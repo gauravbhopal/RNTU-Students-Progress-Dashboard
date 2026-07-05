@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduEval Pro — Student Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary-color: #4361ee;
@@ -17,13 +19,21 @@
             --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        body { background-color: #f0f2f5; color: var(--text-color); }
+        body {
+            background-color: #f0f2f5;
+            color: var(--text-color);
+        }
 
         nav {
             background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -38,12 +48,41 @@
             margin: 0 auto;
         }
 
-        .logo { font-size: 20px; font-weight: 700; color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .logo img { height: 32px; }
-        .nav-links { display: flex; gap: 22px; }
-        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; font-size: 14px; transition: color 0.3s ease; }
-        .nav-links a:hover { color: var(--primary-color); }
-        .nav-links a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            height: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
 
         .btn-logout-nav {
             background: #f72585;
@@ -79,24 +118,84 @@
         header::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
             animation: pulse 8s infinite;
         }
 
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 0.5; } 100% { transform: scale(1); opacity: 0.8; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
 
-        .header-content { position: relative; z-index: 1; text-align: center; }
-        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 800; }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.5;
+            }
 
-        .breadcrumb { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
-        .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; font-size: 14px; }
-        .breadcrumb a:hover { color: white; text-decoration: underline; }
-        .breadcrumb span { color: rgba(255,255,255,0.6); }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
         .card {
             background-color: white;
@@ -110,11 +209,30 @@
             animation: fadeIn 0.5s forwards;
         }
 
-        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .card h2 { margin-bottom: 20px; color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; font-size: 18px; }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-color); font-size: 13px; }
+        .card h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 13px;
+        }
 
         .form-control {
             width: 100%;
@@ -127,40 +245,152 @@
             outline: none;
         }
 
-        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15); }
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
 
-        .row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
-        .col { flex: 1; padding: 0 10px; min-width: 200px; }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
 
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 11px 14px; text-align: center; }
-        th { background-color: var(--primary-color); color: white; font-size: 13px; }
-        tr:nth-child(even) { background-color: var(--light-bg); }
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
 
-        .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-right: 8px; font-family: 'Inter', sans-serif; }
-        .btn-primary { background-color: var(--primary-color); color: white; }
-        .btn-primary:hover { background-color: var(--secondary-color); }
-        .btn-success { background-color: var(--success-color); color: white; }
-        .btn-success:hover { background-color: #3dadd0; }
-        .btn-danger { background-color: var(--warning-color); color: white; }
-        .btn-danger:hover { background-color: #d61a6c; }
-        .btn-secondary { background-color: #6c757d; color: white; }
-        .btn-secondary:hover { background-color: #5a6268; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
 
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 11px 14px;
+            text-align: center;
+        }
 
-        .action-buttons { display: flex; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; gap: 8px; }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 13px;
+        }
 
-        .total-score { font-weight: bold; font-size: 1.2em; color: var(--primary-color); }
+        tr:nth-child(even) {
+            background-color: var(--light-bg);
+        }
 
-        .progress-container { background-color: #e9ecef; border-radius: 8px; height: 12px; margin-top: 12px; overflow: hidden; }
-        .progress-bar { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--primary-color), var(--success-color)); width: 0; transition: width 1s ease-in-out; }
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 8px;
+            font-family: 'Inter', sans-serif;
+        }
 
-        .criteria-table input { width: 65px; text-align: center; padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Inter', sans-serif; }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-        .info-box { background-color: rgba(67,97,238,0.08); border-left: 4px solid var(--primary-color); padding: 14px; margin-bottom: 20px; border-radius: 6px; font-size: 14px; }
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
 
-        .chart-container { display: flex; justify-content: center; margin: 24px 0; }
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #3dadd0;
+        }
+
+        .btn-danger {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #d61a6c;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .total-score {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+
+        .progress-container {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            height: 12px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        .criteria-table input {
+            width: 65px;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .info-box {
+            background-color: rgba(67, 97, 238, 0.08);
+            border-left: 4px solid var(--primary-color);
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            margin: 24px 0;
+        }
 
         /* Toast */
         .toast {
@@ -177,21 +407,100 @@
             opacity: 0;
             transition: all 0.3s;
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.success { background: #06d6a0; }
-        .toast.error { background: #f72585; }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #06d6a0;
+        }
+
+        .toast.error {
+            background: #f72585;
+        }
 
         /* Loading indicator */
-        .loading-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .loading-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
 
-        footer { background-color: #2b2d42; color: #edf2f4; padding: 40px 0 20px; margin-top: 50px; }
-        .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .footer-section h3 { color: white; margin-bottom: 20px; font-size: 16px; position: relative; }
-        .footer-section h3::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 30px; height: 2px; background-color: var(--accent-color); }
-        .footer-section p { margin-bottom: 8px; color: rgba(237,242,244,0.7); font-size: 13px; }
-        .copyright { text-align: center; padding-top: 20px; margin-top: 20px; border-top: 1px solid rgba(237,242,244,0.1); color: rgba(237,242,244,0.5); font-size: 13px; }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            background-color: #2b2d42;
+            color: #edf2f4;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 30px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 8px;
+            color: rgba(237, 242, 244, 0.7);
+            font-size: 13px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(237, 242, 244, 0.1);
+            color: rgba(237, 242, 244, 0.5);
+            font-size: 13px;
+        }
 
         .table-container {
             width: 100%;
@@ -201,14 +510,44 @@
         }
 
         @media (max-width: 768px) {
-            .row { flex-direction: column; }
-            .col { margin-bottom: 15px; }
-            .action-buttons { justify-content: flex-start; }
-            .nav-container { flex-direction: column; gap: 12px; }
-            th, td { padding: 8px 10px; font-size: 13px; }
-            .criteria-table input { width: 50px; font-size: 13px; padding: 4px; }
-            .card { padding: 16px; }
-            .chart-container canvas { max-width: 100% !important; height: auto !important; }
+            .row {
+                flex-direction: column;
+            }
+
+            .col {
+                margin-bottom: 15px;
+            }
+
+            .action-buttons {
+                justify-content: flex-start;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            .criteria-table input {
+                width: 50px;
+                font-size: 13px;
+                padding: 4px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .chart-container canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
             .btn-logout-nav {
                 width: 38px;
                 height: 38px;
@@ -222,6 +561,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav>
@@ -234,7 +574,13 @@
                 <a href="index.html">Dashboard</a>
                 <a href="student-form.html" class="active">Student Profile</a>
             </div>
-            <button class="btn-logout-nav" id="logoutBtn" title="Logout"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></button>
+            <button class="btn-logout-nav" id="logoutBtn" title="Logout"><svg xmlns="http://www.w3.org/2000/svg"
+                    width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    style="display: inline-block; vertical-align: middle;">
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                    <line x1="12" y1="2" x2="12" y2="12"></line>
+                </svg></button>
         </div>
     </nav>
 
@@ -289,9 +635,13 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="attendanceCount">Days Attended</label>
-                        <input type="number" id="attendanceCount" class="form-control" min="0" max="7" value="0" readonly>
+                        <input type="number" id="attendanceCount" class="form-control" min="0" max="7" value="0"
+                            readonly>
                     </div>
                 </div>
+            </div>
+            <div class="action-buttons" id="topActionButtons" style="margin-top: 4px;">
+                <button id="updateBtnTop" class="btn btn-success" style="display:none;">🔄 Update</button>
             </div>
         </div>
 
@@ -325,19 +675,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Fluency</td><td>Smoothness and pace of speech</td><td><input type="number" class="score-input" data-criteria="fluency" min="0" max="10" value="0"></td></tr>
-                        <tr><td>Grammar</td><td>Correct use of grammatical structures</td><td><input type="number" class="score-input" data-criteria="grammar" min="0" max="10" value="0"></td></tr>
-                        <tr><td>Body Language</td><td>Gestures, posture, and non-verbal communication</td><td><input type="number" class="score-input" data-criteria="bodyLanguage" min="0" max="10" value="0"></td></tr>
-                        <tr><td>Confidence</td><td>Self-assurance and conviction in speaking</td><td><input type="number" class="score-input" data-criteria="confidence" min="0" max="10" value="0"></td></tr>
-                        <tr><td>Knowledge</td><td>Subject matter expertise and content</td><td><input type="number" class="score-input" data-criteria="knowledge" min="0" max="10" value="0"></td></tr>
-                        <tr class="total-score"><td colspan="2">Total Score (out of 50)</td><td id="totalScore">0</td></tr>
+                        <tr>
+                            <td>Fluency</td>
+                            <td>Smoothness and pace of speech</td>
+                            <td><input type="number" class="score-input" data-criteria="fluency" min="0" max="10"
+                                    value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Grammar</td>
+                            <td>Correct use of grammatical structures</td>
+                            <td><input type="number" class="score-input" data-criteria="grammar" min="0" max="10"
+                                    value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Body Language</td>
+                            <td>Gestures, posture, and non-verbal communication</td>
+                            <td><input type="number" class="score-input" data-criteria="bodyLanguage" min="0" max="10"
+                                    value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Confidence</td>
+                            <td>Self-assurance and conviction in speaking</td>
+                            <td><input type="number" class="score-input" data-criteria="confidence" min="0" max="10"
+                                    value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Knowledge</td>
+                            <td>Subject matter expertise and content</td>
+                            <td><input type="number" class="score-input" data-criteria="knowledge" min="0" max="10"
+                                    value="0"></td>
+                        </tr>
+                        <tr class="total-score">
+                            <td colspan="2">Total Score (out of 50)</td>
+                            <td id="totalScore">0</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="form-group">
                 <label for="comments">Comments &amp; Feedback</label>
-                <textarea id="comments" class="form-control" rows="4" placeholder="Enter comments or feedback for this session"></textarea>
+                <textarea id="comments" class="form-control" rows="4"
+                    placeholder="Enter comments or feedback for this session"></textarea>
             </div>
 
             <div class="progress-container">
@@ -386,8 +765,10 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul style="list-style:none">
-                    <li style="margin-bottom:8px"><a href="index.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Dashboard</a></li>
-                    <li><a href="student-form.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Add Student</a></li>
+                    <li style="margin-bottom:8px"><a href="index.html"
+                            style="color:rgba(237,242,244,0.7);text-decoration:none">Dashboard</a></li>
+                    <li><a href="student-form.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Add
+                            Student</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -414,9 +795,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script type="module">
-        import { auth, db, onAuthStateChanged, signOut, doc, getDoc, setDoc, updateDoc, deleteDoc, collection } from './firebase-config.js';
+        import { auth, db, onAuthStateChanged, signOut, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from './firebase-config.js';
 
-        const sessionNames = ["Basic Communication","Impromptu Speaking","Interview HR","Interview Tech","GD & Debate","Presentation Skills","Final Mock"];
+        const sessionNames = ["Basic Communication", "Impromptu Speaking", "Interview HR", "Interview Tech", "GD & Debate", "Presentation Skills", "Final Mock"];
 
         let tenantId = null;
         let currentStudentId = null;
@@ -440,6 +821,12 @@
         const progressBar = document.getElementById('progressBar');
         const summaryTable = document.getElementById('summaryTable');
         const toast = document.getElementById('toast');
+        const saveBtn = document.getElementById('saveBtn');
+        const updateBtn = document.getElementById('updateBtn');
+        const updateBtnTop = document.getElementById('updateBtnTop');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const backBtn = document.getElementById('backBtn');
 
         function showLoading(show) { loadingIndicator.style.display = show ? 'flex' : 'none'; }
 
@@ -460,6 +847,16 @@
                 })),
                 totalScore: 0, totalPercentage: 0, grade: "N/A"
             };
+        }
+
+        // ── Toggle which action buttons are visible, based on whether we're
+        //    editing an existing student (id present) or creating a new one.
+        function setEditingMode(isEditing) {
+            saveBtn.style.display = isEditing ? 'none' : 'inline-block';
+            updateBtn.style.display = isEditing ? 'inline-block' : 'none';
+            updateBtnTop.style.display = isEditing ? 'inline-block' : 'none';
+            deleteBtn.style.display = isEditing ? 'inline-block' : 'none';
+            downloadBtn.style.display = isEditing ? 'inline-block' : 'none';
         }
 
         // ── Auth Guard + Load ──
@@ -553,15 +950,9 @@
             if (studentId) {
                 currentStudentId = studentId;
                 await loadStudentFromFirestore(studentId);
-                document.getElementById('saveBtn').style.display = 'none';
-                document.getElementById('updateBtn').style.display = 'inline-block';
-                document.getElementById('deleteBtn').style.display = 'inline-block';
-                document.getElementById('downloadBtn').style.display = 'inline-block';
+                setEditingMode(true);
             } else {
-                document.getElementById('saveBtn').style.display = 'inline-block';
-                document.getElementById('updateBtn').style.display = 'none';
-                document.getElementById('deleteBtn').style.display = 'none';
-                document.getElementById('downloadBtn').style.display = 'none';
+                setEditingMode(false);
             }
 
             // Animate cards
@@ -743,8 +1134,8 @@
         emailInput.addEventListener('input', () => { currentStudent.email = emailInput.value; });
         enrollmentDateInput.addEventListener('change', () => { currentStudent.enrollmentDate = enrollmentDateInput.value; });
 
-        // ── Save ──
-        document.getElementById('saveBtn').addEventListener('click', async () => {
+        // ── Save (creates a brand-new student record) ──
+        async function handleSave() {
             if (!studentNameInput.value.trim()) { showToast('Please enter student name', 'error'); return; }
             if (!mobileNumberInput.value.trim()) { showToast('Please enter mobile number', 'error'); return; }
             if (!tenantId) { showToast('Session error. Please login again.', 'error'); return; }
@@ -759,7 +1150,7 @@
                         alert('Demo version limit reached. You can only add up to 10 students. Please contact SuperAdmin to upgrade to Pro.');
                         return;
                     }
-                } catch(cErr) {
+                } catch (cErr) {
                     console.error('Count students error:', cErr);
                 } finally {
                     showLoading(false);
@@ -775,20 +1166,23 @@
                 currentStudentId = newDocRef.id;
                 showLoading(false);
                 showToast('✅ Student saved! You can now update scores or go back.', 'success');
-                // Swap buttons: saved student can now be Updated or Deleted
-                document.getElementById('saveBtn').style.display = 'none';
-                document.getElementById('updateBtn').style.display = 'inline-block';
-                document.getElementById('deleteBtn').style.display = 'inline-block';
-                document.getElementById('downloadBtn').style.display = 'inline-block';
+                // Now that the student exists, switch into "editing" mode
+                setEditingMode(true);
             } catch (err) {
                 console.error(err);
                 showLoading(false);
                 showToast('Error saving student: ' + err.message, 'error');
             }
-        });
+        }
 
-        // ── Update ──
-        document.getElementById('updateBtn').addEventListener('click', async () => {
+        saveBtn.addEventListener('click', handleSave);
+
+        // ── Update (saves changes to an existing student record) ──
+        // Shared by both the "Update" button at the bottom action bar and the
+        // "Update" button inside the Student Information card at the top.
+        async function handleUpdate() {
+            if (!studentNameInput.value.trim()) { showToast('Please enter student name', 'error'); return; }
+            if (!mobileNumberInput.value.trim()) { showToast('Please enter mobile number', 'error'); return; }
             if (!currentStudentId || !tenantId) { showToast('No student selected to update', 'error'); return; }
             calculateOverallPerformance();
             showLoading(true);
@@ -805,10 +1199,13 @@
                 showLoading(false);
                 showToast('Error updating: ' + err.message, 'error');
             }
-        });
+        }
+
+        updateBtn.addEventListener('click', handleUpdate);
+        updateBtnTop.addEventListener('click', handleUpdate);
 
         // ── Delete ──
-        document.getElementById('deleteBtn').addEventListener('click', async () => {
+        deleteBtn.addEventListener('click', async () => {
             if (!currentStudentId || !tenantId) { showToast('No student selected to delete', 'error'); return; }
             if (!confirm('Are you sure you want to delete this student record?')) return;
             showLoading(true);
@@ -824,11 +1221,11 @@
         });
 
         // ── Download PDF ──
-        document.getElementById('downloadBtn').addEventListener('click', () => {
+        downloadBtn.addEventListener('click', () => {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
             const pageW = pdf.internal.pageSize.getWidth();
-            const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+            const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
 
             // Header
             pdf.setFillColor(67, 97, 238);
@@ -883,17 +1280,17 @@
             pdf.setTextColor(67, 97, 238);
             pdf.text('Session-wise Performance', 14, 88);
 
-            const sessionNames = ['Basic Communication','Impromptu Speaking','Interview HR','Interview Tech','GD & Debate','Presentation Skills','Final Mock'];
+            const sessionNames = ['Basic Communication', 'Impromptu Speaking', 'Interview HR', 'Interview Tech', 'GD & Debate', 'Presentation Skills', 'Final Mock'];
             const rows = currentStudent.sessions
                 .map((s, i) => [i + 1, sessionNames[i], s.date || '-', s.attended ? '✓' : '-',
-                    s.attended ? s.scores.fluency : '-',
-                    s.attended ? s.scores.grammar : '-',
-                    s.attended ? s.scores.bodyLanguage : '-',
-                    s.attended ? s.scores.confidence : '-',
-                    s.attended ? s.scores.knowledge : '-',
-                    s.attended ? `${s.totalScore}/50` : '-',
-                    s.attended ? `${s.percentage}%` : '-',
-                    s.attended ? (s.comments || '-') : '-'
+                s.attended ? s.scores.fluency : '-',
+                s.attended ? s.scores.grammar : '-',
+                s.attended ? s.scores.bodyLanguage : '-',
+                s.attended ? s.scores.confidence : '-',
+                s.attended ? s.scores.knowledge : '-',
+                s.attended ? `${s.totalScore}/50` : '-',
+                s.attended ? `${s.percentage}%` : '-',
+                s.attended ? (s.comments || '-') : '-'
                 ]);
 
             pdf.autoTable({
@@ -926,22 +1323,20 @@
                 }
             });
 
-            const filename = `${(currentStudent.name || 'student').replace(/\s+/g,'_')}_Report.pdf`;
-            try {
-                const blob = pdf.output('blob');
-                const blobUrl = URL.createObjectURL(blob);
-                const newWindow = window.open(blobUrl, '_blank');
-                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-                    pdf.save(filename);
-                }
-            } catch (e) {
-                console.error("Opening PDF tab failed, downloading directly", e);
-                pdf.save(filename);
-            }
+            // Build a clean, human-readable filename from the student's name,
+            // e.g. "Rahul_Sharma_Progress_Report.pdf" — and download it directly.
+            // (We intentionally skip the "open in a new tab" approach used
+            // previously: once a blob is opened in a tab, the browser loses
+            // the intended filename if the user manually saves it from there,
+            // resulting in a random/garbled name. Saving directly guarantees
+            // the correct filename every time.)
+            const safeName = (currentStudent.name || 'Student').trim().replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'Student';
+            const filename = `${safeName}_Progress_Report.pdf`;
+            pdf.save(filename);
         });
 
         // ── Back ──
-        document.getElementById('backBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
+        backBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
 
         // ── Logout ──
         document.getElementById('logoutBtn').addEventListener('click', async () => {
@@ -951,4 +1346,5 @@
         });
     </script>
 </body>
+
 </html>
