@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduEval Pro — First Time Setup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .card {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 48px 40px;
+            max-width: 480px;
+            width: 100%;
+            margin: 20px;
+            backdrop-filter: blur(20px);
+        }
+        h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 24px; }
+        .status { 
+            padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status.success { background: rgba(6,214,160,0.15); border-color: rgba(6,214,160,0.4); color: #06d6a0; }
+        .status.error { background: rgba(247,37,133,0.15); border-color: rgba(247,37,133,0.4); color: #f72585; }
+        .status.info { background: rgba(67,97,238,0.15); border-color: rgba(67,97,238,0.4); color: #4895ef; }
+        .btn {
+            display: block; width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #4361ee, #4895ef);
+            color: white; border: none; border-radius: 12px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            font-family: 'Inter', sans-serif; margin-top: 20px;
+            transition: all 0.2s;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🛠️ First Time Setup</h1>
+    <p>This will create the SuperAdmin account for EduEval Pro. Run this once only.</p>
+    <div id="log"></div>
+    <button class="btn" id="setupBtn" onclick="runSetup()">Create SuperAdmin Account</button>
+    <button class="btn" id="goLoginBtn" onclick="window.location.href='login.html'" style="background:rgba(255,255,255,0.1);margin-top:10px;display:none">Go to Login →</button>
+</div>
+
+<script type="module">
+    import { auth, db, createUserWithEmailAndPassword, doc, setDoc, signOut } from './firebase-config.js';
+
+    function log(msg, type = 'info') {
+        const d = document.getElementById('log');
+        const div = document.createElement('div');
+        div.className = `status ${type}`;
+        div.textContent = msg;
+        d.appendChild(div);
+    }
+
+    window.runSetup = async function() {
+        const btn = document.getElementById('setupBtn');
+        btn.disabled = true;
+        btn.textContent = 'Setting up...';
+
+        try {
+            log('⏳ Creating superadmin@gmail.com account...', 'info');
+            
+            let uid = null;
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, 'superadmin@gmail.com', 'superpassword@123');
+                uid = cred.user.uid;
+                log('✅ Auth user created. UID: ' + uid, 'success');
+            } catch (authErr) {
+                if (authErr.code === 'auth/email-already-in-use') {
+                    log('ℹ️ Account already exists. Attempting to sign in to fetch UID...', 'info');
+                    // Import signInWithEmailAndPassword from firebase-config if needed, it is already imported!
+                    const signIn = (await import('./firebase-config.js')).signInWithEmailAndPassword;
+                    const loginCred = await signIn(auth, 'superadmin@gmail.com', 'superpassword@123');
+                    uid = loginCred.user.uid;
+                    log('✅ Signed in successfully. UID: ' + uid, 'success');
+                } else {
+                    throw authErr;
+                }
+            }
+
+            log('⏳ Ensuring Firestore superadmin record exists...', 'info');
+            await setDoc(doc(db, 'users', uid), {
+                email: 'superadmin@gmail.com',
+                role: 'superadmin',
+                tenantId: null,
+                createdAt: new Date().toISOString()
+            }, { merge: true });
+
+            log('✅ Firestore user document created/updated', 'success');
+            log('✅ Setup complete! You can now login as superadmin@gmail.com', 'success');
+
+            // Sign out so they can log in fresh
+            await signOut(auth);
+            
+            document.getElementById('goLoginBtn').style.display = 'block';
+            btn.style.display = 'none';
+        } catch (err) {
+            log('❌ Error: ' + err.message, 'error');
+            btn.disabled = false;
+            btn.textContent = 'Retry Setup';
+        }
+    };
+</script>
+</body>
+</html>

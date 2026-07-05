@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduEval Pro — Student Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body { background-color: #f0f2f5; color: var(--text-color); }
+
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo { font-size: 20px; font-weight: 700; color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo img { height: 32px; }
+        .nav-links { display: flex; gap: 22px; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; font-size: 14px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary-color); }
+        .nav-links a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
+
+        .btn-logout-nav {
+            background: #f72585;
+            border: none;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(247, 37, 133, 0.3);
+        }
+
+        .btn-logout-nav:hover {
+            background: #d61a6c;
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.5);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 8s infinite;
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 0.5; } 100% { transform: scale(1); opacity: 0.8; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header-content { position: relative; z-index: 1; text-align: center; }
+        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 800; }
+
+        .breadcrumb { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
+        .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; font-size: 14px; }
+        .breadcrumb a:hover { color: white; text-decoration: underline; }
+        .breadcrumb span { color: rgba(255,255,255,0.6); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin: 20px 0;
+            padding: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .card h2 { margin-bottom: 20px; color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; font-size: 18px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-color); font-size: 13px; }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15); }
+
+        .row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
+        .col { flex: 1; padding: 0 10px; min-width: 200px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 11px 14px; text-align: center; }
+        th { background-color: var(--primary-color); color: white; font-size: 13px; }
+        tr:nth-child(even) { background-color: var(--light-bg); }
+
+        .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-right: 8px; font-family: 'Inter', sans-serif; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { background-color: var(--secondary-color); }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .btn-success:hover { background-color: #3dadd0; }
+        .btn-danger { background-color: var(--warning-color); color: white; }
+        .btn-danger:hover { background-color: #d61a6c; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .btn-secondary:hover { background-color: #5a6268; }
+
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .action-buttons { display: flex; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; gap: 8px; }
+
+        .total-score { font-weight: bold; font-size: 1.2em; color: var(--primary-color); }
+
+        .progress-container { background-color: #e9ecef; border-radius: 8px; height: 12px; margin-top: 12px; overflow: hidden; }
+        .progress-bar { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--primary-color), var(--success-color)); width: 0; transition: width 1s ease-in-out; }
+
+        .criteria-table input { width: 65px; text-align: center; padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Inter', sans-serif; }
+
+        .info-box { background-color: rgba(67,97,238,0.08); border-left: 4px solid var(--primary-color); padding: 14px; margin-bottom: 20px; border-radius: 6px; font-size: 14px; }
+
+        .chart-container { display: flex; justify-content: center; margin: 24px 0; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #333;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 500;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #06d6a0; }
+        .toast.error { background: #f72585; }
+
+        /* Loading indicator */
+        .loading-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .loading-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        footer { background-color: #2b2d42; color: #edf2f4; padding: 40px 0 20px; margin-top: 50px; }
+        .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .footer-section h3 { color: white; margin-bottom: 20px; font-size: 16px; position: relative; }
+        .footer-section h3::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 30px; height: 2px; background-color: var(--accent-color); }
+        .footer-section p { margin-bottom: 8px; color: rgba(237,242,244,0.7); font-size: 13px; }
+        .copyright { text-align: center; padding-top: 20px; margin-top: 20px; border-top: 1px solid rgba(237,242,244,0.1); color: rgba(237,242,244,0.5); font-size: 13px; }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .row { flex-direction: column; }
+            .col { margin-bottom: 15px; }
+            .action-buttons { justify-content: flex-start; }
+            .nav-container { flex-direction: column; gap: 12px; }
+            th, td { padding: 8px 10px; font-size: 13px; }
+            .criteria-table input { width: 50px; font-size: 13px; padding: 4px; }
+            .card { padding: 16px; }
+            .chart-container canvas { max-width: 100% !important; height: auto !important; }
+            .btn-logout-nav {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                padding: 0;
+                font-size: 14px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://img.icons8.com/fluency/96/000000/school.png" alt="Logo">
+                EduEval Pro
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="student-form.html" class="active">Student Profile</a>
+            </div>
+            <button class="btn-logout-nav" id="logoutBtn" title="Logout"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></button>
+        </div>
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <h1>Student Evaluation System</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>›</span>
+                <a href="#" id="student-name-header">Student Profile</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Student Information -->
+        <div class="card" style="animation-delay:0s">
+            <h2>📋 Student Information</h2>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="studentName">Full Name *</label>
+                        <input type="text" id="studentName" class="form-control" placeholder="Enter student name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="mobileNumber">Mobile Number *</label>
+                        <input type="tel" id="mobileNumber" class="form-control" placeholder="Enter mobile number">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="batchCode">Batch Code</label>
+                        <input type="text" id="batchCode" class="form-control" placeholder="e.g. BATCH-2025-A">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="enrollmentDate">Enrollment Date</label>
+                        <input type="date" id="enrollmentDate" class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter email address">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="attendanceCount">Days Attended</label>
+                        <input type="number" id="attendanceCount" class="form-control" min="0" max="7" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Evaluation -->
+        <div class="card" style="animation-delay:0.1s">
+            <h2>🎯 Performance Evaluation</h2>
+            <div class="info-box">
+                Enter marks for each criterion (out of 10). Total score will be calculated automatically.
+            </div>
+
+            <div class="form-group">
+                <label for="sessionSelect">Select Session</label>
+                <select id="sessionSelect" class="form-control">
+                    <option value="0">Day 1: Basic Communication</option>
+                    <option value="1">Day 2: Impromptu Speaking</option>
+                    <option value="2">Day 3: Interview HR</option>
+                    <option value="3">Day 4: Interview Tech</option>
+                    <option value="4">Day 5: GD &amp; Debate</option>
+                    <option value="5">Day 6: Presentation Skills</option>
+                    <option value="6">Day 7: Final Mock</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="criteria-table">
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Description</th>
+                            <th>Score (0-10)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Fluency</td><td>Smoothness and pace of speech</td><td><input type="number" class="score-input" data-criteria="fluency" min="0" max="10" value="0"></td></tr>
+                        <tr><td>Grammar</td><td>Correct use of grammatical structures</td><td><input type="number" class="score-input" data-criteria="grammar" min="0" max="10" value="0"></td></tr>
+                        <tr><td>Body Language</td><td>Gestures, posture, and non-verbal communication</td><td><input type="number" class="score-input" data-criteria="bodyLanguage" min="0" max="10" value="0"></td></tr>
+                        <tr><td>Confidence</td><td>Self-assurance and conviction in speaking</td><td><input type="number" class="score-input" data-criteria="confidence" min="0" max="10" value="0"></td></tr>
+                        <tr><td>Knowledge</td><td>Subject matter expertise and content</td><td><input type="number" class="score-input" data-criteria="knowledge" min="0" max="10" value="0"></td></tr>
+                        <tr class="total-score"><td colspan="2">Total Score (out of 50)</td><td id="totalScore">0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Comments &amp; Feedback</label>
+                <textarea id="comments" class="form-control" rows="4" placeholder="Enter comments or feedback for this session"></textarea>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Performance Summary -->
+        <div class="card" style="animation-delay:0.2s">
+            <h2>📈 Performance Summary</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th>Date</th>
+                            <th>Total Score</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryTable"></tbody>
+                </table>
+            </div>
+            <div class="chart-container">
+                <canvas id="performanceChart" width="600" height="280"></canvas>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons" style="margin-bottom: 30px;">
+            <button id="saveBtn" class="btn btn-primary">💾 Save Student</button>
+            <button id="updateBtn" class="btn btn-success">🔄 Update</button>
+            <button id="deleteBtn" class="btn btn-danger">🗑 Delete</button>
+            <button id="downloadBtn" class="btn btn-secondary">📥 Download Report</button>
+            <button id="backBtn" class="btn btn-secondary">← Back</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About EduEval Pro</h3>
+                <p>A Firebase-powered multi-institute student evaluation system.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul style="list-style:none">
+                    <li style="margin-bottom:8px"><a href="index.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Dashboard</a></li>
+                    <li><a href="student-form.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Add Student</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>📧 gaurav.chourasiya@gmail.com</p>
+                <p>📞 +91-8962542152</p>
+                <p>📍 Bhopal, M.P.</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>All Rights Reserved &copy; 2026 EduEval Pro | Powered by Firebase | Developed by Gaurav Chourasiya</p>
+        </div>
+    </footer>
+
+    <!-- Loading -->
+    <div class="loading-container" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script type="module">
+        import { auth, db, onAuthStateChanged, signOut, doc, getDoc, setDoc, updateDoc, deleteDoc, collection } from './firebase-config.js';
+
+        const sessionNames = ["Basic Communication","Impromptu Speaking","Interview HR","Interview Tech","GD & Debate","Presentation Skills","Final Mock"];
+
+        let tenantId = null;
+        let currentStudentId = null;
+        let currentStudent = initializeNewStudent();
+        let performanceChart = null;
+        let isDemo = false;
+
+        // DOM refs
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const studentNameHeader = document.getElementById('student-name-header');
+        const studentNameInput = document.getElementById('studentName');
+        const mobileNumberInput = document.getElementById('mobileNumber');
+        const batchCodeInput = document.getElementById('batchCode');
+        const enrollmentDateInput = document.getElementById('enrollmentDate');
+        const emailInput = document.getElementById('email');
+        const attendanceCountInput = document.getElementById('attendanceCount');
+        const sessionSelect = document.getElementById('sessionSelect');
+        const scoreInputs = document.querySelectorAll('.score-input');
+        const totalScoreEl = document.getElementById('totalScore');
+        const commentsInput = document.getElementById('comments');
+        const progressBar = document.getElementById('progressBar');
+        const summaryTable = document.getElementById('summaryTable');
+        const toast = document.getElementById('toast');
+
+        function showLoading(show) { loadingIndicator.style.display = show ? 'flex' : 'none'; }
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
+
+        function initializeNewStudent() {
+            return {
+                name: "", mobile: "", batchCode: "", email: "",
+                enrollmentDate: "", daysAttended: 0,
+                sessions: Array(7).fill(null).map(() => ({
+                    date: "", attended: false,
+                    scores: { fluency: 0, grammar: 0, bodyLanguage: 0, confidence: 0, knowledge: 0 },
+                    totalScore: 0, percentage: 0, comments: ""
+                })),
+                totalScore: 0, totalPercentage: 0, grade: "N/A"
+            };
+        }
+
+        // ── Auth Guard + Load ──
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+
+            // Resolve tenantId — 1) sessionStorage preview, 2) URL param ?tenant=, 3) Firestore user doc
+            const previewData = sessionStorage.getItem('superadmin_preview');
+            const urlTenant = new URLSearchParams(window.location.search).get('tenant');
+            if (previewData) {
+                tenantId = JSON.parse(previewData).tenantId;
+            } else if (urlTenant) {
+                tenantId = urlTenant;
+            } else {
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    if (userDoc.exists()) {
+                        const ud = userDoc.data();
+                        if (ud.role === 'superadmin') { window.location.href = 'superadmin.html'; return; }
+                        tenantId = ud.tenantId;
+                    } else {
+                        await signOut(auth);
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                } catch (err) { console.error(err); }
+            }
+
+            // Fetch tenant details to check status and plan limits
+            let tenantData = null;
+            if (tenantId) {
+                try {
+                    const tenantDoc = await getDoc(doc(db, 'tenants', tenantId));
+                    if (tenantDoc.exists()) {
+                        tenantData = tenantDoc.data();
+                    }
+                } catch (err) {
+                    console.error('Error fetching tenant details:', err);
+                }
+            }
+
+            if (tenantData) {
+                // Active check
+                const isSuperadminPreview = sessionStorage.getItem('superadmin_preview') !== null;
+                if (tenantData.isActive === false && !isSuperadminPreview) {
+                    document.body.innerHTML = `
+                        <div style="min-height: 100vh; background: #0f0c29; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; color: white; text-align: center; padding: 20px;">
+                            <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 48px; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                                <div style="font-size: 64px; margin-bottom: 24px;">🔒</div>
+                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">Account Suspended</h2>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 14px; line-height: 1.6; margin-bottom: 32px;">
+                                    Your institute's portal access has been suspended by the system administrator.
+                                </p>
+                                <button id="suspendedLoginBtn" style="padding: 12px 24px; background: linear-gradient(135deg, #f72585, #b5179e); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Inter'; box-shadow: 0 4px 15px rgba(247,37,133,0.3);">Go Back to Login</button>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('suspendedLoginBtn').addEventListener('click', async () => {
+                        sessionStorage.removeItem('superadmin_preview');
+                        await signOut(auth);
+                        window.location.href = 'login.html';
+                    });
+                    return;
+                }
+
+                // Demo checks
+                const planType = tenantData.planType || 'demo';
+                const proExpiry = tenantData.proExpiry || '';
+                const isExpired = planType === 'pro' && proExpiry && new Date(proExpiry) < new Date();
+                isDemo = planType === 'demo' || isExpired;
+
+                if (isDemo) {
+                    if (!document.querySelector('.plan-warning-banner')) {
+                        const banner = document.createElement('div');
+                        banner.className = 'plan-warning-banner';
+                        banner.style.cssText = 'background: linear-gradient(90deg, #ffd166, #ffafcc); color: #0d1117; padding: 10px 20px; text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 99;';
+                        if (isExpired) {
+                            banner.innerHTML = `⚠️ Pro Plan Expired on ${proExpiry} — Your account is in Demo Mode (max 10 students).`;
+                        } else {
+                            banner.innerHTML = `⚠️ Demo Mode — Access is limited to a maximum of 10 student profiles.`;
+                        }
+                        document.body.insertBefore(banner, document.body.firstChild);
+                    }
+                }
+            }
+
+            // Check URL params
+            const params = new URLSearchParams(window.location.search);
+            const studentId = params.get('id');
+
+            if (studentId) {
+                currentStudentId = studentId;
+                await loadStudentFromFirestore(studentId);
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('updateBtn').style.display = 'inline-block';
+                document.getElementById('deleteBtn').style.display = 'inline-block';
+                document.getElementById('downloadBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('saveBtn').style.display = 'inline-block';
+                document.getElementById('updateBtn').style.display = 'none';
+                document.getElementById('deleteBtn').style.display = 'none';
+                document.getElementById('downloadBtn').style.display = 'none';
+            }
+
+            // Animate cards
+            document.querySelectorAll('.card').forEach((card, i) => {
+                card.style.animationDelay = `${i * 0.08}s`;
+            });
+        });
+
+        async function loadStudentFromFirestore(id) {
+            showLoading(true);
+            try {
+                const studentRef = doc(db, 'tenants', tenantId, 'students', id);
+                const snap = await getDoc(studentRef);
+                if (snap.exists()) {
+                    currentStudent = { ...initializeNewStudent(), ...snap.data() };
+                    // Ensure sessions array is properly merged
+                    if (!Array.isArray(currentStudent.sessions) || currentStudent.sessions.length !== 7) {
+                        currentStudent.sessions = initializeNewStudent().sessions;
+                    }
+                    populateStudentInfo();
+                    updateAttendanceCount();
+                    populateSummaryTable();
+                    initializeChart();
+                    studentNameHeader.textContent = currentStudent.name || "Student Profile";
+                } else {
+                    showToast('Student not found!', 'error');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Error loading student data', 'error');
+            }
+            showLoading(false);
+        }
+
+        function populateStudentInfo() {
+            studentNameInput.value = currentStudent.name || '';
+            mobileNumberInput.value = currentStudent.mobile || '';
+            batchCodeInput.value = currentStudent.batchCode || '';
+            enrollmentDateInput.value = currentStudent.enrollmentDate || '';
+            emailInput.value = currentStudent.email || '';
+            updateSessionScores();
+        }
+
+        function updateSessionScores() {
+            const idx = parseInt(sessionSelect.value);
+            const session = currentStudent.sessions[idx];
+            scoreInputs.forEach(input => {
+                input.value = session.scores[input.dataset.criteria] || 0;
+            });
+            totalScoreEl.textContent = session.totalScore || 0;
+            commentsInput.value = session.comments || '';
+            progressBar.style.width = `${session.percentage || 0}%`;
+        }
+
+        function calculateTotalScore() {
+            let total = 0;
+            scoreInputs.forEach(input => { total += parseInt(input.value) || 0; });
+            return total;
+        }
+
+        function updateAttendanceCount() {
+            const count = currentStudent.sessions.filter(s => s.attended).length;
+            currentStudent.daysAttended = count;
+            attendanceCountInput.value = count;
+        }
+
+        function populateSummaryTable() {
+            summaryTable.innerHTML = '';
+            currentStudent.sessions.forEach((session, idx) => {
+                if (session.attended) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>Day ${idx + 1}: ${sessionNames[idx]}</td>
+                        <td>${session.date || 'N/A'}</td>
+                        <td>${session.totalScore}/50</td>
+                        <td>${session.percentage}%</td>
+                    `;
+                    summaryTable.appendChild(row);
+                }
+            });
+        }
+
+        function calculateOverallPerformance() {
+            let totalScore = 0, attendedCount = 0;
+            currentStudent.sessions.forEach(session => {
+                if (session.attended) { totalScore += session.totalScore; attendedCount++; }
+            });
+            currentStudent.totalScore = totalScore;
+            if (attendedCount > 0) {
+                currentStudent.totalPercentage = Math.round((totalScore / (attendedCount * 50)) * 100);
+                const pct = currentStudent.totalPercentage;
+                if (pct >= 90) currentStudent.grade = 'A+';
+                else if (pct >= 80) currentStudent.grade = 'A';
+                else if (pct >= 70) currentStudent.grade = 'B+';
+                else if (pct >= 60) currentStudent.grade = 'B';
+                else if (pct >= 50) currentStudent.grade = 'C';
+                else currentStudent.grade = 'D';
+            } else {
+                currentStudent.totalPercentage = 0;
+                currentStudent.grade = 'N/A';
+            }
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            const labels = [], data = [];
+            currentStudent.sessions.forEach((s, idx) => {
+                if (s.attended) { labels.push(`Day ${idx + 1}`); data.push(s.totalScore); }
+            });
+
+            if (performanceChart) performanceChart.destroy();
+
+            performanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Performance Score (out of 50)',
+                        data,
+                        fill: true,
+                        backgroundColor: 'rgba(67,97,238,0.08)',
+                        borderColor: '#4361ee',
+                        pointBackgroundColor: '#4895ef',
+                        pointRadius: 5,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true, max: 50 } },
+                    responsive: true,
+                    animation: { duration: 1000, easing: 'easeInOutQuad' }
+                }
+            });
+        }
+
+        // ── Score input handler ──
+        sessionSelect.addEventListener('change', updateSessionScores);
+
+        scoreInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                let v = parseInt(input.value) || 0;
+                if (v < 0) v = 0;
+                if (v > 10) v = 10;
+                input.value = v;
+
+                const idx = parseInt(sessionSelect.value);
+                currentStudent.sessions[idx].scores[input.dataset.criteria] = v;
+                const total = calculateTotalScore();
+                currentStudent.sessions[idx].totalScore = total;
+                currentStudent.sessions[idx].percentage = Math.round((total / 50) * 100);
+                totalScoreEl.textContent = total;
+
+                if (!currentStudent.sessions[idx].attended && total > 0) {
+                    currentStudent.sessions[idx].attended = true;
+                    currentStudent.sessions[idx].date = new Date().toISOString().split('T')[0];
+                }
+
+                progressBar.style.width = `${currentStudent.sessions[idx].percentage}%`;
+                updateAttendanceCount();
+                calculateOverallPerformance();
+                populateSummaryTable();
+                initializeChart();
+            });
+        });
+
+        commentsInput.addEventListener('input', () => {
+            const idx = parseInt(sessionSelect.value);
+            currentStudent.sessions[idx].comments = commentsInput.value;
+        });
+
+        studentNameInput.addEventListener('input', () => {
+            currentStudent.name = studentNameInput.value;
+            studentNameHeader.textContent = currentStudent.name || 'Student Profile';
+        });
+
+        mobileNumberInput.addEventListener('input', () => { currentStudent.mobile = mobileNumberInput.value; });
+        batchCodeInput.addEventListener('input', () => { currentStudent.batchCode = batchCodeInput.value; });
+        emailInput.addEventListener('input', () => { currentStudent.email = emailInput.value; });
+        enrollmentDateInput.addEventListener('change', () => { currentStudent.enrollmentDate = enrollmentDateInput.value; });
+
+        // ── Save ──
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            if (!studentNameInput.value.trim()) { showToast('Please enter student name', 'error'); return; }
+            if (!mobileNumberInput.value.trim()) { showToast('Please enter mobile number', 'error'); return; }
+            if (!tenantId) { showToast('Session error. Please login again.', 'error'); return; }
+
+            if (isDemo) {
+                try {
+                    showLoading(true);
+                    const snap = await getDocs(collection(db, 'tenants', tenantId, 'students'));
+                    if (snap.size >= 10) {
+                        showLoading(false);
+                        showToast('❌ Limit Reached: Demo plan is limited to 10 students. Upgrade to Pro.', 'error');
+                        alert('Demo version limit reached. You can only add up to 10 students. Please contact SuperAdmin to upgrade to Pro.');
+                        return;
+                    }
+                } catch(cErr) {
+                    console.error('Count students error:', cErr);
+                } finally {
+                    showLoading(false);
+                }
+            }
+
+            calculateOverallPerformance();
+            showLoading(true);
+
+            try {
+                const newDocRef = doc(collection(db, 'tenants', tenantId, 'students'));
+                await setDoc(newDocRef, { ...currentStudent, createdAt: new Date().toISOString() });
+                currentStudentId = newDocRef.id;
+                showLoading(false);
+                showToast('✅ Student saved! You can now update scores or go back.', 'success');
+                // Swap buttons: saved student can now be Updated or Deleted
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('updateBtn').style.display = 'inline-block';
+                document.getElementById('deleteBtn').style.display = 'inline-block';
+                document.getElementById('downloadBtn').style.display = 'inline-block';
+            } catch (err) {
+                console.error(err);
+                showLoading(false);
+                showToast('Error saving student: ' + err.message, 'error');
+            }
+        });
+
+        // ── Update ──
+        document.getElementById('updateBtn').addEventListener('click', async () => {
+            if (!currentStudentId || !tenantId) { showToast('No student selected to update', 'error'); return; }
+            calculateOverallPerformance();
+            showLoading(true);
+            try {
+                await updateDoc(doc(db, 'tenants', tenantId, 'students', currentStudentId), {
+                    ...currentStudent,
+                    updatedAt: new Date().toISOString()
+                });
+                showLoading(false);
+                showToast('✅ Student updated!', 'success');
+                populateSummaryTable();
+                initializeChart();
+            } catch (err) {
+                showLoading(false);
+                showToast('Error updating: ' + err.message, 'error');
+            }
+        });
+
+        // ── Delete ──
+        document.getElementById('deleteBtn').addEventListener('click', async () => {
+            if (!currentStudentId || !tenantId) { showToast('No student selected to delete', 'error'); return; }
+            if (!confirm('Are you sure you want to delete this student record?')) return;
+            showLoading(true);
+            try {
+                await deleteDoc(doc(db, 'tenants', tenantId, 'students', currentStudentId));
+                showLoading(false);
+                showToast('Student deleted', 'success');
+                setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+            } catch (err) {
+                showLoading(false);
+                showToast('Error deleting: ' + err.message, 'error');
+            }
+        });
+
+        // ── Download PDF ──
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            const pageW = pdf.internal.pageSize.getWidth();
+            const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+
+            // Header
+            pdf.setFillColor(67, 97, 238);
+            pdf.rect(0, 0, pageW, 24, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(16);
+            pdf.text('EduEval Pro — Student Report', 14, 13);
+            pdf.setFontSize(9);
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(today, pageW - 14, 13, { align: 'right' });
+            pdf.text('Powered by EduEval Pro', pageW - 14, 19, { align: 'right' });
+
+            // Student Info Box
+            pdf.setFillColor(240, 242, 255);
+            pdf.roundedRect(14, 30, pageW - 28, 40, 3, 3, 'F');
+            pdf.setTextColor(50, 50, 50);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(14);
+            pdf.text(currentStudent.name || 'Student', 20, 42);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(9);
+            pdf.setTextColor(100, 100, 120);
+            pdf.text(`Mobile: ${currentStudent.mobile || '-'}`, 20, 50);
+            pdf.text(`Email: ${currentStudent.email || '-'}`, 20, 57);
+            pdf.text(`Batch: ${currentStudent.batchCode || '-'}`, 100, 50);
+            pdf.text(`Enrolled: ${currentStudent.enrollmentDate || '-'}`, 100, 57);
+            // Grade badge
+            pdf.setFillColor(67, 97, 238);
+            pdf.roundedRect(pageW - 40, 32, 26, 16, 3, 3, 'F');
+            pdf.setTextColor(255);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(18);
+            pdf.text(currentStudent.grade || 'N/A', pageW - 27, 44, { align: 'center' });
+
+            // Overall stats row
+            pdf.setTextColor(50, 50, 50);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(10);
+            pdf.text(`Days Attended: ${currentStudent.daysAttended || 0}/7`, 20, 76);
+            pdf.text(`Total Score: ${currentStudent.totalScore || 0}`, 80, 76);
+            pdf.text(`Overall: ${currentStudent.totalPercentage || 0}%`, 140, 76);
+
+            // Divider
+            pdf.setDrawColor(67, 97, 238);
+            pdf.setLineWidth(0.4);
+            pdf.line(14, 80, pageW - 14, 80);
+
+            // Session table
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(11);
+            pdf.setTextColor(67, 97, 238);
+            pdf.text('Session-wise Performance', 14, 88);
+
+            const sessionNames = ['Basic Communication','Impromptu Speaking','Interview HR','Interview Tech','GD & Debate','Presentation Skills','Final Mock'];
+            const rows = currentStudent.sessions
+                .map((s, i) => [i + 1, sessionNames[i], s.date || '-', s.attended ? '✓' : '-',
+                    s.attended ? s.scores.fluency : '-',
+                    s.attended ? s.scores.grammar : '-',
+                    s.attended ? s.scores.bodyLanguage : '-',
+                    s.attended ? s.scores.confidence : '-',
+                    s.attended ? s.scores.knowledge : '-',
+                    s.attended ? `${s.totalScore}/50` : '-',
+                    s.attended ? `${s.percentage}%` : '-',
+                    s.attended ? (s.comments || '-') : '-'
+                ]);
+
+            pdf.autoTable({
+                startY: 92,
+                head: [['#', 'Session', 'Date', 'Present', 'Fluency', 'Grammar', 'Body Lang', 'Confidence', 'Knowledge', 'Score', '%', 'Remarks']],
+                body: rows,
+                headStyles: { fillColor: [67, 97, 238], textColor: 255, fontStyle: 'bold', fontSize: 8 },
+                bodyStyles: { fontSize: 8, textColor: [50, 50, 50] },
+                alternateRowStyles: { fillColor: [245, 246, 255] },
+                columnStyles: {
+                    0: { cellWidth: 8 },
+                    1: { cellWidth: 32 },
+                    2: { cellWidth: 20 },
+                    3: { cellWidth: 12, halign: 'center' },
+                    4: { cellWidth: 10, halign: 'center' },
+                    5: { cellWidth: 12, halign: 'center' },
+                    6: { cellWidth: 14, halign: 'center' },
+                    7: { cellWidth: 14, halign: 'center' },
+                    8: { cellWidth: 14, halign: 'center' },
+                    9: { cellWidth: 10, halign: 'center' },
+                    10: { cellWidth: 10, halign: 'center' },
+                    11: { cellWidth: 26 } // Remarks
+                },
+                margin: { left: 14, right: 14 },
+                didDrawPage: (data) => {
+                    const pageCount = pdf.internal.getNumberOfPages();
+                    pdf.setFontSize(8);
+                    pdf.setTextColor(150);
+                    pdf.text(`Page ${data.pageNumber} of ${pageCount}  |  EduEval Pro — Confidential`, pageW / 2, pdf.internal.pageSize.getHeight() - 8, { align: 'center' });
+                }
+            });
+
+            const filename = `${(currentStudent.name || 'student').replace(/\s+/g,'_')}_Report.pdf`;
+            try {
+                const blob = pdf.output('blob');
+                const blobUrl = URL.createObjectURL(blob);
+                const newWindow = window.open(blobUrl, '_blank');
+                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                    pdf.save(filename);
+                }
+            } catch (e) {
+                console.error("Opening PDF tab failed, downloading directly", e);
+                pdf.save(filename);
+            }
+        });
+
+        // ── Back ──
+        document.getElementById('backBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
+
+        // ── Logout ──
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            sessionStorage.removeItem('superadmin_preview');
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
