@@ -366,33 +366,6 @@
             });
         }
 
-        // PWA Install Button Handler
-        let deferredPrompt;
-        const installBtn = document.createElement('button');
-        installBtn.style.cssText = 'display:none; width:100%; padding:10px; margin-top:15px; border-radius:12px; border:1px dashed var(--accent); background:rgba(76,201,240,0.1); color:var(--accent); font-weight:600; cursor:pointer; font-family:"Inter",sans-serif; text-align:center; transition:0.3s;';
-        installBtn.innerHTML = '📲 Install EduEval Pro App';
-        installBtn.addEventListener('mouseover', () => installBtn.style.background = 'rgba(76,201,240,0.2)');
-        installBtn.addEventListener('mouseout', () => installBtn.style.background = 'rgba(76,201,240,0.1)');
-        
-        // Add to card
-        document.querySelector('.login-card').appendChild(installBtn);
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            }
-        });
     </script>
 </body>
 </html>

@@ -1464,36 +1464,6 @@
             });
         }
 
-        // PWA Install Button Handler
-        let deferredPrompt;
-        const installBtn = document.createElement('button');
-        installBtn.style.cssText = 'display:none; background:rgba(6, 214, 160, 0.1); border:1px solid rgba(6, 214, 160, 0.3); color:#06d6a0; padding:7px 16px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s; font-family:"Inter",sans-serif; margin-right:10px;';
-        installBtn.innerHTML = '📲 Install App';
-        installBtn.addEventListener('mouseover', () => installBtn.style.background = 'rgba(6, 214, 160, 0.2)');
-        installBtn.addEventListener('mouseout', () => installBtn.style.background = 'rgba(6, 214, 160, 0.1)');
-
-        // Add to topbar-right before the logout button
-        const topbarRight = document.querySelector('.topbar-right');
-        if (topbarRight) {
-            topbarRight.insertBefore(installBtn, document.getElementById('logoutBtn'));
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'inline-block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            }
-        });
     </script>
 </body>
 
