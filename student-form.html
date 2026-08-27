@@ -840,20 +840,26 @@
                         <input type="text" id="mentorName" class="form-control" placeholder="Prof. / Dr. Name">
                     </div>
 
-                    <!-- STUDENT GRADING (C, B, B+, A, A+) -->
-                    <div class="form-group grid-full" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;">
-                        <label style="font-size:14px;color:var(--rntu-blue);font-weight:800;margin-bottom:8px;">
-                            ⭐ Overall Student Performance Grade (C, B, B+, A, A+) <span class="req">*</span>
-                        </label>
-                        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">
-                            Auto-evaluated based on academic baseline & mock results or manually assigned by the evaluation committee.
+                    <!-- STUDENT GRADING (C, B, B+, A, A+) - 100% AUTOMATICALLY CALCULATED -->
+                    <div class="form-group grid-full" style="background:#ffffff;border:2px solid #bfdbfe;border-radius:12px;padding:20px;box-shadow:0 4px 14px rgba(13,44,108,0.06);">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                            <label style="font-size:15px;color:var(--rntu-blue);font-weight:800;margin-bottom:0;">
+                                ⭐ Student Performance Grade: <span id="displayGradeTitle" style="color:#15803d;">Grade A (80% - 89%)</span>
+                            </label>
+                            <span id="gradeCalcStatusBadge" style="background:#eff6ff;color:#1e40af;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid #bfdbfe;">
+                                ⚡ Auto-Calculated Live
+                            </span>
+                        </div>
+                        <p id="gradeCalcFormulaText" style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">
+                            Automatically computed based on entered Academic CGPA, 1st Semester Mock Diagnostic, and 360° Soft Skills scores.
                         </p>
+
                         <div class="grade-picker-container">
-                            <button type="button" class="grade-btn" id="btn-grade-C" onclick="selectGrade('C')">Grade C (Below 60%)</button>
-                            <button type="button" class="grade-btn" id="btn-grade-B" onclick="selectGrade('B')">Grade B (60% - 69%)</button>
-                            <button type="button" class="grade-btn" id="btn-grade-Bplus" onclick="selectGrade('B+')">Grade B+ (70% - 79%)</button>
-                            <button type="button" class="grade-btn" id="btn-grade-A" onclick="selectGrade('A')">Grade A (80% - 89%)</button>
-                            <button type="button" class="grade-btn" id="btn-grade-Aplus" onclick="selectGrade('A+')">Grade A+ (90%+ Top Tier)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-C" onclick="manualGradeOverride('C')">Grade C (< 60%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-B" onclick="manualGradeOverride('B')">Grade B (60% - 69.9%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-Bplus" onclick="manualGradeOverride('B+')">Grade B+ (70% - 79.9%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-A" onclick="manualGradeOverride('A')">Grade A (80% - 89.9%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-Aplus" onclick="manualGradeOverride('A+')">Grade A+ (90%+ Top Tier)</button>
                         </div>
                         <input type="hidden" id="studentGrade" value="A">
                     </div>
@@ -1345,9 +1351,119 @@
             setTimeout(() => { toast.style.display = 'none'; }, duration);
         }
 
-        // Grade Selection Handler (C, B, B+, A, A+)
-        window.selectGrade = function(grade) {
+        // Automated Real-Time Grade Calculator based on given numbers
+        window.autoCalculateGrade = function() {
+            const cgpa = parseFloat(document.getElementById('currentCgpa')?.value) || 0;
+            const tenth = parseFloat(document.getElementById('tenthMarks')?.value) || 0;
+            const twelfth = parseFloat(document.getElementById('twelfthMarks')?.value) || 0;
+
+            const apt = parseFloat(document.getElementById('mockAptitude')?.value) || 0;
+            const tech = parseFloat(document.getElementById('mockTech')?.value) || 0;
+            const comm = parseFloat(document.getElementById('mockComm')?.value) || 0;
+            const conf = parseFloat(document.getElementById('mockConfidence')?.value) || 0;
+            const mockAvg = (apt + tech + comm + conf) / 4;
+
+            const c = parseFloat(document.getElementById('scoreComm')?.value) || 0;
+            const p = parseFloat(document.getElementById('scorePresentation')?.value) || 0;
+            const l = parseFloat(document.getElementById('scoreLeadership')?.value) || 0;
+            const ps = parseFloat(document.getElementById('scoreProblemSolving')?.value) || 0;
+            const e = parseFloat(document.getElementById('scoreEtiquette')?.value) || 0;
+            const t = parseFloat(document.getElementById('scoreTechnical')?.value) || 0;
+            const softAvg = (c + p + l + ps + e + t) / 6;
+
+            // Compute composite percentage based on available numbers
+            let score = 0;
+            let explanation = '';
+
+            if (cgpa > 0) {
+                const cgpaPercent = cgpa <= 10 ? (cgpa * 9.5) : cgpa;
+                score = (cgpaPercent * 0.5) + (mockAvg * 0.25) + (softAvg * 0.25);
+                explanation = `Computed from CGPA (${cgpa} = ${cgpaPercent.toFixed(1)}%) + 1st Sem Mock (${mockAvg.toFixed(1)}%) + Soft Skills (${softAvg.toFixed(1)}%)`;
+            } else if (mockAvg > 0) {
+                score = (mockAvg * 0.6) + (softAvg * 0.4);
+                explanation = `Computed from 1st Sem Mock Diagnostic (${mockAvg.toFixed(1)}%) + 360° Soft Skills (${softAvg.toFixed(1)}%)`;
+            } else if (twelfth > 0 || tenth > 0) {
+                score = twelfth > 0 ? twelfth : tenth;
+                explanation = `Computed from Pre-admission Academic Marks (${score.toFixed(1)}%)`;
+            } else {
+                score = 75;
+                explanation = 'Default baseline evaluation';
+            }
+
+            score = Math.min(100, Math.max(0, score));
+
+            // Determine Grade (C, B, B+, A, A+)
+            let computedGrade = 'C';
+            let gradeLabel = 'Grade C (< 60%)';
+            let gradeColor = '#b91c1c';
+
+            if (score >= 90.0 || (cgpa >= 9.0 && cgpa <= 10)) {
+                computedGrade = 'A+';
+                gradeLabel = `Grade A+ (${score.toFixed(1)}% — Top Tier)`;
+                gradeColor = '#15803d';
+            } else if (score >= 80.0 || (cgpa >= 8.0 && cgpa <= 10)) {
+                computedGrade = 'A';
+                gradeLabel = `Grade A (${score.toFixed(1)}% — Excellent)`;
+                gradeColor = '#1d4ed8';
+            } else if (score >= 70.0 || (cgpa >= 7.0 && cgpa <= 10)) {
+                computedGrade = 'B+';
+                gradeLabel = `Grade B+ (${score.toFixed(1)}% — Very Good)`;
+                gradeColor = '#0369a1';
+            } else if (score >= 60.0 || (cgpa >= 6.0 && cgpa <= 10)) {
+                computedGrade = 'B';
+                gradeLabel = `Grade B (${score.toFixed(1)}% — Good)`;
+                gradeColor = '#b45309';
+            } else {
+                computedGrade = 'C';
+                gradeLabel = `Grade C (${score.toFixed(1)}% — Needs Focus)`;
+                gradeColor = '#b91c1c';
+            }
+
+            // Update UI
+            document.getElementById('studentGrade').value = computedGrade;
+            const titleEl = document.getElementById('displayGradeTitle');
+            if (titleEl) {
+                titleEl.textContent = gradeLabel;
+                titleEl.style.color = gradeColor;
+            }
+
+            const formulaEl = document.getElementById('gradeCalcFormulaText');
+            if (formulaEl) {
+                formulaEl.textContent = `${explanation} ➔ Final Composite Rating: ${score.toFixed(1)}%`;
+            }
+
+            // Highlight Active Grade Button
+            const grades = ['C', 'B', 'B+', 'A', 'A+'];
+            grades.forEach(g => {
+                const btnKey = g.replace('+', 'plus');
+                const btn = document.getElementById(`btn-grade-${btnKey}`);
+                if (btn) {
+                    btn.className = 'grade-btn';
+                    if (g === computedGrade) {
+                        btn.classList.add(`active-grade-${btnKey}`);
+                    }
+                }
+            });
+
+            return computedGrade;
+        };
+
+        // Manual override option
+        window.manualGradeOverride = function(grade) {
             document.getElementById('studentGrade').value = grade;
+            const badge = document.getElementById('gradeCalcStatusBadge');
+            if (badge) {
+                badge.textContent = '✏️ Manually Overridden';
+                badge.style.background = '#fef3c7';
+                badge.style.color = '#b45309';
+                badge.style.borderColor = '#fde68a';
+            }
+
+            const titleEl = document.getElementById('displayGradeTitle');
+            if (titleEl) {
+                titleEl.textContent = `Grade ${grade} (Assigned by Evaluator)`;
+            }
+
             const grades = ['C', 'B', 'B+', 'A', 'A+'];
             grades.forEach(g => {
                 const btnKey = g.replace('+', 'plus');
@@ -1361,24 +1477,8 @@
             });
         };
 
-        window.autoSuggestGrade = function() {
-            const cgpa = parseFloat(document.getElementById('currentCgpa').value);
-            const tenth = parseFloat(document.getElementById('tenthMarks').value);
-            const twelfth = parseFloat(document.getElementById('twelfthMarks').value);
-
-            let score = 0;
-            if (cgpa > 0) {
-                score = cgpa * 9.5;
-            } else if (twelfth > 0) {
-                score = twelfth;
-            } else if (tenth > 0) {
-                score = tenth;
-            }
-
-            if (score > 0) {
-                const suggested = GDriveSync.calculateGrade(cgpa, score);
-                selectGrade(suggested);
-            }
+        window.selectGrade = function(grade) {
+            window.manualGradeOverride(grade);
         };
 
         // Open student drive portfolio folder in a new tab
@@ -1406,6 +1506,8 @@
             const overall = ((apt + tech + comm + conf) / 4).toFixed(2);
             document.getElementById('mockOverallVal').textContent = overall + '%';
             document.getElementById('mockOverall').value = overall;
+
+            window.autoCalculateGrade();
         };
 
         window.updatePersonalityMatrix = function() {
@@ -1448,6 +1550,8 @@
             }
             badge.textContent = readiness;
             document.getElementById('personalityReadiness').value = readiness;
+
+            window.autoCalculateGrade();
         };
 
         window.selectCareer = function(el) {
@@ -1610,12 +1714,21 @@
             }
         }
 
+        // Attach Real-Time Calculation Listeners to all score inputs
+        const scoreInputIds = ['currentCgpa', 'tenthMarks', 'twelfthMarks', 'sem1Marks', 'sem2Marks', 'sem3Marks', 'sem4Marks', 'sem5Marks', 'sem6Marks', 'sem7Marks', 'sem8Marks'];
+        scoreInputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', () => window.autoCalculateGrade());
+            }
+        });
+
         if (editId) {
             loadStudentForEdit(editId);
         } else {
-            selectGrade('A');
             updateMockScores();
             updatePersonalityMatrix();
+            autoCalculateGrade();
         }
 
         // Form Submit Handler

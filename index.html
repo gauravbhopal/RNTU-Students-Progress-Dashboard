@@ -1378,11 +1378,17 @@
         let sectorChartInstance = null;
         let careerChartInstance = null;
 
-        // Helper to format grade pill
-        function renderGradePill(grade) {
-            const g = grade || 'A';
+        // Helper to format grade pill dynamically with auto-calculated fallback
+        function renderGradePill(grade, student = null) {
+            let g = grade;
+            if (!g && student) {
+                const cgpa = parseFloat(student.cgpa) || 0;
+                const mock = parseFloat(student.mockOverall) || 0;
+                g = GDriveSync.calculateGrade(cgpa, mock);
+            }
+            if (!g) g = 'A';
             const cleanG = g.replace('+', 'plus');
-            return `<span class="grade-pill grade-${cleanG}">${g}</span>`;
+            return `<span class="grade-pill grade-${cleanG}" title="Student Performance Grade ${g}">Grade ${g}</span>`;
         }
 
         // Initialize Data
