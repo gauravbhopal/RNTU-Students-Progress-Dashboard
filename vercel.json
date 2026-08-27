@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "rntu-student-progress-dashboard",
+  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
