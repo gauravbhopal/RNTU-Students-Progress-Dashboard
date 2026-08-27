@@ -1,1350 +1,1769 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduEval Pro — Student Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <title>Student Lifecycle & Evaluation Profile — RNTU Bhopal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --success-color: #4cc9f0;
-            --warning-color: #f72585;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --rntu-blue: #0d2c6c;
+            --rntu-light-blue: #1e50a2;
+            --rntu-orange: #f39200;
+            --rntu-red: #d8232a;
+            --rntu-dark: #121826;
+            --rntu-card-bg: #ffffff;
+            --rntu-bg: #f3f6fb;
+            --rntu-border: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --shadow-sm: 0 2px 8px rgba(13, 44, 108, 0.06);
+            --shadow-md: 0 8px 24px rgba(13, 44, 108, 0.1);
+            --radius-lg: 14px;
+            --radius-md: 8px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            background-color: #f0f2f5;
-            color: var(--text-color);
+            background-color: var(--rntu-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding-bottom: 60px;
         }
 
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Top University Header Bar */
+        .uni-topbar {
+            background: #ffffff;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 10px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .nav-container {
+        .uni-brand {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 14px;
+            text-decoration: none;
         }
 
-        .logo {
-            font-size: 20px;
+        .uni-brand img {
+            height: 52px;
+            max-width: 320px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .uni-badge-portal {
+            background: linear-gradient(135deg, var(--rntu-blue), var(--rntu-light-blue));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .logo img {
-            height: 32px;
-        }
-
-        .nav-links {
+        .nav-actions {
             display: flex;
-            gap: 22px;
+            align-items: center;
+            gap: 12px;
         }
 
-        .nav-links a {
+        .btn-nav-back {
+            background: #f1f5f9;
+            color: var(--rntu-blue);
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 8px;
             text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-links a.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .btn-logout-nav {
-            background: #f72585;
-            border: none;
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(247, 37, 133, 0.3);
         }
 
-        .btn-logout-nav:hover {
-            background: #d61a6c;
-            transform: scale(1.08);
-            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.5);
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        .btn-nav-back:hover {
+            background: var(--rntu-blue);
             color: white;
-            padding: 20px 0;
-            box-shadow: var(--card-shadow);
+            border-color: var(--rntu-blue);
+        }
+
+        /* Hero Banner */
+        .page-hero {
+            background: linear-gradient(135deg, #091e4a 0%, #0d2c6c 60%, #1e50a2 100%);
+            color: white;
+            padding: 34px 20px 30px;
             position: relative;
             overflow: hidden;
         }
 
-        header::before {
+        .page-hero::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-            animation: pulse 8s infinite;
+            top: 0; right: 0; bottom: 0; width: 40%;
+            background: radial-gradient(circle at right, rgba(243, 146, 0, 0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-
-            50% {
-                transform: scale(1.05);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 26px;
-            margin-bottom: 8px;
-            font-weight: 800;
-        }
-
-        .breadcrumb {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .breadcrumb a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .breadcrumb a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .container {
+        .hero-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .card {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            margin: 20px 0;
-            padding: 24px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.5s forwards;
+        .hero-tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffd166;
+            margin-bottom: 10px;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        .page-hero h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .card h2 {
+        .page-hero p {
+            font-size: 14px;
+            color: #cbd5e1;
+            max-width: 850px;
+        }
+
+        /* Main Form Container */
+        .form-layout {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        /* Section Navigation Quick Pills */
+        .section-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 6px 2px 14px;
+            margin-bottom: 16px;
+            scrollbar-width: thin;
+        }
+
+        .section-nav-pill {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: var(--text-dark);
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .section-nav-pill:hover, .section-nav-pill.active {
+            background: var(--rntu-blue);
+            color: white;
+            border-color: var(--rntu-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Card Sections */
+        .form-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--rntu-border);
+            box-shadow: var(--shadow-sm);
+            padding: 26px 30px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .form-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            font-size: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #f1f5f9;
         }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .bg-blue { background: linear-gradient(135deg, #0d2c6c, #1e50a2); }
+        .bg-orange { background: linear-gradient(135deg, #f39200, #ffb703); }
+        .bg-red { background: linear-gradient(135deg, #d8232a, #e63946); }
+        .bg-teal { background: linear-gradient(135deg, #0077b6, #0096c7); }
+        .bg-green { background: linear-gradient(135deg, #2b9348, #55a630); }
+        .bg-purple { background: linear-gradient(135deg, #6a4c93, #8338ec); }
+
+        .card-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--rntu-blue);
+        }
+
+        .card-header .card-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Form Grid System */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px 22px;
+        }
+
+        .grid-full { grid-column: 1 / -1; }
+        .grid-2 { grid-column: span 2; }
 
         .form-group {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-color);
-            font-size: 13px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-
-        .row {
+            color: #334155;
             display: flex;
-            flex-wrap: wrap;
-            margin: 0 -10px;
+            align-items: center;
+            gap: 4px;
         }
 
-        .col {
-            flex: 1;
-            padding: 0 10px;
-            min-width: 200px;
-        }
+        .req { color: var(--rntu-red); font-weight: 800; }
 
-        table {
+        .form-control, .form-select {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 11px 14px;
-            text-align: center;
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 13px;
-        }
-
-        tr:nth-child(even) {
-            background-color: var(--light-bg);
-        }
-
-        .btn {
-            padding: 10px 22px;
-            border: none;
-            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: var(--radius-md);
             font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 8px;
-            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background: #ffffff;
+            outline: none;
+            transition: all 0.2s;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+        .form-control:focus, .form-select:focus {
+            border-color: var(--rntu-blue);
+            box-shadow: 0 0 0 3.5px rgba(13, 44, 108, 0.12);
+            background: #ffffff;
         }
 
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
         }
 
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #3dadd0;
-        }
-
-        .btn-danger {
-            background-color: var(--warning-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d61a6c;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .action-buttons {
+        /* Grade Selection Buttons / Badges (C, B, B+, A, A+) */
+        .grade-picker-container {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .grade-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .grade-btn:hover {
+            border-color: var(--rntu-blue);
+            background: #f8fafc;
+        }
+
+        .grade-btn.active-grade-C { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .grade-btn.active-grade-B { background: #fef3c7; border-color: #f59e0b; color: #b45309; }
+        .grade-btn.active-grade-Bplus { background: #e0f2fe; border-color: #0284c7; color: #0369a1; }
+        .grade-btn.active-grade-A { background: #dbeafe; border-color: #2563eb; color: #1d4ed8; }
+        .grade-btn.active-grade-Aplus { background: #dcfce7; border-color: #16a34a; color: #15803d; box-shadow: 0 0 0 2px #16a34a; }
+
+        /* Google Drive Portfolio Highlight Box */
+        .gdrive-portfolio-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .gdrive-portfolio-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
             flex-wrap: wrap;
             gap: 8px;
         }
 
-        .total-score {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: var(--primary-color);
-        }
-
-        .progress-container {
-            background-color: #e9ecef;
-            border-radius: 8px;
-            height: 12px;
-            margin-top: 12px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            border-radius: 8px;
-            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
-            width: 0;
-            transition: width 1s ease-in-out;
-        }
-
-        .criteria-table input {
-            width: 65px;
-            text-align: center;
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .info-box {
-            background-color: rgba(67, 97, 238, 0.08);
-            border-left: 4px solid var(--primary-color);
-            padding: 14px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .chart-container {
-            display: flex;
-            justify-content: center;
-            margin: 24px 0;
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #333;
-            color: white;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 500;
-            transform: translateY(80px);
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            background: #06d6a0;
-        }
-
-        .toast.error {
-            background: #f72585;
-        }
-
-        /* Loading indicator */
-        .loading-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        footer {
-            background-color: #2b2d42;
-            color: #edf2f4;
-            padding: 40px 0 20px;
-            margin-top: 50px;
-        }
-
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .footer-section h3 {
-            color: white;
-            margin-bottom: 20px;
+        .gdrive-portfolio-header h3 {
             font-size: 16px;
+            font-weight: 800;
+            color: #14532d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gdrive-tag {
+            background: #16a34a;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .gdrive-input-wrap {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-test-link {
+            background: #15803d;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-test-link:hover { background: #166534; }
+
+        /* Range Slider Controls */
+        .slider-group {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 14px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .score-pill {
+            background: var(--rntu-blue);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .score-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 4px;
+            background: #cbd5e1;
+            outline: none;
+            cursor: pointer;
+            accent-color: var(--rntu-blue);
+        }
+
+        /* Matrix Total Card */
+        .matrix-total-card {
+            background: linear-gradient(135deg, #0d2c6c 0%, #1e50a2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .matrix-total-info h4 { font-size: 15px; font-weight: 700; }
+        .matrix-total-info p { font-size: 12px; color: #93c5fd; }
+        .matrix-total-score {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffd166;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .matrix-total-score span { font-size: 16px; color: #ffffff; font-weight: 500; }
+        .readiness-badge {
+            background: #06d6a0;
+            color: #064e3b;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dynamic Table for Certifications */
+        .cert-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .cert-table th {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .cert-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .btn-add-row {
+            background: #e2e8f0;
+            color: #334155;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-row:hover {
+            background: var(--rntu-blue);
+            color: white;
+        }
+
+        .btn-delete-row {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-delete-row:hover { background: #dc2626; color: white; }
+
+        /* Career Radio Cards */
+        .career-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .career-card-label {
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 14px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #ffffff;
             position: relative;
         }
 
-        .footer-section h3::after {
-            content: '';
+        .career-card-label:hover {
+            border-color: var(--rntu-blue);
+            background: #f8fafc;
+        }
+
+        .career-card-label input[type="radio"] {
             position: absolute;
-            left: 0;
-            bottom: -8px;
-            width: 30px;
-            height: 2px;
-            background-color: var(--accent-color);
+            top: 10px;
+            right: 10px;
+            accent-color: var(--rntu-blue);
         }
 
-        .footer-section p {
-            margin-bottom: 8px;
-            color: rgba(237, 242, 244, 0.7);
+        .career-card-label.selected {
+            border-color: var(--rntu-blue);
+            background: #eff6ff;
+            box-shadow: 0 0 0 2px var(--rntu-blue);
+        }
+
+        .career-icon { font-size: 24px; margin-bottom: 6px; }
+        .career-title { font-size: 13px; font-weight: 700; color: #1e293b; }
+        .career-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        /* Floating / Sticky Save Bar */
+        .submit-action-bar {
+            position: sticky;
+            bottom: 20px;
+            background: #ffffff;
+            border: 1.5px solid var(--rntu-blue);
+            border-radius: 14px;
+            padding: 16px 26px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(13, 44, 108, 0.18);
+            z-index: 90;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .save-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 13px;
+            font-weight: 500;
+            color: #475569;
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            margin-top: 20px;
-            border-top: 1px solid rgba(237, 242, 244, 0.1);
-            color: rgba(237, 242, 244, 0.5);
-            font-size: 13px;
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse-dot 2s infinite;
         }
 
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 20px 0;
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .btn-group-submit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-save-main {
+            background: linear-gradient(135deg, var(--rntu-blue), #1e50a2);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(13, 44, 108, 0.25);
+        }
+
+        .btn-save-main:hover {
+            background: #091e4a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(13, 44, 108, 0.35);
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-cancel:hover { background: #e2e8f0; }
+
+        /* Toast notification */
+        .toast-box {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: #0d2c6c;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .row {
-                flex-direction: column;
-            }
-
-            .col {
-                margin-bottom: 15px;
-            }
-
-            .action-buttons {
-                justify-content: flex-start;
-            }
-
-            .nav-container {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            th,
-            td {
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-
-            .criteria-table input {
-                width: 50px;
-                font-size: 13px;
-                padding: 4px;
-            }
-
-            .card {
-                padding: 16px;
-            }
-
-            .chart-container canvas {
-                max-width: 100% !important;
-                height: auto !important;
-            }
-
-            .btn-logout-nav {
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
-                padding: 0;
-                font-size: 14px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
+            .form-card { padding: 18px 16px; }
+            .submit-action-bar { flex-direction: column; align-items: stretch; text-align: center; }
+            .btn-group-submit { flex-direction: column; width: 100%; }
+            .btn-save-main, .btn-cancel { width: 100%; justify-content: center; }
+            .uni-topbar { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
-
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="https://img.icons8.com/fluency/96/000000/school.png" alt="Logo">
-                EduEval Pro
-            </a>
-            <div class="nav-links">
-                <a href="index.html">Dashboard</a>
-                <a href="student-form.html" class="active">Student Profile</a>
-            </div>
-            <button class="btn-logout-nav" id="logoutBtn" title="Logout"><svg xmlns="http://www.w3.org/2000/svg"
-                    width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    style="display: inline-block; vertical-align: middle;">
-                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                    <line x1="12" y1="2" x2="12" y2="12"></line>
-                </svg></button>
-        </div>
-    </nav>
 
-    <header>
-        <div class="header-content">
-            <h1>Student Evaluation System</h1>
-            <div class="breadcrumb">
-                <a href="index.html">Home</a>
-                <span>›</span>
-                <a href="#" id="student-name-header">Student Profile</a>
-            </div>
+    <!-- University Top Navigation Bar (Unaltered Official RNTU Logo) -->
+    <header class="uni-topbar">
+        <a href="index.html" class="uni-brand">
+            <img src="rntu-logo.jpg" alt="Rabindranath Tagore University Logo">
+        </a>
+        <div class="nav-actions">
+            <span class="uni-badge-portal">🎓 Student Lifecycle Portal</span>
+            <a href="index.html" class="btn-nav-back">← Back to Dashboard</a>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Student Information -->
-        <div class="card" style="animation-delay:0s">
-            <h2>📋 Student Information</h2>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="studentName">Full Name *</label>
-                        <input type="text" id="studentName" class="form-control" placeholder="Enter student name">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="mobileNumber">Mobile Number *</label>
-                        <input type="tel" id="mobileNumber" class="form-control" placeholder="Enter mobile number">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="batchCode">Batch Code</label>
-                        <input type="text" id="batchCode" class="form-control" placeholder="e.g. BATCH-2025-A">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="enrollmentDate">Enrollment Date</label>
-                        <input type="date" id="enrollmentDate" class="form-control">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter email address">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="attendanceCount">Days Attended</label>
-                        <input type="number" id="attendanceCount" class="form-control" min="0" max="7" value="0"
-                            readonly>
-                    </div>
-                </div>
-            </div>
-            <div class="action-buttons" id="topActionButtons" style="margin-top: 4px;">
-                <button id="updateBtnTop" class="btn btn-success" style="display:none;">🔄 Update</button>
-            </div>
+    <!-- Page Header -->
+    <section class="page-hero">
+        <div class="hero-container">
+            <span class="hero-tagline">🏛️ Rabindranath Tagore University — Student Progress & Evaluation</span>
+            <h1 id="pageHeading">Student Lifecycle & Performance Record</h1>
+            <p>Record, evaluate, and track students through Semester 1 Foundation Mock, Semester Progression, 360° Personality Matrix, Certifications, Career Goals, Placements, and Alumni Journey.</p>
         </div>
+    </section>
 
-        <!-- Performance Evaluation -->
-        <div class="card" style="animation-delay:0.1s">
-            <h2>🎯 Performance Evaluation</h2>
-            <div class="info-box">
-                Enter marks for each criterion (out of 10). Total score will be calculated automatically.
-            </div>
+    <!-- Main Container -->
+    <main class="form-layout">
+        <!-- Section Quick Navigation -->
+        <nav class="section-nav">
+            <a href="#sec-drive-hub" class="section-nav-pill active">📁 Student Drive Hub</a>
+            <a href="#sec-basic" class="section-nav-pill">1. Profile & Sector</a>
+            <a href="#sec-preacademic" class="section-nav-pill">2. 10th & 12th Academics</a>
+            <a href="#sec-mock" class="section-nav-pill">3. 1st Sem Mock Evaluation</a>
+            <a href="#sec-semprogression" class="section-nav-pill">4. Semester Progression (1-8)</a>
+            <a href="#sec-personality" class="section-nav-pill">5. 360° Personality Matrix</a>
+            <a href="#sec-certifications" class="section-nav-pill">6. Certifications & Projects</a>
+            <a href="#sec-aspirations" class="section-nav-pill">7. Career Aspirations</a>
+            <a href="#sec-placement-alumni" class="section-nav-pill">8. Placement & Alumni Journey</a>
+        </nav>
 
-            <div class="form-group">
-                <label for="sessionSelect">Select Session</label>
-                <select id="sessionSelect" class="form-control">
-                    <option value="0">Day 1: Basic Communication</option>
-                    <option value="1">Day 2: Impromptu Speaking</option>
-                    <option value="2">Day 3: Interview HR</option>
-                    <option value="3">Day 4: Interview Tech</option>
-                    <option value="4">Day 5: GD &amp; Debate</option>
-                    <option value="5">Day 6: Presentation Skills</option>
-                    <option value="6">Day 7: Final Mock</option>
-                </select>
-            </div>
+        <form id="studentMasterForm">
+            <input type="hidden" id="studentDocId" value="">
 
-            <div class="table-container">
-                <table class="criteria-table">
-                    <thead>
-                        <tr>
-                            <th>Criteria</th>
-                            <th>Description</th>
-                            <th>Score (0-10)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Fluency</td>
-                            <td>Smoothness and pace of speech</td>
-                            <td><input type="number" class="score-input" data-criteria="fluency" min="0" max="10"
-                                    value="0"></td>
-                        </tr>
-                        <tr>
-                            <td>Grammar</td>
-                            <td>Correct use of grammatical structures</td>
-                            <td><input type="number" class="score-input" data-criteria="grammar" min="0" max="10"
-                                    value="0"></td>
-                        </tr>
-                        <tr>
-                            <td>Body Language</td>
-                            <td>Gestures, posture, and non-verbal communication</td>
-                            <td><input type="number" class="score-input" data-criteria="bodyLanguage" min="0" max="10"
-                                    value="0"></td>
-                        </tr>
-                        <tr>
-                            <td>Confidence</td>
-                            <td>Self-assurance and conviction in speaking</td>
-                            <td><input type="number" class="score-input" data-criteria="confidence" min="0" max="10"
-                                    value="0"></td>
-                        </tr>
-                        <tr>
-                            <td>Knowledge</td>
-                            <td>Subject matter expertise and content</td>
-                            <td><input type="number" class="score-input" data-criteria="knowledge" min="0" max="10"
-                                    value="0"></td>
-                        </tr>
-                        <tr class="total-score">
-                            <td colspan="2">Total Score (out of 50)</td>
-                            <td id="totalScore">0</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <!-- STUDENT GOOGLE DRIVE PORTFOLIO LINK (FOR RESUME, VIDEOS, PROJECTS) -->
+            <section class="gdrive-portfolio-box" id="sec-drive-hub">
+                <div class="gdrive-portfolio-header">
+                    <h3>
+                        <span>📁 Student Google Drive Asset Hub</span>
+                        <span class="gdrive-tag">Resume, Videos & Projects Link</span>
+                    </h3>
+                    <span style="font-size:12px;color:#166534;font-weight:600;">Direct Cloud Access for Mentors & Recruiters</span>
+                </div>
+                <p style="font-size:13px;color:#14532d;margin-bottom:12px;">
+                    Provide the student's shared Google Drive folder link where they maintain their Resume, Video Introductions, Project demos, and credential certificates.
+                </p>
+                <div class="gdrive-input-wrap">
+                    <input type="url" id="drivePortfolioUrl" class="form-control" placeholder="https://drive.google.com/drive/folders/..." style="border-color:#86efac;background:#ffffff;">
+                    <button type="button" class="btn-test-link" onclick="openDriveLinkTest()">
+                        🔗 Test & Open Folder
+                    </button>
+                </div>
+            </section>
 
-            <div class="form-group">
-                <label for="comments">Comments &amp; Feedback</label>
-                <textarea id="comments" class="form-control" rows="4"
-                    placeholder="Enter comments or feedback for this session"></textarea>
-            </div>
-
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-
-        <!-- Performance Summary -->
-        <div class="card" style="animation-delay:0.2s">
-            <h2>📈 Performance Summary</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Session</th>
-                            <th>Date</th>
-                            <th>Total Score</th>
-                            <th>Percentage</th>
-                        </tr>
-                    </thead>
-                    <tbody id="summaryTable"></tbody>
-                </table>
-            </div>
-            <div class="chart-container">
-                <canvas id="performanceChart" width="600" height="280"></canvas>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons" style="margin-bottom: 30px;">
-            <button id="saveBtn" class="btn btn-primary">💾 Save Student</button>
-            <button id="updateBtn" class="btn btn-success">🔄 Update</button>
-            <button id="deleteBtn" class="btn btn-danger">🗑 Delete</button>
-            <button id="downloadBtn" class="btn btn-secondary">📥 Download Report</button>
-            <button id="backBtn" class="btn btn-secondary">← Back</button>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>About EduEval Pro</h3>
-                <p>A Firebase-powered multi-institute student evaluation system.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul style="list-style:none">
-                    <li style="margin-bottom:8px"><a href="index.html"
-                            style="color:rgba(237,242,244,0.7);text-decoration:none">Dashboard</a></li>
-                    <li><a href="student-form.html" style="color:rgba(237,242,244,0.7);text-decoration:none">Add
-                            Student</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <p>📧 gaurav.chourasiya@gmail.com</p>
-                <p>📞 +91-8962542152</p>
-                <p>📍 Bhopal, M.P.</p>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>All Rights Reserved &copy; 2026 EduEval Pro | Powered by Firebase | Developed by Gaurav Chourasiya</p>
-        </div>
-    </footer>
-
-    <!-- Loading -->
-    <div class="loading-container" id="loadingIndicator">
-        <div class="loading-spinner"></div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script type="module">
-        import { auth, db, onAuthStateChanged, signOut, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from './firebase-config.js';
-
-        const sessionNames = ["Basic Communication", "Impromptu Speaking", "Interview HR", "Interview Tech", "GD & Debate", "Presentation Skills", "Final Mock"];
-
-        let tenantId = null;
-        let currentStudentId = null;
-        let currentStudent = initializeNewStudent();
-        let performanceChart = null;
-        let isDemo = false;
-
-        // DOM refs
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const studentNameHeader = document.getElementById('student-name-header');
-        const studentNameInput = document.getElementById('studentName');
-        const mobileNumberInput = document.getElementById('mobileNumber');
-        const batchCodeInput = document.getElementById('batchCode');
-        const enrollmentDateInput = document.getElementById('enrollmentDate');
-        const emailInput = document.getElementById('email');
-        const attendanceCountInput = document.getElementById('attendanceCount');
-        const sessionSelect = document.getElementById('sessionSelect');
-        const scoreInputs = document.querySelectorAll('.score-input');
-        const totalScoreEl = document.getElementById('totalScore');
-        const commentsInput = document.getElementById('comments');
-        const progressBar = document.getElementById('progressBar');
-        const summaryTable = document.getElementById('summaryTable');
-        const toast = document.getElementById('toast');
-        const saveBtn = document.getElementById('saveBtn');
-        const updateBtn = document.getElementById('updateBtn');
-        const updateBtnTop = document.getElementById('updateBtnTop');
-        const deleteBtn = document.getElementById('deleteBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const backBtn = document.getElementById('backBtn');
-
-        function showLoading(show) { loadingIndicator.style.display = show ? 'flex' : 'none'; }
-
-        function showToast(msg, type = 'success') {
-            toast.textContent = msg;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => { toast.className = 'toast'; }, 3000);
-        }
-
-        function initializeNewStudent() {
-            return {
-                name: "", mobile: "", batchCode: "", email: "",
-                enrollmentDate: "", daysAttended: 0,
-                sessions: Array(7).fill(null).map(() => ({
-                    date: "", attended: false,
-                    scores: { fluency: 0, grammar: 0, bodyLanguage: 0, confidence: 0, knowledge: 0 },
-                    totalScore: 0, percentage: 0, comments: ""
-                })),
-                totalScore: 0, totalPercentage: 0, grade: "N/A"
-            };
-        }
-
-        // ── Toggle which action buttons are visible, based on whether we're
-        //    editing an existing student (id present) or creating a new one.
-        function setEditingMode(isEditing) {
-            saveBtn.style.display = isEditing ? 'none' : 'inline-block';
-            updateBtn.style.display = isEditing ? 'inline-block' : 'none';
-            updateBtnTop.style.display = isEditing ? 'inline-block' : 'none';
-            deleteBtn.style.display = isEditing ? 'inline-block' : 'none';
-            downloadBtn.style.display = isEditing ? 'inline-block' : 'none';
-        }
-
-        // ── Auth Guard + Load ──
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) { window.location.href = 'login.html'; return; }
-
-            // Resolve tenantId — 1) sessionStorage preview, 2) URL param ?tenant=, 3) Firestore user doc
-            const previewData = sessionStorage.getItem('superadmin_preview');
-            const urlTenant = new URLSearchParams(window.location.search).get('tenant');
-            if (previewData) {
-                tenantId = JSON.parse(previewData).tenantId;
-            } else if (urlTenant) {
-                tenantId = urlTenant;
-            } else {
-                try {
-                    const userDoc = await getDoc(doc(db, 'users', user.uid));
-                    if (userDoc.exists()) {
-                        const ud = userDoc.data();
-                        if (ud.role === 'superadmin') { window.location.href = 'superadmin.html'; return; }
-                        tenantId = ud.tenantId;
-                    } else {
-                        await signOut(auth);
-                        window.location.href = 'login.html';
-                        return;
-                    }
-                } catch (err) { console.error(err); }
-            }
-
-            // Fetch tenant details to check status and plan limits
-            let tenantData = null;
-            if (tenantId) {
-                try {
-                    const tenantDoc = await getDoc(doc(db, 'tenants', tenantId));
-                    if (tenantDoc.exists()) {
-                        tenantData = tenantDoc.data();
-                    }
-                } catch (err) {
-                    console.error('Error fetching tenant details:', err);
-                }
-            }
-
-            if (tenantData) {
-                // Active check
-                const isSuperadminPreview = sessionStorage.getItem('superadmin_preview') !== null;
-                if (tenantData.isActive === false && !isSuperadminPreview) {
-                    document.body.innerHTML = `
-                        <div style="min-height: 100vh; background: #0f0c29; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; color: white; text-align: center; padding: 20px;">
-                            <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 48px; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                                <div style="font-size: 64px; margin-bottom: 24px;">🔒</div>
-                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">Account Suspended</h2>
-                                <p style="color: rgba(255,255,255,0.6); font-size: 14px; line-height: 1.6; margin-bottom: 32px;">
-                                    Your institute's portal access has been suspended by the system administrator.
-                                </p>
-                                <button id="suspendedLoginBtn" style="padding: 12px 24px; background: linear-gradient(135deg, #f72585, #b5179e); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Inter'; box-shadow: 0 4px 15px rgba(247,37,133,0.3);">Go Back to Login</button>
-                            </div>
+            <!-- SECTION 1: Student Information & Sector Selection -->
+            <section class="form-card" id="sec-basic">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-blue">1</div>
+                        <div>
+                            <h2>Student Identification & Sector Allocation</h2>
+                            <div class="card-subtitle">Official enrollment and institutional academic mapping at RNTU</div>
                         </div>
-                    `;
-                    document.getElementById('suspendedLoginBtn').addEventListener('click', async () => {
-                        sessionStorage.removeItem('superadmin_preview');
-                        await signOut(auth);
-                        window.location.href = 'login.html';
-                    });
-                    return;
-                }
+                    </div>
+                </div>
 
-                // Demo checks
-                const planType = tenantData.planType || 'demo';
-                const proExpiry = tenantData.proExpiry || '';
-                const isExpired = planType === 'pro' && proExpiry && new Date(proExpiry) < new Date();
-                isDemo = planType === 'demo' || isExpired;
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="enrollmentNo">Enrollment / Scholar Number <span class="req">*</span></label>
+                        <input type="text" id="enrollmentNo" class="form-control" placeholder="e.g. 0101RNTU23001" required>
+                    </div>
 
-                if (isDemo) {
-                    if (!document.querySelector('.plan-warning-banner')) {
-                        const banner = document.createElement('div');
-                        banner.className = 'plan-warning-banner';
-                        banner.style.cssText = 'background: linear-gradient(90deg, #ffd166, #ffafcc); color: #0d1117; padding: 10px 20px; text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 99;';
-                        if (isExpired) {
-                            banner.innerHTML = `⚠️ Pro Plan Expired on ${proExpiry} — Your account is in Demo Mode (max 10 students).`;
-                        } else {
-                            banner.innerHTML = `⚠️ Demo Mode — Access is limited to a maximum of 10 student profiles.`;
-                        }
-                        document.body.insertBefore(banner, document.body.firstChild);
+                    <div class="form-group">
+                        <label for="fullName">Full Student Name <span class="req">*</span></label>
+                        <input type="text" id="fullName" class="form-control" placeholder="e.g. Aman Sharma" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Institutional / Personal Email <span class="req">*</span></label>
+                        <input type="email" id="email" class="form-control" placeholder="student@rntu.ac.in" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number (WhatsApp) <span class="req">*</span></label>
+                        <input type="tel" id="mobile" class="form-control" placeholder="10-digit mobile number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" class="form-select">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Sector Dropdown Matching RNTU 6 Sectors -->
+                    <div class="form-group">
+                        <label for="sectorSelect">RNTU Sector Domain <span class="req">*</span></label>
+                        <select id="sectorSelect" class="form-select" required>
+                            <option value="">-- Select Sector --</option>
+                            <option value="1">Sector 1: Engineering & Technology (BE & Diploma - All Branches)</option>
+                            <option value="2">Sector 2: Computer Applications & IT (BCA, B.Sc.-IT, CS, Data Science)</option>
+                            <option value="3">Sector 3: Commerce & Management (B.Com, BBA)</option>
+                            <option value="4">Sector 4: Life & Physical Sciences (B.Sc. Life & Physical Science)</option>
+                            <option value="5">Sector 5: Pharmacy (B.Pharma & D.Pharma)</option>
+                            <option value="6">Sector 6: Agriculture (B.Sc. Agriculture — Sections A & B)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseSelect">Specific Course / Branch <span class="req">*</span></label>
+                        <input type="text" id="courseSelect" class="form-control" placeholder="e.g. BE Computer Science, BCA, B.Sc. Agri Sec-A" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentYear">Current Year of Study <span class="req">*</span></label>
+                        <select id="currentYear" class="form-select" required>
+                            <option value="1st Year">1st Year (Semester 1 / 2)</option>
+                            <option value="2nd Year">2nd Year (Semester 3 / 4)</option>
+                            <option value="3rd Year">3rd Year (Semester 5 / 6)</option>
+                            <option value="4th Year">4th Year (Semester 7 / 8 - Final Year)</option>
+                            <option value="Alumni">Alumni / Graduated</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentSemester">Current Semester</label>
+                        <select id="currentSemester" class="form-select">
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                            <option value="Completed">Graduated / Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sectionBatch">Section / Batch Code</label>
+                        <input type="text" id="sectionBatch" class="form-control" placeholder="e.g. Batch 2023-27 / Sec-A">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mentorName">Assigned Faculty Mentor / Guide</label>
+                        <input type="text" id="mentorName" class="form-control" placeholder="Prof. / Dr. Name">
+                    </div>
+
+                    <!-- STUDENT GRADING (C, B, B+, A, A+) -->
+                    <div class="form-group grid-full" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;">
+                        <label style="font-size:14px;color:var(--rntu-blue);font-weight:800;margin-bottom:8px;">
+                            ⭐ Overall Student Performance Grade (C, B, B+, A, A+) <span class="req">*</span>
+                        </label>
+                        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">
+                            Auto-evaluated based on academic baseline & mock results or manually assigned by the evaluation committee.
+                        </p>
+                        <div class="grade-picker-container">
+                            <button type="button" class="grade-btn" id="btn-grade-C" onclick="selectGrade('C')">Grade C (Below 60%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-B" onclick="selectGrade('B')">Grade B (60% - 69%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-Bplus" onclick="selectGrade('B+')">Grade B+ (70% - 79%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-A" onclick="selectGrade('A')">Grade A (80% - 89%)</button>
+                            <button type="button" class="grade-btn" id="btn-grade-Aplus" onclick="selectGrade('A+')">Grade A+ (90%+ Top Tier)</button>
+                        </div>
+                        <input type="hidden" id="studentGrade" value="A">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Pre-Admission & Academic Baseline -->
+            <section class="form-card" id="sec-preacademic">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-orange">2</div>
+                        <div>
+                            <h2>Pre-Admission Academic Baseline & Current CGPA</h2>
+                            <div class="card-subtitle">Prior educational benchmarks and ongoing cumulative performance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="tenthMarks">10th Standard Percentage (%) <span class="req">*</span></label>
+                        <input type="number" step="0.01" min="0" max="100" id="tenthMarks" class="form-control" placeholder="e.g. 84.5" oninput="autoSuggestGrade()" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="twelfthMarks">12th / Diploma Percentage (%) <span class="req">*</span></label>
+                        <input type="number" step="0.01" min="0" max="100" id="twelfthMarks" class="form-control" placeholder="e.g. 79.2" oninput="autoSuggestGrade()" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entranceScore">Entrance Exam / Admission Merit Score</label>
+                        <input type="text" id="entranceScore" class="form-control" placeholder="e.g. JEE Rank: 45000 / Merit: 85%">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentCgpa">Current Cumulative CGPA (Scale of 10) <span class="req">*</span></label>
+                        <input type="number" step="0.01" min="0" max="10" id="currentCgpa" class="form-control" placeholder="e.g. 8.4" oninput="autoSuggestGrade()" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: 1st Semester Mock Evaluation (Foundation Baseline) -->
+            <section class="form-card" id="sec-mock">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-red">3</div>
+                        <div>
+                            <h2>1st Semester Mock Evaluation (Foundation Baseline)</h2>
+                            <div class="card-subtitle">First semester comprehensive diagnostic interview & test assessment</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="mockDate">Mock Assessment Date</label>
+                        <input type="date" id="mockDate" class="form-control">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Aptitude & Logical Reasoning (100)</span>
+                            <span class="score-pill" id="mockAptitudeVal">70/100</span>
+                        </div>
+                        <input type="range" id="mockAptitude" min="0" max="100" value="70" class="score-slider" oninput="updateMockScores()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Technical / Domain Foundation (100)</span>
+                            <span class="score-pill" id="mockTechVal">68/100</span>
+                        </div>
+                        <input type="range" id="mockTech" min="0" max="100" value="68" class="score-slider" oninput="updateMockScores()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Communication & Spoken English (100)</span>
+                            <span class="score-pill" id="mockCommVal">72/100</span>
+                        </div>
+                        <input type="range" id="mockComm" min="0" max="100" value="72" class="score-slider" oninput="updateMockScores()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Confidence & Body Language (100)</span>
+                            <span class="score-pill" id="mockConfidenceVal">75/100</span>
+                        </div>
+                        <input type="range" id="mockConfidence" min="0" max="100" value="75" class="score-slider" oninput="updateMockScores()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Overall 1st Sem Mock Score (Calculated)</span>
+                            <span class="score-pill" style="background:#d8232a;" id="mockOverallVal">71.25%</span>
+                        </div>
+                        <input type="hidden" id="mockOverall" value="71.25">
+                        <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">Calculated automatically across all mock parameters.</p>
+                    </div>
+
+                    <div class="form-group grid-full">
+                        <label for="mockStrengths">Key Strengths Identified</label>
+                        <input type="text" id="mockStrengths" class="form-control" placeholder="e.g. Good logical grasp, high enthusiasm, articulate verbal expression">
+                    </div>
+
+                    <div class="form-group grid-full">
+                        <label for="mockImprovements">Key Areas for Improvement</label>
+                        <input type="text" id="mockImprovements" class="form-control" placeholder="e.g. Technical terminology, coding practice, stage fear reduction">
+                    </div>
+
+                    <div class="form-group grid-full">
+                        <label for="mockRemarks">Evaluator / Mentor Remarks & 4-Year Roadmap</label>
+                        <textarea id="mockRemarks" class="form-control" placeholder="Detailed evaluator comments and recommended training tracks for the student..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Semester-by-Semester Progression (Sem 1 to 8) -->
+            <section class="form-card" id="sec-semprogression">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-teal">4</div>
+                        <div>
+                            <h2>Semester-by-Semester Academic Progression (Sem 1 to 8)</h2>
+                            <div class="card-subtitle">Year-by-year SGPA / Percentage and attendance tracking till Final Year</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Sem 1 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem1Marks" class="form-control" placeholder="e.g. 8.2">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 2 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem2Marks" class="form-control" placeholder="e.g. 8.4">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 3 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem3Marks" class="form-control" placeholder="e.g. 7.9">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 4 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem4Marks" class="form-control" placeholder="e.g. 8.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 5 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem5Marks" class="form-control" placeholder="e.g. 8.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 6 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem6Marks" class="form-control" placeholder="e.g. 8.7">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 7 SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem7Marks" class="form-control" placeholder="e.g. 8.9">
+                    </div>
+                    <div class="form-group">
+                        <label>Sem 8 (Final) SGPA / %</label>
+                        <input type="number" step="0.01" min="0" max="100" id="sem8Marks" class="form-control" placeholder="e.g. 9.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="overallAttendance">Overall College Attendance (%)</label>
+                        <input type="number" step="0.1" min="0" max="100" id="overallAttendance" class="form-control" placeholder="e.g. 88.5">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: 360° Personality & Soft Skills Matrix -->
+            <section class="form-card" id="sec-personality">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-purple">5</div>
+                        <div>
+                            <h2>Complete Personality & Soft Skills Assessment (RNTU 360°)</h2>
+                            <div class="card-subtitle">Comprehensive behavioral, leadership, problem solving and professional scoring</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Verbal & Written Communication (100)</span>
+                            <span class="score-pill" id="scoreCommVal">75/100</span>
+                        </div>
+                        <input type="range" id="scoreComm" min="0" max="100" value="75" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Presentation & Public Speaking (100)</span>
+                            <span class="score-pill" id="scorePresentationVal">70/100</span>
+                        </div>
+                        <input type="range" id="scorePresentation" min="0" max="100" value="70" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Teamwork & Leadership Agility (100)</span>
+                            <span class="score-pill" id="scoreLeadershipVal">80/100</span>
+                        </div>
+                        <input type="range" id="scoreLeadership" min="0" max="100" value="80" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Critical Thinking & Problem Solving (100)</span>
+                            <span class="score-pill" id="scoreProblemSolvingVal">78/100</span>
+                        </div>
+                        <input type="range" id="scoreProblemSolving" min="0" max="100" value="78" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Professional Etiquette & Grooming (100)</span>
+                            <span class="score-pill" id="scoreEtiquetteVal">82/100</span>
+                        </div>
+                        <input type="range" id="scoreEtiquette" min="0" max="100" value="82" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Technical & Domain Mastery (100)</span>
+                            <span class="score-pill" id="scoreTechnicalVal">75/100</span>
+                        </div>
+                        <input type="range" id="scoreTechnical" min="0" max="100" value="75" class="score-slider" oninput="updatePersonalityMatrix()">
+                    </div>
+                </div>
+
+                <!-- Live Matrix Total Summary -->
+                <div class="matrix-total-card">
+                    <div class="matrix-total-info">
+                        <h4>RNTU 360° Composite Personality Score</h4>
+                        <p>Aggregated benchmark across all soft-skills & professional parameters</p>
+                    </div>
+                    <div class="matrix-total-score">
+                        <span id="compositePersonalityScore">76.7</span>
+                        <span>/ 100</span>
+                    </div>
+                    <div class="readiness-badge" id="readinessBadge">Placement Ready</div>
+                    <input type="hidden" id="personalityScore" value="76.7">
+                    <input type="hidden" id="personalityReadiness" value="Placement Ready">
+                </div>
+            </section>
+
+            <!-- SECTION 6: Certifications & Portfolio -->
+            <section class="form-card" id="sec-certifications">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-green">6</div>
+                        <div>
+                            <h2>Professional Certifications & Projects Portfolio</h2>
+                            <div class="card-subtitle">NPTEL, Coursera, AWS, ICAR, AICTE, and Industry-recognized credentials</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="cert-table" id="certTable">
+                        <thead>
+                            <tr>
+                                <th style="width:35%">Certification / Course Title</th>
+                                <th style="width:25%">Issuing Organization</th>
+                                <th style="width:15%">Year</th>
+                                <th style="width:20%">Credential ID / Link</th>
+                                <th style="width:5%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certTableBody">
+                            <tr>
+                                <td><input type="text" class="form-control cert-title" placeholder="e.g. Python for Data Science" value="NPTEL Python Programming"></td>
+                                <td><input type="text" class="form-control cert-issuer" placeholder="e.g. NPTEL / Coursera / AWS" value="IIT Madras / NPTEL"></td>
+                                <td><input type="text" class="form-control cert-year" placeholder="2024" value="2024"></td>
+                                <td><input type="text" class="form-control cert-link" placeholder="Credential link / ID" value="NPTEL24CS102"></td>
+                                <td><button type="button" class="btn-delete-row" onclick="removeCertRow(this)">✕</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn-add-row" onclick="addCertRow()">+ Add Another Certification</button>
+            </section>
+
+            <!-- SECTION 7: Career Aspirations & Future Goals -->
+            <section class="form-card" id="sec-aspirations">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-orange">7</div>
+                        <div>
+                            <h2>Career Aspirations & Long-Term Goals</h2>
+                            <div class="card-subtitle">What the student intends to pursue post-graduation from RNTU</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Primary Career Goal / Path <span class="req">*</span></label>
+                    <div class="career-options">
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Job / Corporate Placement" checked>
+                            <span class="career-icon">💼</span>
+                            <span class="career-title">Job / Placement</span>
+                            <span class="career-desc">Campus / Corporate IT & Core Jobs</span>
+                        </label>
+
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Higher Studies">
+                            <span class="career-icon">🎓</span>
+                            <span class="career-title">Higher Studies</span>
+                            <span class="career-desc">GATE, CAT, GRE, MS, M.Tech, MBA, Ph.D</span>
+                        </label>
+
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Family Business">
+                            <span class="career-icon">🏢</span>
+                            <span class="career-title">Family Business</span>
+                            <span class="career-desc">Expanding existing family enterprise</span>
+                        </label>
+
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Start Own / Startup">
+                            <span class="career-icon">🚀</span>
+                            <span class="career-title">Start Own / Startup</span>
+                            <span class="career-desc">Entrepreneurship & Innovation</span>
+                        </label>
+
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Competitive Exam Prep">
+                            <span class="career-icon">🏛️</span>
+                            <span class="career-title">Competitive Exams</span>
+                            <span class="career-desc">UPSC, MPPSC, SSC, Banking, Defense</span>
+                        </label>
+
+                        <label class="career-card-label" onclick="selectCareer(this)">
+                            <input type="radio" name="careerGoal" value="Not Sure / Exploring">
+                            <span class="career-icon">❓</span>
+                            <span class="career-title">Not Sure / Exploring</span>
+                            <span class="career-desc">Needs mentoring & career counseling</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-top:16px;">
+                    <div class="form-group grid-full">
+                        <label for="targetDetails">Target Role, Exam, University, or Startup Idea Details</label>
+                        <input type="text" id="targetDetails" class="form-control" placeholder="e.g. Aiming for Software Engineer at MNC / GATE 2026 for IITs / Agri-Tech Startup">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: Sector Placement & Alumni Journey Tracker -->
+            <section class="form-card" id="sec-placement-alumni">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon-badge bg-blue">8</div>
+                        <div>
+                            <h2>Sector Placement Details & Alumni Journey Tracker</h2>
+                            <div class="card-subtitle">Tracking placement offer details and ongoing alumni career trajectory</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:14px;color:var(--rntu-blue);margin-bottom:12px;font-weight:700;">💼 Placement Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="placementStatus">Placement Status</label>
+                        <select id="placementStatus" class="form-select" onchange="togglePlacementFields()">
+                            <option value="Not Yet Placed">In Process / Not Yet Placed</option>
+                            <option value="Placed">Placed via Campus / Off-Campus</option>
+                            <option value="Higher Studies">Opted for Higher Studies</option>
+                            <option value="Entrepreneur">Started Own Venture / Startup</option>
+                            <option value="Opted Out">Opted Out of Placements</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placedCompany">Recruiting Company Name</label>
+                        <input type="text" id="placedCompany" class="form-control" placeholder="e.g. TCS, Infosys, Lupin, Mahindra Agri">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placedRole">Designation / Job Role</label>
+                        <input type="text" id="placedRole" class="form-control" placeholder="e.g. Associate Software Engineer">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placedPackage">Package / Annual CTC (in Lakhs Per Annum - LPA)</label>
+                        <input type="number" step="0.1" min="0" id="placedPackage" class="form-control" placeholder="e.g. 6.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placedLocation">Job / Work Location</label>
+                        <input type="text" id="placedLocation" class="form-control" placeholder="e.g. Bhopal, Indore, Pune, Bangalore">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offerLetterReceived">Offer Letter Received?</label>
+                        <select id="offerLetterReceived" class="form-select">
+                            <option value="Yes">Yes — Offer Letter Verified</option>
+                            <option value="Awaited">Awaited / LOI Issued</option>
+                            <option value="No">No / Not Applicable</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr style="margin:24px 0 18px;border:none;border-top:1px dashed #cbd5e1;">
+
+                <h3 style="font-size:14px;color:var(--rntu-blue);margin-bottom:12px;font-weight:700;">🌟 Alumni Career Journey Tracker (Post-Graduation)</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="alumniOrg">Current Organization / Employer</label>
+                        <input type="text" id="alumniOrg" class="form-control" placeholder="e.g. Microsoft, Sun Pharma, ICAR Research">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alumniRole">Current Designation / Title</label>
+                        <input type="text" id="alumniRole" class="form-control" placeholder="e.g. Senior Data Analyst">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alumniExp">Total Professional Experience (Years)</label>
+                        <input type="number" step="0.5" min="0" id="alumniExp" class="form-control" placeholder="e.g. 2.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alumniLinkedIn">LinkedIn Profile URL</label>
+                        <input type="url" id="alumniLinkedIn" class="form-control" placeholder="https://linkedin.com/in/username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alumniMentor">Willing to Mentor RNTU Juniors?</label>
+                        <select id="alumniMentor" class="form-select">
+                            <option value="Yes">Yes, Active Alumni Mentor</option>
+                            <option value="No">No / Busy Currently</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sticky Bottom Submission Bar -->
+            <div class="submit-action-bar">
+                <div class="save-status-indicator">
+                    <div class="live-dot"></div>
+                    <span id="syncStatusText">Ready to save & sync instantly with Google Drive & Cloud Database</span>
+                </div>
+                <div class="btn-group-submit">
+                    <a href="index.html" class="btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-save-main" id="saveStudentBtn">
+                        💾 Save & Sync Record
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- Toast Notification Box -->
+    <div class="toast-box" id="toast">
+        <span style="font-size:20px;">✅</span>
+        <span id="toastMessage">Student record saved successfully!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { db, doc, getDoc, setDoc } from './firebase-config.js';
+        import { GDriveSync } from './google-drive-sync.js';
+
+        // Sector Names Map
+        const SECTOR_NAMES = {
+            '1': 'Sector 1: Engineering & Technology',
+            '2': 'Sector 2: Computer Applications & IT',
+            '3': 'Sector 3: Commerce & Management',
+            '4': 'Sector 4: Life & Physical Sciences',
+            '5': 'Sector 5: Pharmacy',
+            '6': 'Sector 6: Agriculture'
+        };
+
+        // Form elements
+        const form = document.getElementById('studentMasterForm');
+        const studentDocIdInput = document.getElementById('studentDocId');
+        const pageHeading = document.getElementById('pageHeading');
+        const saveStudentBtn = document.getElementById('saveStudentBtn');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        function showToast(msg, duration = 3500) {
+            toastMessage.textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, duration);
+        }
+
+        // Grade Selection Handler (C, B, B+, A, A+)
+        window.selectGrade = function(grade) {
+            document.getElementById('studentGrade').value = grade;
+            const grades = ['C', 'B', 'B+', 'A', 'A+'];
+            grades.forEach(g => {
+                const btnKey = g.replace('+', 'plus');
+                const btn = document.getElementById(`btn-grade-${btnKey}`);
+                if (btn) {
+                    btn.className = 'grade-btn';
+                    if (g === grade) {
+                        btn.classList.add(`active-grade-${btnKey}`);
                     }
                 }
-            }
-
-            // Check URL params
-            const params = new URLSearchParams(window.location.search);
-            const studentId = params.get('id');
-
-            if (studentId) {
-                currentStudentId = studentId;
-                await loadStudentFromFirestore(studentId);
-                setEditingMode(true);
-            } else {
-                setEditingMode(false);
-            }
-
-            // Animate cards
-            document.querySelectorAll('.card').forEach((card, i) => {
-                card.style.animationDelay = `${i * 0.08}s`;
             });
-        });
+        };
 
-        async function loadStudentFromFirestore(id) {
-            showLoading(true);
+        window.autoSuggestGrade = function() {
+            const cgpa = parseFloat(document.getElementById('currentCgpa').value);
+            const tenth = parseFloat(document.getElementById('tenthMarks').value);
+            const twelfth = parseFloat(document.getElementById('twelfthMarks').value);
+
+            let score = 0;
+            if (cgpa > 0) {
+                score = cgpa * 9.5;
+            } else if (twelfth > 0) {
+                score = twelfth;
+            } else if (tenth > 0) {
+                score = tenth;
+            }
+
+            if (score > 0) {
+                const suggested = GDriveSync.calculateGrade(cgpa, score);
+                selectGrade(suggested);
+            }
+        };
+
+        // Open student drive portfolio folder in a new tab
+        window.openDriveLinkTest = function() {
+            const url = document.getElementById('drivePortfolioUrl').value.trim();
+            if (!url) {
+                alert('Please paste a Google Drive folder link first.');
+                return;
+            }
+            window.open(url, '_blank');
+        };
+
+        // Global functions for sliders and calculations
+        window.updateMockScores = function() {
+            const apt = parseFloat(document.getElementById('mockAptitude').value) || 0;
+            const tech = parseFloat(document.getElementById('mockTech').value) || 0;
+            const comm = parseFloat(document.getElementById('mockComm').value) || 0;
+            const conf = parseFloat(document.getElementById('mockConfidence').value) || 0;
+
+            document.getElementById('mockAptitudeVal').textContent = apt + '/100';
+            document.getElementById('mockTechVal').textContent = tech + '/100';
+            document.getElementById('mockCommVal').textContent = comm + '/100';
+            document.getElementById('mockConfidenceVal').textContent = conf + '/100';
+
+            const overall = ((apt + tech + comm + conf) / 4).toFixed(2);
+            document.getElementById('mockOverallVal').textContent = overall + '%';
+            document.getElementById('mockOverall').value = overall;
+        };
+
+        window.updatePersonalityMatrix = function() {
+            const c = parseFloat(document.getElementById('scoreComm').value) || 0;
+            const p = parseFloat(document.getElementById('scorePresentation').value) || 0;
+            const l = parseFloat(document.getElementById('scoreLeadership').value) || 0;
+            const ps = parseFloat(document.getElementById('scoreProblemSolving').value) || 0;
+            const e = parseFloat(document.getElementById('scoreEtiquette').value) || 0;
+            const t = parseFloat(document.getElementById('scoreTechnical').value) || 0;
+
+            document.getElementById('scoreCommVal').textContent = c + '/100';
+            document.getElementById('scorePresentationVal').textContent = p + '/100';
+            document.getElementById('scoreLeadershipVal').textContent = l + '/100';
+            document.getElementById('scoreProblemSolvingVal').textContent = ps + '/100';
+            document.getElementById('scoreEtiquetteVal').textContent = e + '/100';
+            document.getElementById('scoreTechnicalVal').textContent = t + '/100';
+
+            const composite = ((c + p + l + ps + e + t) / 6).toFixed(1);
+            document.getElementById('compositePersonalityScore').textContent = composite;
+            document.getElementById('personalityScore').value = composite;
+
+            const badge = document.getElementById('readinessBadge');
+            let readiness = 'Developing';
+            if (composite >= 85) {
+                readiness = 'Exceptional / Top Talent';
+                badge.style.background = '#ffd166';
+                badge.style.color = '#78350f';
+            } else if (composite >= 70) {
+                readiness = 'Placement Ready';
+                badge.style.background = '#06d6a0';
+                badge.style.color = '#064e3b';
+            } else if (composite >= 50) {
+                readiness = 'Intermediate / In Training';
+                badge.style.background = '#4895ef';
+                badge.style.color = '#ffffff';
+            } else {
+                readiness = 'Foundational / Needs Focus';
+                badge.style.background = '#f72585';
+                badge.style.color = '#ffffff';
+            }
+            badge.textContent = readiness;
+            document.getElementById('personalityReadiness').value = readiness;
+        };
+
+        window.selectCareer = function(el) {
+            document.querySelectorAll('.career-card-label').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        };
+
+        window.addCertRow = function() {
+            const tbody = document.getElementById('certTableBody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" class="form-control cert-title" placeholder="e.g. AWS Cloud / ICAR Certificate"></td>
+                <td><input type="text" class="form-control cert-issuer" placeholder="Issuing Body"></td>
+                <td><input type="text" class="form-control cert-year" placeholder="Year"></td>
+                <td><input type="text" class="form-control cert-link" placeholder="Credential Link / ID"></td>
+                <td><button type="button" class="btn-delete-row" onclick="removeCertRow(this)">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        };
+
+        window.removeCertRow = function(btn) {
+            const tr = btn.closest('tr');
+            if (document.querySelectorAll('#certTableBody tr').length > 1) {
+                tr.remove();
+            } else {
+                tr.querySelectorAll('input').forEach(i => i.value = '');
+            }
+        };
+
+        window.togglePlacementFields = function() {
+            // Can be used for dynamic visual adjustments
+        };
+
+        // Extract URL params (e.g. ?id=xyz or ?sector=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('id');
+        const prefillSector = urlParams.get('sector');
+
+        if (prefillSector && document.getElementById('sectorSelect')) {
+            document.getElementById('sectorSelect').value = prefillSector;
+        }
+
+        // Load existing record if editing
+        async function loadStudentForEdit(id) {
             try {
-                const studentRef = doc(db, 'tenants', tenantId, 'students', id);
-                const snap = await getDoc(studentRef);
-                if (snap.exists()) {
-                    currentStudent = { ...initializeNewStudent(), ...snap.data() };
-                    // Ensure sessions array is properly merged
-                    if (!Array.isArray(currentStudent.sessions) || currentStudent.sessions.length !== 7) {
-                        currentStudent.sessions = initializeNewStudent().sessions;
+                const localData = localStorage.getItem('rntu_students_cache');
+                let foundStudent = null;
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    foundStudent = parsed.find(s => s.id === id || s.enrollmentNo === id);
+                }
+
+                if (!foundStudent && db) {
+                    const snap = await getDoc(doc(db, 'students', id));
+                    if (snap.exists()) {
+                        foundStudent = { id: snap.id, ...snap.data() };
                     }
-                    populateStudentInfo();
-                    updateAttendanceCount();
-                    populateSummaryTable();
-                    initializeChart();
-                    studentNameHeader.textContent = currentStudent.name || "Student Profile";
-                } else {
-                    showToast('Student not found!', 'error');
-                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+                }
+
+                if (foundStudent) {
+                    pageHeading.textContent = `Edit Record: ${foundStudent.name || foundStudent.fullName || 'Student'}`;
+                    studentDocIdInput.value = foundStudent.id || id;
+                    document.getElementById('enrollmentNo').value = foundStudent.enrollmentNo || foundStudent.rollNo || '';
+                    document.getElementById('fullName').value = foundStudent.name || foundStudent.fullName || '';
+                    document.getElementById('email').value = foundStudent.email || '';
+                    document.getElementById('mobile').value = foundStudent.mobile || '';
+                    document.getElementById('gender').value = foundStudent.gender || 'Male';
+                    document.getElementById('sectorSelect').value = foundStudent.sectorId || '';
+                    document.getElementById('courseSelect').value = foundStudent.course || foundStudent.branch || '';
+                    document.getElementById('currentYear').value = foundStudent.currentYear || '1st Year';
+                    document.getElementById('currentSemester').value = foundStudent.currentSemester || '1';
+                    document.getElementById('sectionBatch').value = foundStudent.section || foundStudent.batchCode || '';
+                    document.getElementById('mentorName').value = foundStudent.mentorName || '';
+
+                    // Drive Link & Grade
+                    document.getElementById('drivePortfolioUrl').value = foundStudent.drivePortfolioUrl || '';
+                    selectGrade(foundStudent.grade || 'A');
+
+                    // Academics
+                    document.getElementById('tenthMarks').value = foundStudent.tenthMarks || '';
+                    document.getElementById('twelfthMarks').value = foundStudent.twelfthMarks || '';
+                    document.getElementById('entranceScore').value = foundStudent.entranceScore || '';
+                    document.getElementById('currentCgpa').value = foundStudent.cgpa || '';
+
+                    // Mock
+                    document.getElementById('mockDate').value = foundStudent.mockDate || '';
+                    document.getElementById('mockAptitude').value = foundStudent.mockAptitude || 70;
+                    document.getElementById('mockTech').value = foundStudent.mockTech || 68;
+                    document.getElementById('mockComm').value = foundStudent.mockComm || 72;
+                    document.getElementById('mockConfidence').value = foundStudent.mockConfidence || 75;
+                    document.getElementById('mockStrengths').value = foundStudent.mockStrengths || '';
+                    document.getElementById('mockImprovements').value = foundStudent.mockImprovements || '';
+                    document.getElementById('mockRemarks').value = foundStudent.mockRemarks || '';
+
+                    // Semesters
+                    document.getElementById('sem1Marks').value = foundStudent.sem1Marks || '';
+                    document.getElementById('sem2Marks').value = foundStudent.sem2Marks || '';
+                    document.getElementById('sem3Marks').value = foundStudent.sem3Marks || '';
+                    document.getElementById('sem4Marks').value = foundStudent.sem4Marks || '';
+                    document.getElementById('sem5Marks').value = foundStudent.sem5Marks || '';
+                    document.getElementById('sem6Marks').value = foundStudent.sem6Marks || '';
+                    document.getElementById('sem7Marks').value = foundStudent.sem7Marks || '';
+                    document.getElementById('sem8Marks').value = foundStudent.sem8Marks || '';
+                    document.getElementById('overallAttendance').value = foundStudent.overallAttendance || '';
+
+                    // Personality
+                    document.getElementById('scoreComm').value = foundStudent.scoreComm || 75;
+                    document.getElementById('scorePresentation').value = foundStudent.scorePresentation || 70;
+                    document.getElementById('scoreLeadership').value = foundStudent.scoreLeadership || 80;
+                    document.getElementById('scoreProblemSolving').value = foundStudent.scoreProblemSolving || 78;
+                    document.getElementById('scoreEtiquette').value = foundStudent.scoreEtiquette || 82;
+                    document.getElementById('scoreTechnical').value = foundStudent.scoreTechnical || 75;
+
+                    // Career
+                    const careerVal = foundStudent.careerAspiration || 'Job / Corporate Placement';
+                    const radio = document.querySelector(`input[name="careerGoal"][value="${careerVal}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        selectCareer(radio.closest('.career-card-label'));
+                    }
+                    document.getElementById('targetDetails').value = foundStudent.targetDetails || '';
+
+                    // Placement
+                    document.getElementById('placementStatus').value = foundStudent.placementStatus || 'Not Yet Placed';
+                    document.getElementById('placedCompany').value = foundStudent.placedCompany || '';
+                    document.getElementById('placedRole').value = foundStudent.placedRole || '';
+                    document.getElementById('placedPackage').value = foundStudent.placedPackage || '';
+                    document.getElementById('placedLocation').value = foundStudent.placedLocation || '';
+                    document.getElementById('offerLetterReceived').value = foundStudent.offerLetterReceived || 'No';
+
+                    // Alumni
+                    document.getElementById('alumniOrg').value = foundStudent.alumniOrg || '';
+                    document.getElementById('alumniRole').value = foundStudent.alumniRole || '';
+                    document.getElementById('alumniExp').value = foundStudent.alumniExp || '';
+                    document.getElementById('alumniLinkedIn').value = foundStudent.alumniLinkedIn || '';
+                    document.getElementById('alumniMentor').value = foundStudent.alumniMentor || 'Yes';
+
+                    // Populate certs if available
+                    if (Array.isArray(foundStudent.certifications) && foundStudent.certifications.length > 0) {
+                        const tbody = document.getElementById('certTableBody');
+                        tbody.innerHTML = '';
+                        foundStudent.certifications.forEach(c => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td><input type="text" class="form-control cert-title" value="${c.title || ''}"></td>
+                                <td><input type="text" class="form-control cert-issuer" value="${c.issuer || ''}"></td>
+                                <td><input type="text" class="form-control cert-year" value="${c.year || ''}"></td>
+                                <td><input type="text" class="form-control cert-link" value="${c.link || ''}"></td>
+                                <td><button type="button" class="btn-delete-row" onclick="removeCertRow(this)">✕</button></td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    updateMockScores();
+                    updatePersonalityMatrix();
                 }
             } catch (err) {
-                console.error(err);
-                showToast('Error loading student data', 'error');
-            }
-            showLoading(false);
-        }
-
-        function populateStudentInfo() {
-            studentNameInput.value = currentStudent.name || '';
-            mobileNumberInput.value = currentStudent.mobile || '';
-            batchCodeInput.value = currentStudent.batchCode || '';
-            enrollmentDateInput.value = currentStudent.enrollmentDate || '';
-            emailInput.value = currentStudent.email || '';
-            updateSessionScores();
-        }
-
-        function updateSessionScores() {
-            const idx = parseInt(sessionSelect.value);
-            const session = currentStudent.sessions[idx];
-            scoreInputs.forEach(input => {
-                input.value = session.scores[input.dataset.criteria] || 0;
-            });
-            totalScoreEl.textContent = session.totalScore || 0;
-            commentsInput.value = session.comments || '';
-            progressBar.style.width = `${session.percentage || 0}%`;
-        }
-
-        function calculateTotalScore() {
-            let total = 0;
-            scoreInputs.forEach(input => { total += parseInt(input.value) || 0; });
-            return total;
-        }
-
-        function updateAttendanceCount() {
-            const count = currentStudent.sessions.filter(s => s.attended).length;
-            currentStudent.daysAttended = count;
-            attendanceCountInput.value = count;
-        }
-
-        function populateSummaryTable() {
-            summaryTable.innerHTML = '';
-            currentStudent.sessions.forEach((session, idx) => {
-                if (session.attended) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>Day ${idx + 1}: ${sessionNames[idx]}</td>
-                        <td>${session.date || 'N/A'}</td>
-                        <td>${session.totalScore}/50</td>
-                        <td>${session.percentage}%</td>
-                    `;
-                    summaryTable.appendChild(row);
-                }
-            });
-        }
-
-        function calculateOverallPerformance() {
-            let totalScore = 0, attendedCount = 0;
-            currentStudent.sessions.forEach(session => {
-                if (session.attended) { totalScore += session.totalScore; attendedCount++; }
-            });
-            currentStudent.totalScore = totalScore;
-            if (attendedCount > 0) {
-                currentStudent.totalPercentage = Math.round((totalScore / (attendedCount * 50)) * 100);
-                const pct = currentStudent.totalPercentage;
-                if (pct >= 90) currentStudent.grade = 'A+';
-                else if (pct >= 80) currentStudent.grade = 'A';
-                else if (pct >= 70) currentStudent.grade = 'B+';
-                else if (pct >= 60) currentStudent.grade = 'B';
-                else if (pct >= 50) currentStudent.grade = 'C';
-                else currentStudent.grade = 'D';
-            } else {
-                currentStudent.totalPercentage = 0;
-                currentStudent.grade = 'N/A';
+                console.error('Error loading student:', err);
             }
         }
 
-        function initializeChart() {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            const labels = [], data = [];
-            currentStudent.sessions.forEach((s, idx) => {
-                if (s.attended) { labels.push(`Day ${idx + 1}`); data.push(s.totalScore); }
-            });
-
-            if (performanceChart) performanceChart.destroy();
-
-            performanceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Performance Score (out of 50)',
-                        data,
-                        fill: true,
-                        backgroundColor: 'rgba(67,97,238,0.08)',
-                        borderColor: '#4361ee',
-                        pointBackgroundColor: '#4895ef',
-                        pointRadius: 5,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    scales: { y: { beginAtZero: true, max: 50 } },
-                    responsive: true,
-                    animation: { duration: 1000, easing: 'easeInOutQuad' }
-                }
-            });
+        if (editId) {
+            loadStudentForEdit(editId);
+        } else {
+            selectGrade('A');
+            updateMockScores();
+            updatePersonalityMatrix();
         }
 
-        // ── Score input handler ──
-        sessionSelect.addEventListener('change', updateSessionScores);
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            saveStudentBtn.disabled = true;
+            saveStudentBtn.innerHTML = '⏳ Saving & Syncing...';
 
-        scoreInputs.forEach(input => {
-            input.addEventListener('input', () => {
-                let v = parseInt(input.value) || 0;
-                if (v < 0) v = 0;
-                if (v > 10) v = 10;
-                input.value = v;
-
-                const idx = parseInt(sessionSelect.value);
-                currentStudent.sessions[idx].scores[input.dataset.criteria] = v;
-                const total = calculateTotalScore();
-                currentStudent.sessions[idx].totalScore = total;
-                currentStudent.sessions[idx].percentage = Math.round((total / 50) * 100);
-                totalScoreEl.textContent = total;
-
-                if (!currentStudent.sessions[idx].attended && total > 0) {
-                    currentStudent.sessions[idx].attended = true;
-                    currentStudent.sessions[idx].date = new Date().toISOString().split('T')[0];
-                }
-
-                progressBar.style.width = `${currentStudent.sessions[idx].percentage}%`;
-                updateAttendanceCount();
-                calculateOverallPerformance();
-                populateSummaryTable();
-                initializeChart();
-            });
-        });
-
-        commentsInput.addEventListener('input', () => {
-            const idx = parseInt(sessionSelect.value);
-            currentStudent.sessions[idx].comments = commentsInput.value;
-        });
-
-        studentNameInput.addEventListener('input', () => {
-            currentStudent.name = studentNameInput.value;
-            studentNameHeader.textContent = currentStudent.name || 'Student Profile';
-        });
-
-        mobileNumberInput.addEventListener('input', () => { currentStudent.mobile = mobileNumberInput.value; });
-        batchCodeInput.addEventListener('input', () => { currentStudent.batchCode = batchCodeInput.value; });
-        emailInput.addEventListener('input', () => { currentStudent.email = emailInput.value; });
-        enrollmentDateInput.addEventListener('change', () => { currentStudent.enrollmentDate = enrollmentDateInput.value; });
-
-        // ── Save (creates a brand-new student record) ──
-        async function handleSave() {
-            if (!studentNameInput.value.trim()) { showToast('Please enter student name', 'error'); return; }
-            if (!mobileNumberInput.value.trim()) { showToast('Please enter mobile number', 'error'); return; }
-            if (!tenantId) { showToast('Session error. Please login again.', 'error'); return; }
-
-            if (isDemo) {
-                try {
-                    showLoading(true);
-                    const snap = await getDocs(collection(db, 'tenants', tenantId, 'students'));
-                    if (snap.size >= 10) {
-                        showLoading(false);
-                        showToast('❌ Limit Reached: Demo plan is limited to 10 students. Upgrade to Pro.', 'error');
-                        alert('Demo version limit reached. You can only add up to 10 students. Please contact SuperAdmin to upgrade to Pro.');
-                        return;
+            try {
+                // Collect Certifications
+                const certRows = document.querySelectorAll('#certTableBody tr');
+                const certifications = [];
+                certRows.forEach(r => {
+                    const title = r.querySelector('.cert-title')?.value.trim();
+                    const issuer = r.querySelector('.cert-issuer')?.value.trim();
+                    const year = r.querySelector('.cert-year')?.value.trim();
+                    const link = r.querySelector('.cert-link')?.value.trim();
+                    if (title) {
+                        certifications.push({ title, issuer, year, link });
                     }
-                } catch (cErr) {
-                    console.error('Count students error:', cErr);
-                } finally {
-                    showLoading(false);
-                }
-            }
-
-            calculateOverallPerformance();
-            showLoading(true);
-
-            try {
-                const newDocRef = doc(collection(db, 'tenants', tenantId, 'students'));
-                await setDoc(newDocRef, { ...currentStudent, createdAt: new Date().toISOString() });
-                currentStudentId = newDocRef.id;
-                showLoading(false);
-                showToast('✅ Student saved! You can now update scores or go back.', 'success');
-                // Now that the student exists, switch into "editing" mode
-                setEditingMode(true);
-            } catch (err) {
-                console.error(err);
-                showLoading(false);
-                showToast('Error saving student: ' + err.message, 'error');
-            }
-        }
-
-        saveBtn.addEventListener('click', handleSave);
-
-        // ── Update (saves changes to an existing student record) ──
-        // Shared by both the "Update" button at the bottom action bar and the
-        // "Update" button inside the Student Information card at the top.
-        async function handleUpdate() {
-            if (!studentNameInput.value.trim()) { showToast('Please enter student name', 'error'); return; }
-            if (!mobileNumberInput.value.trim()) { showToast('Please enter mobile number', 'error'); return; }
-            if (!currentStudentId || !tenantId) { showToast('No student selected to update', 'error'); return; }
-            calculateOverallPerformance();
-            showLoading(true);
-            try {
-                await updateDoc(doc(db, 'tenants', tenantId, 'students', currentStudentId), {
-                    ...currentStudent,
-                    updatedAt: new Date().toISOString()
                 });
-                showLoading(false);
-                showToast('✅ Student updated!', 'success');
-                populateSummaryTable();
-                initializeChart();
-            } catch (err) {
-                showLoading(false);
-                showToast('Error updating: ' + err.message, 'error');
-            }
-        }
 
-        updateBtn.addEventListener('click', handleUpdate);
-        updateBtnTop.addEventListener('click', handleUpdate);
+                const sectorId = document.getElementById('sectorSelect').value;
+                const sectorName = SECTOR_NAMES[sectorId] || 'General';
 
-        // ── Delete ──
-        deleteBtn.addEventListener('click', async () => {
-            if (!currentStudentId || !tenantId) { showToast('No student selected to delete', 'error'); return; }
-            if (!confirm('Are you sure you want to delete this student record?')) return;
-            showLoading(true);
-            try {
-                await deleteDoc(doc(db, 'tenants', tenantId, 'students', currentStudentId));
-                showLoading(false);
-                showToast('Student deleted', 'success');
-                setTimeout(() => { window.location.href = 'index.html'; }, 1000);
-            } catch (err) {
-                showLoading(false);
-                showToast('Error deleting: ' + err.message, 'error');
-            }
-        });
+                const selectedCareerRadio = document.querySelector('input[name="careerGoal"]:checked');
+                const careerAspiration = selectedCareerRadio ? selectedCareerRadio.value : 'Job / Corporate Placement';
 
-        // ── Download PDF ──
-        downloadBtn.addEventListener('click', () => {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-            const pageW = pdf.internal.pageSize.getWidth();
-            const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+                const docId = studentDocIdInput.value || 'rntu_' + Date.now();
 
-            // Header
-            pdf.setFillColor(67, 97, 238);
-            pdf.rect(0, 0, pageW, 24, 'F');
-            pdf.setTextColor(255, 255, 255);
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(16);
-            pdf.text('EduEval Pro — Student Report', 14, 13);
-            pdf.setFontSize(9);
-            pdf.setFont('helvetica', 'normal');
-            pdf.text(today, pageW - 14, 13, { align: 'right' });
-            pdf.text('Powered by EduEval Pro', pageW - 14, 19, { align: 'right' });
+                const studentData = {
+                    id: docId,
+                    enrollmentNo: document.getElementById('enrollmentNo').value.trim(),
+                    name: document.getElementById('fullName').value.trim(),
+                    fullName: document.getElementById('fullName').value.trim(),
+                    grade: document.getElementById('studentGrade').value || 'A',
+                    drivePortfolioUrl: document.getElementById('drivePortfolioUrl').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    mobile: document.getElementById('mobile').value.trim(),
+                    gender: document.getElementById('gender').value,
+                    sectorId: sectorId,
+                    sectorName: sectorName,
+                    course: document.getElementById('courseSelect').value.trim(),
+                    branch: document.getElementById('courseSelect').value.trim(),
+                    currentYear: document.getElementById('currentYear').value,
+                    currentSemester: document.getElementById('currentSemester').value,
+                    section: document.getElementById('sectionBatch').value.trim(),
+                    batchCode: document.getElementById('sectionBatch').value.trim(),
+                    mentorName: document.getElementById('mentorName').value.trim(),
 
-            // Student Info Box
-            pdf.setFillColor(240, 242, 255);
-            pdf.roundedRect(14, 30, pageW - 28, 40, 3, 3, 'F');
-            pdf.setTextColor(50, 50, 50);
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(14);
-            pdf.text(currentStudent.name || 'Student', 20, 42);
-            pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(9);
-            pdf.setTextColor(100, 100, 120);
-            pdf.text(`Mobile: ${currentStudent.mobile || '-'}`, 20, 50);
-            pdf.text(`Email: ${currentStudent.email || '-'}`, 20, 57);
-            pdf.text(`Batch: ${currentStudent.batchCode || '-'}`, 100, 50);
-            pdf.text(`Enrolled: ${currentStudent.enrollmentDate || '-'}`, 100, 57);
-            // Grade badge
-            pdf.setFillColor(67, 97, 238);
-            pdf.roundedRect(pageW - 40, 32, 26, 16, 3, 3, 'F');
-            pdf.setTextColor(255);
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(18);
-            pdf.text(currentStudent.grade || 'N/A', pageW - 27, 44, { align: 'center' });
+                    // Academics
+                    tenthMarks: parseFloat(document.getElementById('tenthMarks').value) || 0,
+                    twelfthMarks: parseFloat(document.getElementById('twelfthMarks').value) || 0,
+                    entranceScore: document.getElementById('entranceScore').value.trim(),
+                    cgpa: parseFloat(document.getElementById('currentCgpa').value) || 0,
 
-            // Overall stats row
-            pdf.setTextColor(50, 50, 50);
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(10);
-            pdf.text(`Days Attended: ${currentStudent.daysAttended || 0}/7`, 20, 76);
-            pdf.text(`Total Score: ${currentStudent.totalScore || 0}`, 80, 76);
-            pdf.text(`Overall: ${currentStudent.totalPercentage || 0}%`, 140, 76);
+                    // Mock Evaluation
+                    mockDate: document.getElementById('mockDate').value,
+                    mockAptitude: parseFloat(document.getElementById('mockAptitude').value) || 0,
+                    mockTech: parseFloat(document.getElementById('mockTech').value) || 0,
+                    mockComm: parseFloat(document.getElementById('mockComm').value) || 0,
+                    mockConfidence: parseFloat(document.getElementById('mockConfidence').value) || 0,
+                    mockOverall: parseFloat(document.getElementById('mockOverall').value) || 0,
+                    mockStrengths: document.getElementById('mockStrengths').value.trim(),
+                    mockImprovements: document.getElementById('mockImprovements').value.trim(),
+                    mockRemarks: document.getElementById('mockRemarks').value.trim(),
 
-            // Divider
-            pdf.setDrawColor(67, 97, 238);
-            pdf.setLineWidth(0.4);
-            pdf.line(14, 80, pageW - 14, 80);
+                    // Sem Progression
+                    sem1Marks: parseFloat(document.getElementById('sem1Marks').value) || null,
+                    sem2Marks: parseFloat(document.getElementById('sem2Marks').value) || null,
+                    sem3Marks: parseFloat(document.getElementById('sem3Marks').value) || null,
+                    sem4Marks: parseFloat(document.getElementById('sem4Marks').value) || null,
+                    sem5Marks: parseFloat(document.getElementById('sem5Marks').value) || null,
+                    sem6Marks: parseFloat(document.getElementById('sem6Marks').value) || null,
+                    sem7Marks: parseFloat(document.getElementById('sem7Marks').value) || null,
+                    sem8Marks: parseFloat(document.getElementById('sem8Marks').value) || null,
+                    overallAttendance: parseFloat(document.getElementById('overallAttendance').value) || 0,
 
-            // Session table
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(11);
-            pdf.setTextColor(67, 97, 238);
-            pdf.text('Session-wise Performance', 14, 88);
+                    // Personality
+                    scoreComm: parseFloat(document.getElementById('scoreComm').value) || 0,
+                    scorePresentation: parseFloat(document.getElementById('scorePresentation').value) || 0,
+                    scoreLeadership: parseFloat(document.getElementById('scoreLeadership').value) || 0,
+                    scoreProblemSolving: parseFloat(document.getElementById('scoreProblemSolving').value) || 0,
+                    scoreEtiquette: parseFloat(document.getElementById('scoreEtiquette').value) || 0,
+                    scoreTechnical: parseFloat(document.getElementById('scoreTechnical').value) || 0,
+                    personalityScore: parseFloat(document.getElementById('personalityScore').value) || 0,
+                    personalityReadiness: document.getElementById('personalityReadiness').value,
 
-            const sessionNames = ['Basic Communication', 'Impromptu Speaking', 'Interview HR', 'Interview Tech', 'GD & Debate', 'Presentation Skills', 'Final Mock'];
-            const rows = currentStudent.sessions
-                .map((s, i) => [i + 1, sessionNames[i], s.date || '-', s.attended ? '✓' : '-',
-                s.attended ? s.scores.fluency : '-',
-                s.attended ? s.scores.grammar : '-',
-                s.attended ? s.scores.bodyLanguage : '-',
-                s.attended ? s.scores.confidence : '-',
-                s.attended ? s.scores.knowledge : '-',
-                s.attended ? `${s.totalScore}/50` : '-',
-                s.attended ? `${s.percentage}%` : '-',
-                s.attended ? (s.comments || '-') : '-'
-                ]);
+                    // Certifications
+                    certifications: certifications,
 
-            pdf.autoTable({
-                startY: 92,
-                head: [['#', 'Session', 'Date', 'Present', 'Fluency', 'Grammar', 'Body Lang', 'Confidence', 'Knowledge', 'Score', '%', 'Remarks']],
-                body: rows,
-                headStyles: { fillColor: [67, 97, 238], textColor: 255, fontStyle: 'bold', fontSize: 8 },
-                bodyStyles: { fontSize: 8, textColor: [50, 50, 50] },
-                alternateRowStyles: { fillColor: [245, 246, 255] },
-                columnStyles: {
-                    0: { cellWidth: 8 },
-                    1: { cellWidth: 32 },
-                    2: { cellWidth: 20 },
-                    3: { cellWidth: 12, halign: 'center' },
-                    4: { cellWidth: 10, halign: 'center' },
-                    5: { cellWidth: 12, halign: 'center' },
-                    6: { cellWidth: 14, halign: 'center' },
-                    7: { cellWidth: 14, halign: 'center' },
-                    8: { cellWidth: 14, halign: 'center' },
-                    9: { cellWidth: 10, halign: 'center' },
-                    10: { cellWidth: 10, halign: 'center' },
-                    11: { cellWidth: 26 } // Remarks
-                },
-                margin: { left: 14, right: 14 },
-                didDrawPage: (data) => {
-                    const pageCount = pdf.internal.getNumberOfPages();
-                    pdf.setFontSize(8);
-                    pdf.setTextColor(150);
-                    pdf.text(`Page ${data.pageNumber} of ${pageCount}  |  EduEval Pro — Confidential`, pageW / 2, pdf.internal.pageSize.getHeight() - 8, { align: 'center' });
+                    // Aspirations
+                    careerAspiration: careerAspiration,
+                    targetDetails: document.getElementById('targetDetails').value.trim(),
+
+                    // Placement
+                    placementStatus: document.getElementById('placementStatus').value,
+                    placedCompany: document.getElementById('placedCompany').value.trim(),
+                    placedRole: document.getElementById('placedRole').value.trim(),
+                    placedPackage: parseFloat(document.getElementById('placedPackage').value) || 0,
+                    placedLocation: document.getElementById('placedLocation').value.trim(),
+                    offerLetterReceived: document.getElementById('offerLetterReceived').value,
+
+                    // Alumni
+                    alumniOrg: document.getElementById('alumniOrg').value.trim(),
+                    alumniRole: document.getElementById('alumniRole').value.trim(),
+                    alumniExp: parseFloat(document.getElementById('alumniExp').value) || 0,
+                    alumniLinkedIn: document.getElementById('alumniLinkedIn').value.trim(),
+                    alumniMentor: document.getElementById('alumniMentor').value,
+
+                    updatedAt: new Date().toISOString()
+                };
+
+                // 1. Update Local Storage Cache immediately
+                let localCache = JSON.parse(localStorage.getItem('rntu_students_cache') || '[]');
+                const existingIdx = localCache.findIndex(s => s.id === studentData.id || s.enrollmentNo === studentData.enrollmentNo);
+                if (existingIdx >= 0) {
+                    localCache[existingIdx] = studentData;
+                } else {
+                    localCache.unshift(studentData);
                 }
-            });
+                localStorage.setItem('rntu_students_cache', JSON.stringify(localCache));
 
-            // Build a clean, human-readable filename from the student's name,
-            // e.g. "Rahul_Sharma_Progress_Report.pdf" — and download it directly.
-            // (We intentionally skip the "open in a new tab" approach used
-            // previously: once a blob is opened in a tab, the browser loses
-            // the intended filename if the user manually saves it from there,
-            // resulting in a random/garbled name. Saving directly guarantees
-            // the correct filename every time.)
-            const safeName = (currentStudent.name || 'Student').trim().replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'Student';
-            const filename = `${safeName}_Progress_Report.pdf`;
-            pdf.save(filename);
-        });
+                // 2. Push to Firestore if available
+                try {
+                    if (db) {
+                        await setDoc(doc(db, 'students', studentData.id), studentData);
+                    }
+                } catch (fsErr) {
+                    console.warn('Firestore write fallback:', fsErr);
+                }
 
-        // ── Back ──
-        backBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+                // 3. Trigger Google Drive & Google Sheets Sync
+                const syncAction = editId ? 'UPDATE' : 'ADD';
+                await GDriveSync.pushToGoogleDrive(syncAction, studentData);
 
-        // ── Logout ──
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            sessionStorage.removeItem('superadmin_preview');
-            await signOut(auth);
-            window.location.href = 'login.html';
+                showToast(`✅ Student record saved & synced successfully! Redirecting to Dashboard...`, 2000);
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1600);
+
+            } catch (error) {
+                console.error('Error saving student record:', error);
+                alert('An error occurred while saving: ' + error.message);
+                saveStudentBtn.disabled = false;
+                saveStudentBtn.innerHTML = '💾 Save & Sync Record';
+            }
         });
     </script>
 </body>
-
 </html>

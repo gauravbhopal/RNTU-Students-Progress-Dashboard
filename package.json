@@ -1,0 +1,24 @@
+{
+  "name": "rntu-student-progress-dashboard",
+  "version": "2.0.0",
+  "description": "RNTU Multi-Sector Student Progress, Mock Evaluation, Grading & Placement Dashboard with Google Drive Sync",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve -l 3000 .",
+    "start": "serve -s .",
+    "build": "echo 'Static build ready'"
+  },
+  "keywords": [
+    "rntu",
+    "student-progress",
+    "mock-evaluation",
+    "placement-tracking",
+    "google-drive-sync",
+    "aisect"
+  ],
+  "author": "RNTU Bhopal",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

@@ -1,5 +1,4 @@
-/.firebase
-/.firebaserc
-/firebase-config.js
-/firebase.json
-/firestore.rules
+.vercel
+node_modules
+.DS_Store
+*.log

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 240" width="100%" height="100%">
+  <!-- Background -->
+  <rect width="1000" height="240" fill="#ffffff" rx="8"/>
+  
+  <!-- Left Side: R N T U -->
+  <g transform="translate(30, 20)">
+    <!-- R (Black) -->
+    <path d="M 10 30 L 50 30 C 75 30 90 42 90 62 C 90 78 78 88 62 92 L 95 145 L 68 145 L 40 98 L 34 98 L 34 145 L 10 145 Z M 34 50 L 34 80 L 48 80 C 60 80 66 74 66 65 C 66 56 60 50 48 50 Z" fill="#111111"/>
+    
+    <!-- N (Blue) -->
+    <path d="M 105 30 L 129 30 L 175 105 L 175 30 L 198 30 L 198 145 L 174 145 L 128 70 L 128 145 L 105 145 Z" fill="#0d47a1"/>
+    
+    <!-- T (Orange) -->
+    <path d="M 212 30 L 290 30 L 290 52 L 263 52 L 263 145 L 239 145 L 239 52 L 212 52 Z" fill="#f57c00"/>
+    
+    <!-- U (Red) -->
+    <path d="M 305 30 L 329 30 L 329 105 C 329 128 344 147 370 147 C 396 147 411 128 411 105 L 411 30 L 435 30 L 435 105 C 435 140 408 168 370 168 C 332 168 305 140 305 105 Z" fill="#d32f2f"/>
+  </g>
+
+  <!-- Middle: Tagore Portrait Box -->
+  <g transform="translate(480, 42)">
+    <rect x="0" y="0" width="100" height="115" fill="#111111" rx="4"/>
+    <!-- Stylized Rabindranath Tagore line art silhouette in white -->
+    <path d="M 50 15 C 42 15 36 22 36 32 C 36 40 40 45 44 48 C 38 52 30 60 28 72 C 26 84 32 98 50 105 C 68 98 74 84 72 72 C 70 60 62 52 56 48 C 60 45 64 40 64 32 C 64 22 58 15 50 15 Z" fill="#ffffff" opacity="0.95"/>
+    <path d="M 40 35 Q 50 45 60 35 Q 60 55 50 65 Q 40 55 40 35 Z" fill="#111111"/>
+    <path d="M 35 60 Q 50 85 65 60 Q 50 95 35 60 Z" fill="#ffffff"/>
+    <path d="M 45 70 L 50 95 L 55 70 Z" fill="#111111"/>
+    <path d="M 32 75 Q 50 110 68 75 Q 50 115 32 75 Z" fill="#ffffff" opacity="0.8"/>
+  </g>
+
+  <!-- Right Side: RABINDRANATH TAGORE UNIVERSITY -->
+  <g transform="translate(600, 50)">
+    <text x="0" y="32" font-family="'Times New Roman', Georgia, serif" font-size="34" font-weight="bold" fill="#111111" letter-spacing="1">Rabindranath</text>
+    <text x="0" y="68" font-family="'Times New Roman', Georgia, serif" font-size="38" font-weight="900" fill="#111111" letter-spacing="3">TAGORE</text>
+    <text x="0" y="104" font-family="'Times New Roman', Georgia, serif" font-size="34" font-weight="bold" fill="#111111" letter-spacing="2">UNIVERSITY</text>
+    <text x="365" y="45" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#555555">TM</text>
+  </g>
+
+  <!-- Bottom Divider Line -->
+  <line x1="30" y1="180" x2="970" y2="180" stroke="#e0e0e0" stroke-width="2"/>
+
+  <!-- Bottom Left: A part of aisect india -->
+  <g transform="translate(40, 192)">
+    <text x="0" y="24" font-family="'Inter', sans-serif" font-size="24" font-weight="bold" fill="#111111">A part of </text>
+    <g transform="translate(115, -6)">
+      <!-- AISECT Icon -->
+      <circle cx="15" cy="10" r="4" fill="#d32f2f"/>
+      <circle cx="9" cy="15" r="3" fill="#0d47a1"/>
+      <circle cx="21" cy="15" r="3" fill="#f57c00"/>
+      <!-- aisect text -->
+      <text x="32" y="30" font-family="'Inter', sans-serif" font-size="28" font-weight="900" fill="#d32f2f" letter-spacing="-0.5">aisect</text>
+      <text x="116" y="30" font-family="'Inter', sans-serif" font-size="28" font-weight="800" fill="#0d47a1">india</text>
+    </g>
+  </g>
+
+  <!-- Bottom Right: Bhopal, Madhya Pradesh Badge -->
+  <g transform="translate(600, 190)">
+    <rect x="0" y="0" width="370" height="34" fill="#0d2c6c" rx="4"/>
+    <text x="185" y="23" font-family="'Inter', sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">Bhopal, Madhya Pradesh</text>
+  </g>
+</svg>
