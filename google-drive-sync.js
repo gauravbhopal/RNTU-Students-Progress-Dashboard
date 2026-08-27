@@ -112,6 +112,14 @@ export const GDriveSync = {
  * 11. Paste that Web App URL in your RNTU Dashboard -> "Google Drive Sync" settings!
  */
 
+function doGet(e) {
+  return ContentService.createTextOutput(JSON.stringify({
+    status: "active",
+    message: "RNTU Student Progress Sync API is active & online!",
+    time: new Date().toISOString()
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   try {
     var rawData = e.postData.contents;
