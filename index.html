@@ -1078,7 +1078,8 @@
 
                 <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
                     <button class="btn-nav-action" onclick="saveDriveUrl()">💾 Save Connection URL</button>
-                    <button class="btn-gdrive-sync" onclick="triggerFullDriveSync()">🔄 Sync All Students to Drive Now</button>
+                    <button id="btnPullFromSheet" class="btn-nav-action" style="background:#059669;color:white;" onclick="triggerPullFromGoogleSheet()">📥 Pull Records from Google Sheet</button>
+                    <button class="btn-gdrive-sync" onclick="triggerFullDriveSync()">📤 Push Records to Google Sheet</button>
                 </div>
 
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
@@ -1112,7 +1113,6 @@
 
     <!-- Main Logic -->
     <script type="module">
-        import { db, collection, getDocs, doc, deleteDoc } from './firebase-config.js';
         import { GDriveSync } from './google-drive-sync.js';
 
         // SECTORS MAP
@@ -1146,40 +1146,33 @@
             return `<span class="grade-pill grade-${cleanG}" title="Student Performance Grade ${g}">Grade ${g}</span>`;
         }
 
-        // Initialize Real Data
+        // Initialize Real Data from Local Storage & Google Sheets
         async function initDashboardData() {
             studentsList = [];
             let localData = localStorage.getItem('rntu_students_cache');
             if (localData) {
                 try {
                     const parsed = JSON.parse(localData);
-                    // Filter out legacy dummy students
                     studentsList = Array.isArray(parsed) ? parsed.filter(s => !SAMPLE_STUDENT_IDS.includes(s.id)) : [];
-                    localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
                 } catch(e) {
                     studentsList = [];
                 }
             }
 
+            // Render immediately from cache for instant speed
+            renderDashboard();
+
+            // Fetch live records directly from Google Sheets
             try {
-                if (db) {
-                    const snap = await getDocs(collection(db, 'students'));
-                    if (!snap.empty) {
-                        const fsStudents = [];
-                        snap.forEach(doc => {
-                            if (!SAMPLE_STUDENT_IDS.includes(doc.id)) {
-                                fsStudents.push({ id: doc.id, ...doc.data() });
-                            }
-                        });
-                        studentsList = fsStudents;
-                        localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
-                    }
+                const res = await GDriveSync.fetchStudentsFromGoogleSheet();
+                if (res.success && Array.isArray(res.students)) {
+                    studentsList = res.students;
+                    localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
+                    renderDashboard();
                 }
             } catch(e) {
-                console.log('Using local cache for real students data.');
+                console.log('Google Sheets live fetch fallback:', e);
             }
-
-            renderDashboard();
         }
 
         function renderDashboard() {
@@ -1453,14 +1446,6 @@
             studentsList = studentsList.filter(s => s.id !== id);
             localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
 
-            try {
-                if (db) {
-                    await deleteDoc(doc(db, 'students', id));
-                }
-            } catch(err) {
-                console.warn('Firestore delete note:', err);
-            }
-
             if (deletedStudent) {
                 GDriveSync.pushToGoogleDrive('DELETE', deletedStudent);
             }
@@ -1597,6 +1582,51 @@
             copyText.select();
             document.execCommand('copy');
             alert('📋 Google Apps Script code copied to clipboard! Paste it in your Google Sheet Script editor.');
+        };
+
+        window.triggerPullFromGoogleSheet = async function() {
+            if (!GDriveSync.getSyncUrl()) {
+                alert('Please enter and save your Google Apps Script Web App URL first.');
+                return;
+            }
+            const btn = document.getElementById('btnPullFromSheet');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Fetching from Sheet...';
+            }
+            try {
+                const res = await GDriveSync.fetchStudentsFromGoogleSheet();
+                if (res.success && Array.isArray(res.students)) {
+                    if (res.students.length === 0) {
+                        alert('ℹ️ Connected to Google Sheet, but no student records were found.');
+                    } else {
+                        studentsList = res.students;
+                        localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
+                        
+                        if (db) {
+                            for (const st of studentsList) {
+                                try {
+                                    await setDoc(doc(db, 'students', st.id), st);
+                                } catch(e) {
+                                    console.warn('Firestore sync write error:', e);
+                                }
+                            }
+                        }
+                        renderDashboard();
+                        alert(`✅ Successfully imported ${res.students.length} students from your Google Sheet!`);
+                        closeDriveSyncModal();
+                    }
+                } else {
+                    alert('⚠️ Could not fetch from Google Sheet: ' + (res.error || 'Please update your Google Apps Script with the doGet code and redeploy as a new version.'));
+                }
+            } catch(e) {
+                alert('⚠️ Error pulling from Google Sheet: ' + e.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '📥 Pull Records from Google Sheet';
+                }
+            }
         };
 
         window.triggerFullDriveSync = async function() {

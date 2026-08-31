@@ -5,7 +5,7 @@ export const GDriveSync = {
     STORAGE_KEY: 'rntu_gdrive_sync_url',
     STATUS_KEY: 'rntu_gdrive_last_sync',
 
-    DEFAULT_URL: 'https://script.google.com/macros/s/AKfycbzbsB8xk0szjUei6QwEu4c_ZSQSgML1iUT1mpNmIa4QDaQlaoqRBRZGShwkz37Tjgdf/exec',
+    DEFAULT_URL: 'https://script.google.com/macros/s/AKfycbxgrFZEbE0_JTPE99sgstm10CXDWzFThyR3Q7YHALstX0m4uq0GfDizZptni2FeE72LgA/exec',
 
     getSyncUrl() {
         return localStorage.getItem(this.STORAGE_KEY) || this.DEFAULT_URL;
@@ -89,6 +89,40 @@ export const GDriveSync = {
     },
 
     /**
+     * Fetch all students from Google Sheets via Google Apps Script Web App
+     */
+    async fetchStudentsFromGoogleSheet() {
+        const scriptUrl = this.getSyncUrl();
+        if (!scriptUrl) return { success: false, error: 'NO_URL' };
+
+        try {
+            const url = new URL(scriptUrl);
+            url.searchParams.set('action', 'GET_ALL');
+            url.searchParams.set('_t', Date.now());
+
+            const response = await fetch(url.toString(), {
+                method: 'GET',
+                redirect: 'follow'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const res = await response.json();
+            if (res && res.status === 'success' && Array.isArray(res.students)) {
+                this.setLastSyncTime();
+                return { success: true, students: res.students, count: res.students.length };
+            } else {
+                return { success: false, error: res.message || 'Invalid response from Google Apps Script' };
+            }
+        } catch (err) {
+            console.error('[Google Drive Fetch Error]:', err);
+            return { success: false, error: err.message };
+        }
+    },
+
+    /**
      * Complete copy-paste Google Apps Script code for the user to deploy
      */
     getGoogleAppsScriptCode() {
@@ -98,26 +132,102 @@ export const GDriveSync = {
  * Rabindranath Tagore University, Bhopal (A part of AISECT India)
  * ====================================================================
  * 
- * INSTRUCTIONS TO DEPLOY:
- * 1. Open Google Drive (https://drive.google.com)
- * 2. Create a new Google Sheet named "RNTU_Student_Progress_Master_Data"
- * 3. In the Sheet, click "Extensions" -> "Apps Script"
- * 4. Replace all code in the script editor with THIS ENTIRE SCRIPT
- * 5. Click "Deploy" (top right) -> "New deployment"
- * 6. Select type: "Web app"
- * 7. Description: "RNTU Student Sync API"
- * 8. Execute as: "Me"
- * 9. Who has access: "Anyone" (allows dashboard to send data)
- * 10. Click "Deploy", Authorize access, and copy the "Web app URL"
- * 11. Paste that Web App URL in your RNTU Dashboard -> "Google Drive Sync" settings!
+ * INSTRUCTIONS TO UPDATE / DEPLOY:
+ * 1. Open your Google Sheet in Google Drive
+ * 2. Click "Extensions" -> "Apps Script"
+ * 3. Replace all code in the script editor with THIS ENTIRE SCRIPT
+ * 4. Click "Deploy" -> "Manage deployments" -> Click Edit (pencil icon) -> Version: "New version" -> Click "Deploy"
+ * 5. Your Web App URL is ready to sync live with your RNTU Dashboard!
  */
 
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    status: "active",
-    message: "RNTU Student Progress Sync API is active & online!",
-    time: new Date().toISOString()
-  })).setMimeType(ContentService.MimeType.JSON);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("RNTU_Master_Records") || ss.getSheets()[0];
+    var data = sheet.getDataRange().getValues();
+    
+    if (data.length <= 1) {
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        students: [],
+        count: 0
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var students = [];
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      if (!row[0] && !row[1]) continue;
+      
+      var student = {
+        id: String(row[0] || ('rntu_' + (Date.now() + i))),
+        enrollmentNo: String(row[0] || ''),
+        name: String(row[1] || ''),
+        fullName: String(row[1] || ''),
+        grade: String(row[2] || 'A'),
+        drivePortfolioUrl: String(row[3] || ''),
+        email: String(row[4] || ''),
+        mobile: String(row[5] || ''),
+        gender: String(row[6] || 'Male'),
+        sectorId: String(row[7] || '1'),
+        sectorName: String(row[8] || ''),
+        course: String(row[9] || ''),
+        currentYear: String(row[10] || '1st Year'),
+        currentSemester: String(row[11] || '1'),
+        section: String(row[12] || ''),
+        mentorName: String(row[13] || ''),
+        tenthMarks: parseFloat(row[14]) || '',
+        twelfthMarks: parseFloat(row[15]) || '',
+        entranceScore: String(row[16] || ''),
+        cgpa: parseFloat(row[17]) || '',
+        mockAptitude: parseFloat(row[18]) || 70,
+        mockTech: parseFloat(row[19]) || 68,
+        mockComm: parseFloat(row[20]) || 72,
+        mockConfidence: parseFloat(row[21]) || 75,
+        mockOverall: parseFloat(row[22]) || 71.25,
+        mockDate: row[23] ? String(row[23]) : '',
+        mockStrengths: String(row[24] || ''),
+        mockImprovements: String(row[25] || ''),
+        mockRemarks: String(row[26] || ''),
+        scoreComm: parseFloat(row[27]) || 75,
+        scorePresentation: parseFloat(row[28]) || 70,
+        scoreLeadership: parseFloat(row[29]) || 80,
+        scoreProblemSolving: parseFloat(row[30]) || 78,
+        scoreEtiquette: parseFloat(row[31]) || 82,
+        scoreTechnical: parseFloat(row[32]) || 75,
+        personalityScore: parseFloat(row[33]) || 76.7,
+        personalityReadiness: String(row[34] || 'Placement Ready'),
+        certifications: String(row[35] || ''),
+        careerAspiration: String(row[36] || 'Job / Corporate Placement'),
+        targetDetails: String(row[37] || ''),
+        placementStatus: String(row[38] || 'Not Yet Placed'),
+        placedCompany: String(row[39] || ''),
+        placedRole: String(row[40] || ''),
+        placedPackage: parseFloat(row[41]) || 0,
+        placedLocation: String(row[42] || ''),
+        offerLetterReceived: String(row[43] || 'No'),
+        alumniOrg: String(row[44] || ''),
+        alumniRole: String(row[45] || ''),
+        alumniExp: parseFloat(row[46]) || 0,
+        alumniLinkedIn: String(row[47] || ''),
+        alumniMentor: String(row[48] || 'No'),
+        lastUpdated: String(row[49] || '')
+      };
+      students.push(student);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      students: students,
+      count: students.length
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: err.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 function doPost(e) {

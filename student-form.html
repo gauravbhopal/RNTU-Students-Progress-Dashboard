@@ -1324,7 +1324,6 @@
 
     <!-- Scripts -->
     <script type="module">
-        import { db, doc, getDoc, setDoc } from './firebase-config.js';
         import { GDriveSync } from './google-drive-sync.js';
 
         // Sector Names Map
@@ -1604,10 +1603,10 @@
                     foundStudent = parsed.find(s => s.id === id || s.enrollmentNo === id);
                 }
 
-                if (!foundStudent && db) {
-                    const snap = await getDoc(doc(db, 'students', id));
-                    if (snap.exists()) {
-                        foundStudent = { id: snap.id, ...snap.data() };
+                if (!foundStudent) {
+                    const res = await GDriveSync.fetchStudentsFromGoogleSheet();
+                    if (res.success && Array.isArray(res.students)) {
+                        foundStudent = res.students.find(s => s.id === id || s.enrollmentNo === id);
                     }
                 }
 
@@ -1852,16 +1851,7 @@
                 }
                 localStorage.setItem('rntu_students_cache', JSON.stringify(localCache));
 
-                // 2. Push to Firestore if available
-                try {
-                    if (db) {
-                        await setDoc(doc(db, 'students', studentData.id), studentData);
-                    }
-                } catch (fsErr) {
-                    console.warn('Firestore write fallback:', fsErr);
-                }
-
-                // 3. Trigger Google Drive & Google Sheets Sync
+                // 2. Trigger Google Drive & Google Sheets Sync
                 const syncAction = editId ? 'UPDATE' : 'ADD';
                 await GDriveSync.pushToGoogleDrive(syncAction, studentData);
 
