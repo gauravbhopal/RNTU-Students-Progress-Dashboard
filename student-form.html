@@ -563,6 +563,83 @@
             transform: translateY(-1px);
         }
 
+        /* Multi-Mock Session Navigation & Growth Delta Styles */
+        .mock-tabs-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 2px 14px;
+            margin-bottom: 16px;
+            border-bottom: 1.5px solid #e2e8f0;
+        }
+
+        .mock-tab-btn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1.5px solid #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .mock-tab-btn:hover {
+            background: #e2e8f0;
+            color: var(--rntu-blue);
+            border-color: #94a3b8;
+        }
+
+        .mock-tab-btn.active {
+            background: var(--rntu-blue);
+            color: white;
+            border-color: var(--rntu-blue);
+            box-shadow: 0 4px 10px rgba(13,44,108,0.25);
+        }
+
+        .mock-tab-btn.add-tab-btn {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1.5px dashed #10b981;
+        }
+
+        .mock-tab-btn.add-tab-btn:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .mock-growth-banner {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+            border: 1.5px solid #86efac;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .growth-delta-pill {
+            background: #16a34a;
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* Career Radio Cards */
         .career-options {
             display: grid;
@@ -970,21 +1047,59 @@
                 </div>
             </section>
 
-            <!-- SECTION 3: 1st Semester Mock Evaluation (Foundation Baseline) -->
+            <!-- SECTION 3: Multi-Round Mock Evaluation & Longitudinal Progress Tracking -->
             <section class="form-card" id="sec-mock">
                 <div class="card-header">
                     <div class="card-title-group">
                         <div class="card-icon-badge bg-red">3</div>
                         <div>
-                            <h2>1st Semester Mock Evaluation (Foundation Baseline)</h2>
-                            <div class="card-subtitle">First semester comprehensive diagnostic interview & test assessment</div>
+                            <h2>Mock Evaluation & Longitudinal Progress Tracking (Sem 1 to 8)</h2>
+                            <div class="card-subtitle">Track repeated mock sessions across semesters, measure skill progression, and analyze 4-year growth</div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Round Mock Navigation Tabs -->
+                <div class="mock-tabs-nav" id="mockTabsNav">
+                    <button type="button" class="mock-tab-btn active" onclick="switchMockRound('round1')" id="mockTab_round1">
+                        🎯 Round 1: 1st Sem Baseline
+                    </button>
+                    <button type="button" class="mock-tab-btn" onclick="switchMockRound('round2')" id="mockTab_round2">
+                        🚀 Round 2: 2nd/3rd Sem Progress
+                    </button>
+                    <button type="button" class="mock-tab-btn" onclick="switchMockRound('round3')" id="mockTab_round3">
+                        💼 Round 3: 4th/5th Sem Pre-Placement
+                    </button>
+                    <button type="button" class="mock-tab-btn" onclick="switchMockRound('round4')" id="mockTab_round4">
+                        🏆 Round 4: Final Placement Simulation
+                    </button>
+                    <button type="button" class="mock-tab-btn add-tab-btn" onclick="promptAddCustomMockRound()">
+                        ➕ Add Custom Mock
+                    </button>
+                </div>
+
+                <!-- Live Longitudinal Progress Delta Banner -->
+                <div class="mock-growth-banner" id="mockGrowthBanner">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span style="font-size:20px;">📈</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:700;color:#065f46;">Longitudinal Skill Growth Trajectory</div>
+                            <div style="font-size:12px;color:#047857;" id="growthTrajectorySubtext">Baseline: 1st Sem (71.25%) ➔ Latest Mock (71.25%)</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="growth-delta-pill" id="growthDeltaPill">🌱 Baseline Evaluation</span>
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="mockDate">Mock Assessment Date</label>
+                        <label for="mockRoundTitle">Active Mock Session Title</label>
+                        <input type="text" id="mockRoundTitle" class="form-control" value="Round 1: 1st Sem Baseline Diagnostic" placeholder="e.g. Round 1: 1st Sem Baseline Diagnostic">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mockDate">Assessment Date</label>
                         <input type="date" id="mockDate" class="form-control">
                     </div>
 
@@ -1020,17 +1135,17 @@
                         <input type="range" id="mockConfidence" min="0" max="100" value="75" class="score-slider" oninput="updateMockScores()">
                     </div>
 
-                    <div class="slider-group">
+                    <div class="slider-group grid-full">
                         <div class="slider-header">
-                            <span>Overall 1st Sem Mock Score (Calculated)</span>
+                            <span>Active Mock Session Overall Score (Calculated)</span>
                             <span class="score-pill" style="background:#d8232a;" id="mockOverallVal">71.25%</span>
                         </div>
                         <input type="hidden" id="mockOverall" value="71.25">
-                        <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">Calculated automatically across all mock parameters.</p>
+                        <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">Calculated automatically across Aptitude, Tech, Communication & Confidence for this round.</p>
                     </div>
 
                     <div class="form-group grid-full">
-                        <label for="mockStrengths">Key Strengths Identified</label>
+                        <label for="mockStrengths">Key Strengths Identified in this Session</label>
                         <input type="text" id="mockStrengths" list="strengthSuggestions" class="form-control" placeholder="e.g. Good logical grasp, high enthusiasm, articulate verbal expression">
                         <datalist id="strengthSuggestions">
                             <option value="Strong Analytical & Logical Reasoning">
@@ -1075,7 +1190,7 @@
                     </div>
 
                     <div class="form-group grid-full">
-                        <label for="mockRemarks">Evaluator / Mentor Remarks & 4-Year Roadmap</label>
+                        <label for="mockRemarks">Evaluator Remarks & 4-Year Roadmap</label>
                         <textarea id="mockRemarks" class="form-control" placeholder="Detailed evaluator comments and recommended training tracks for the student..."></textarea>
                         <div class="suggestion-chips-wrap">
                             <span class="chip-label">⚡ Quick Templates:</span>
@@ -1699,6 +1814,164 @@
             window.open(url, '_blank');
         };
 
+        // Multi-Round Mock State Store
+        let activeRoundId = 'round1';
+        let mockSessionsState = {
+            'round1': {
+                roundId: 'round1',
+                roundTitle: 'Round 1: 1st Sem Baseline Diagnostic',
+                date: '',
+                mockAptitude: 70,
+                mockTech: 68,
+                mockComm: 72,
+                mockConfidence: 75,
+                mockOverall: 71.25,
+                mockStrengths: '',
+                mockImprovements: '',
+                mockRemarks: ''
+            }
+        };
+
+        const DEFAULT_ROUND_TITLES = {
+            'round1': 'Round 1: 1st Sem Baseline Diagnostic',
+            'round2': 'Round 2: 2nd/3rd Sem Progress Mock',
+            'round3': 'Round 3: 4th/5th Sem Pre-Placement Mock',
+            'round4': 'Round 4: Final Placement Simulation'
+        };
+
+        function saveActiveRoundToState() {
+            if (!activeRoundId) return;
+            const apt = parseFloat(document.getElementById('mockAptitude')?.value) || 0;
+            const tech = parseFloat(document.getElementById('mockTech')?.value) || 0;
+            const comm = parseFloat(document.getElementById('mockComm')?.value) || 0;
+            const conf = parseFloat(document.getElementById('mockConfidence')?.value) || 0;
+            const overall = parseFloat(((apt + tech + comm + conf) / 4).toFixed(2));
+
+            mockSessionsState[activeRoundId] = {
+                roundId: activeRoundId,
+                roundTitle: document.getElementById('mockRoundTitle')?.value?.trim() || DEFAULT_ROUND_TITLES[activeRoundId] || `Mock Session (${activeRoundId})`,
+                date: document.getElementById('mockDate')?.value || '',
+                mockAptitude: apt,
+                mockTech: tech,
+                mockComm: comm,
+                mockConfidence: conf,
+                mockOverall: overall,
+                mockStrengths: document.getElementById('mockStrengths')?.value?.trim() || '',
+                mockImprovements: document.getElementById('mockImprovements')?.value?.trim() || '',
+                mockRemarks: document.getElementById('mockRemarks')?.value?.trim() || ''
+            };
+            updateGrowthTrajectoryBanner();
+        }
+
+        window.switchMockRound = function(targetRoundId) {
+            saveActiveRoundToState();
+            activeRoundId = targetRoundId;
+
+            // Update UI Tab buttons
+            document.querySelectorAll('.mock-tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`mockTab_${targetRoundId}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // If target round doesn't exist yet, initialize it
+            if (!mockSessionsState[targetRoundId]) {
+                mockSessionsState[targetRoundId] = {
+                    roundId: targetRoundId,
+                    roundTitle: DEFAULT_ROUND_TITLES[targetRoundId] || `Custom Mock Assessment (${targetRoundId})`,
+                    date: new Date().toISOString().split('T')[0],
+                    mockAptitude: 70,
+                    mockTech: 70,
+                    mockComm: 70,
+                    mockConfidence: 70,
+                    mockOverall: 70.00,
+                    mockStrengths: '',
+                    mockImprovements: '',
+                    mockRemarks: ''
+                };
+            }
+
+            // Populate form with target round data
+            const cur = mockSessionsState[targetRoundId];
+            if (document.getElementById('mockRoundTitle')) document.getElementById('mockRoundTitle').value = cur.roundTitle || '';
+            if (document.getElementById('mockDate')) document.getElementById('mockDate').value = cur.date || '';
+            if (document.getElementById('mockAptitude')) document.getElementById('mockAptitude').value = cur.mockAptitude ?? 70;
+            if (document.getElementById('mockTech')) document.getElementById('mockTech').value = cur.mockTech ?? 68;
+            if (document.getElementById('mockComm')) document.getElementById('mockComm').value = cur.mockComm ?? 72;
+            if (document.getElementById('mockConfidence')) document.getElementById('mockConfidence').value = cur.mockConfidence ?? 75;
+            if (document.getElementById('mockStrengths')) document.getElementById('mockStrengths').value = cur.mockStrengths || '';
+            if (document.getElementById('mockImprovements')) document.getElementById('mockImprovements').value = cur.mockImprovements || '';
+            if (document.getElementById('mockRemarks')) document.getElementById('mockRemarks').value = cur.mockRemarks || '';
+
+            updateMockScores();
+            updateGrowthTrajectoryBanner();
+        };
+
+        window.promptAddCustomMockRound = function() {
+            const customTitle = prompt('Enter Custom Mock Assessment Title (e.g. 5th Sem Pre-TCS Mock):', 'Custom Special Mock Assessment');
+            if (!customTitle || !customTitle.trim()) return;
+
+            const newId = 'custom_' + Date.now();
+            const nav = document.getElementById('mockTabsNav');
+            const addBtn = nav?.querySelector('.add-tab-btn');
+
+            if (nav && addBtn) {
+                const newTab = document.createElement('button');
+                newTab.type = 'button';
+                newTab.className = 'mock-tab-btn';
+                newTab.id = `mockTab_${newId}`;
+                newTab.innerHTML = `⭐ ${customTitle.trim().substring(0, 24)}`;
+                newTab.onclick = () => window.switchMockRound(newId);
+                nav.insertBefore(newTab, addBtn);
+            }
+
+            mockSessionsState[newId] = {
+                roundId: newId,
+                roundTitle: customTitle.trim(),
+                date: new Date().toISOString().split('T')[0],
+                mockAptitude: 75,
+                mockTech: 75,
+                mockComm: 75,
+                mockConfidence: 75,
+                mockOverall: 75.00,
+                mockStrengths: '',
+                mockImprovements: '',
+                mockRemarks: ''
+            };
+
+            window.switchMockRound(newId);
+        };
+
+        function updateGrowthTrajectoryBanner() {
+            const rounds = Object.values(mockSessionsState);
+            if (rounds.length === 0) return;
+
+            const baseline = rounds.find(r => r.roundId === 'round1') || rounds[0];
+            const latest = rounds[rounds.length - 1];
+
+            const bScore = parseFloat(baseline.mockOverall) || 0;
+            const lScore = parseFloat(latest.mockOverall) || 0;
+            const delta = (lScore - bScore).toFixed(1);
+
+            const subtext = document.getElementById('growthTrajectorySubtext');
+            const pill = document.getElementById('growthDeltaPill');
+
+            if (subtext) {
+                subtext.textContent = `Baseline: ${baseline.roundTitle || '1st Sem'} (${bScore}%) ➔ Latest: ${latest.roundTitle || 'Latest Mock'} (${lScore}%)`;
+            }
+
+            if (pill) {
+                if (rounds.length === 1 || Math.abs(parseFloat(delta)) === 0) {
+                    pill.textContent = `🌱 Baseline Score: ${bScore}%`;
+                    pill.style.background = '#0284c7';
+                } else if (parseFloat(delta) > 0) {
+                    pill.textContent = `📈 +${delta}% Skill Growth`;
+                    pill.style.background = '#16a34a';
+                } else {
+                    pill.textContent = `⚠️ ${delta}% Needs Focus`;
+                    pill.style.background = '#dc2626';
+                }
+            }
+        }
+
         // Global functions for sliders and calculations
         window.updateMockScores = function() {
             const apt = parseFloat(document.getElementById('mockAptitude').value) || 0;
@@ -1715,6 +1988,21 @@
             document.getElementById('mockOverallVal').textContent = overall + '%';
             document.getElementById('mockOverall').value = overall;
 
+            // Save active round
+            if (activeRoundId && mockSessionsState[activeRoundId]) {
+                mockSessionsState[activeRoundId].mockAptitude = apt;
+                mockSessionsState[activeRoundId].mockTech = tech;
+                mockSessionsState[activeRoundId].mockComm = comm;
+                mockSessionsState[activeRoundId].mockConfidence = conf;
+                mockSessionsState[activeRoundId].mockOverall = parseFloat(overall);
+                mockSessionsState[activeRoundId].roundTitle = document.getElementById('mockRoundTitle')?.value || '';
+                mockSessionsState[activeRoundId].date = document.getElementById('mockDate')?.value || '';
+                mockSessionsState[activeRoundId].mockStrengths = document.getElementById('mockStrengths')?.value || '';
+                mockSessionsState[activeRoundId].mockImprovements = document.getElementById('mockImprovements')?.value || '';
+                mockSessionsState[activeRoundId].mockRemarks = document.getElementById('mockRemarks')?.value || '';
+            }
+
+            updateGrowthTrajectoryBanner();
             window.autoCalculateGrade();
         };
 
@@ -1832,7 +2120,6 @@
                     document.getElementById('currentYear').value = foundStudent.currentYear || '1st Year';
                     document.getElementById('currentSemester').value = foundStudent.currentSemester || '1';
                     document.getElementById('sectionBatch').value = foundStudent.section || foundStudent.batchCode || '';
-                    document.getElementById('mentorName').value = foundStudent.mentorName || '';
 
                     // Drive Link & Grade
                     document.getElementById('drivePortfolioUrl').value = foundStudent.drivePortfolioUrl || '';
@@ -1844,15 +2131,58 @@
                     document.getElementById('entranceScore').value = foundStudent.entranceScore || '';
                     document.getElementById('currentCgpa').value = foundStudent.cgpa || '';
 
-                    // Mock
-                    document.getElementById('mockDate').value = foundStudent.mockDate || '';
-                    document.getElementById('mockAptitude').value = foundStudent.mockAptitude || 70;
-                    document.getElementById('mockTech').value = foundStudent.mockTech || 68;
-                    document.getElementById('mockComm').value = foundStudent.mockComm || 72;
-                    document.getElementById('mockConfidence').value = foundStudent.mockConfidence || 75;
-                    document.getElementById('mockStrengths').value = foundStudent.mockStrengths || '';
-                    document.getElementById('mockImprovements').value = foundStudent.mockImprovements || '';
-                    document.getElementById('mockRemarks').value = foundStudent.mockRemarks || '';
+                    // Multi-Round Mock Restoration
+                    if (Array.isArray(foundStudent.mockAssessments) && foundStudent.mockAssessments.length > 0) {
+                        mockSessionsState = {};
+                        foundStudent.mockAssessments.forEach(m => {
+                            const rId = m.roundId || ('round_' + Math.random().toString(36).substr(2, 5));
+                            mockSessionsState[rId] = {
+                                roundId: rId,
+                                roundTitle: m.roundTitle || DEFAULT_ROUND_TITLES[rId] || 'Mock Assessment',
+                                date: m.date || '',
+                                mockAptitude: m.mockAptitude ?? 70,
+                                mockTech: m.mockTech ?? 68,
+                                mockComm: m.mockComm ?? 72,
+                                mockConfidence: m.mockConfidence ?? 75,
+                                mockOverall: m.mockOverall ?? 71.25,
+                                mockStrengths: m.mockStrengths || '',
+                                mockImprovements: m.mockImprovements || '',
+                                mockRemarks: m.mockRemarks || ''
+                            };
+
+                            // Check if custom tab button needs creation
+                            if (!document.getElementById(`mockTab_${rId}`)) {
+                                const nav = document.getElementById('mockTabsNav');
+                                const addBtn = nav?.querySelector('.add-tab-btn');
+                                if (nav && addBtn) {
+                                    const newTab = document.createElement('button');
+                                    newTab.type = 'button';
+                                    newTab.className = 'mock-tab-btn';
+                                    newTab.id = `mockTab_${rId}`;
+                                    newTab.innerHTML = `⭐ ${mockSessionsState[rId].roundTitle.substring(0, 24)}`;
+                                    newTab.onclick = () => window.switchMockRound(rId);
+                                    nav.insertBefore(newTab, addBtn);
+                                }
+                            }
+                        });
+                        const firstKey = Object.keys(mockSessionsState)[0] || 'round1';
+                        window.switchMockRound(firstKey);
+                    } else {
+                        mockSessionsState['round1'] = {
+                            roundId: 'round1',
+                            roundTitle: 'Round 1: 1st Sem Baseline Diagnostic',
+                            date: foundStudent.mockDate || '',
+                            mockAptitude: foundStudent.mockAptitude ?? 70,
+                            mockTech: foundStudent.mockTech ?? 68,
+                            mockComm: foundStudent.mockComm ?? 72,
+                            mockConfidence: foundStudent.mockConfidence ?? 75,
+                            mockOverall: foundStudent.mockOverall ?? 71.25,
+                            mockStrengths: foundStudent.mockStrengths || '',
+                            mockImprovements: foundStudent.mockImprovements || '',
+                            mockRemarks: foundStudent.mockRemarks || ''
+                        };
+                        window.switchMockRound('round1');
+                    }
 
                     // Semesters
                     document.getElementById('sem1Marks').value = foundStudent.sem1Marks || '';
@@ -1965,7 +2295,10 @@
                 const selectedCareerRadio = document.querySelector('input[name="careerGoal"]:checked');
                 const careerAspiration = selectedCareerRadio ? selectedCareerRadio.value : 'Job / Corporate Placement';
 
-                const docId = studentDocIdInput.value || 'rntu_' + Date.now();
+                saveActiveRoundToState();
+                const allAssessments = Object.values(mockSessionsState);
+                const baseline = mockSessionsState['round1'] || allAssessments[0] || {};
+                const latest = allAssessments[allAssessments.length - 1] || baseline;
 
                 const studentData = {
                     id: docId,
@@ -1992,16 +2325,18 @@
                     entranceScore: document.getElementById('entranceScore').value.trim(),
                     cgpa: parseFloat(document.getElementById('currentCgpa').value) || 0,
 
-                    // Mock Evaluation
-                    mockDate: document.getElementById('mockDate').value,
-                    mockAptitude: parseFloat(document.getElementById('mockAptitude').value) || 0,
-                    mockTech: parseFloat(document.getElementById('mockTech').value) || 0,
-                    mockComm: parseFloat(document.getElementById('mockComm').value) || 0,
-                    mockConfidence: parseFloat(document.getElementById('mockConfidence').value) || 0,
-                    mockOverall: parseFloat(document.getElementById('mockOverall').value) || 0,
-                    mockStrengths: document.getElementById('mockStrengths').value.trim(),
-                    mockImprovements: document.getElementById('mockImprovements').value.trim(),
-                    mockRemarks: document.getElementById('mockRemarks').value.trim(),
+                    // Multi-Round Mock Evaluation System
+                    mockAssessments: allAssessments,
+                    mockDate: baseline.date || '',
+                    mockAptitude: parseFloat(baseline.mockAptitude) || 0,
+                    mockTech: parseFloat(baseline.mockTech) || 0,
+                    mockComm: parseFloat(baseline.mockComm) || 0,
+                    mockConfidence: parseFloat(baseline.mockConfidence) || 0,
+                    mockOverall: parseFloat(baseline.mockOverall) || 0,
+                    mockStrengths: baseline.mockStrengths || '',
+                    mockImprovements: baseline.mockImprovements || '',
+                    mockRemarks: baseline.mockRemarks || '',
+                    latestMockOverall: parseFloat(latest.mockOverall) || parseFloat(baseline.mockOverall) || 0,
 
                     // Sem Progression
                     sem1Marks: parseFloat(document.getElementById('sem1Marks').value) || null,

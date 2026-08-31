@@ -193,6 +193,21 @@ function doGet(e) {
         mockStrengths: String(row[23] || ''),
         mockImprovements: String(row[24] || ''),
         mockRemarks: String(row[25] || ''),
+        mockAssessments: [
+          {
+            roundId: 'round1',
+            roundTitle: 'Round 1: 1st Sem Baseline Diagnostic',
+            date: row[22] ? String(row[22]) : '',
+            mockAptitude: parseFloat(row[17]) || 70,
+            mockTech: parseFloat(row[18]) || 68,
+            mockComm: parseFloat(row[19]) || 72,
+            mockConfidence: parseFloat(row[20]) || 75,
+            mockOverall: parseFloat(row[21]) || 71.25,
+            mockStrengths: String(row[23] || ''),
+            mockImprovements: String(row[24] || ''),
+            mockRemarks: String(row[25] || '')
+          }
+        ],
         scoreComm: parseFloat(row[26]) || 75,
         scorePresentation: parseFloat(row[27]) || 70,
         scoreLeadership: parseFloat(row[28]) || 80,

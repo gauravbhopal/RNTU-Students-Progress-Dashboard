@@ -1459,13 +1459,34 @@
                     ? `<a href="${st.drivePortfolioUrl}" target="_blank" class="btn-drive-folder" title="Open Student Google Drive Folder">📁 Open Folder ↗</a>`
                     : `<span style="font-size:11px;color:#94a3b8;">Not Attached</span>`;
 
+                // Multi-Mock Progress in table cell
+                const mList = Array.isArray(st.mockAssessments) && st.mockAssessments.length > 0 ? st.mockAssessments : null;
+                let mockCellHtml = '';
+                if (mList && mList.length > 1) {
+                    const b = parseFloat(mList[0].mockOverall) || 0;
+                    const l = parseFloat(mList[mList.length - 1].mockOverall) || 0;
+                    const diff = (l - b).toFixed(1);
+                    const diffTag = diff > 0 
+                        ? `<span style="color:#16a34a;font-weight:800;font-size:11px;">(▲ +${diff}%)</span>` 
+                        : `<span style="color:#dc2626;font-weight:800;font-size:11px;">(▼ ${diff}%)</span>`;
+                    mockCellHtml = `
+                        <strong style="color:#d8232a;font-size:13px;">${l}%</strong> ${diffTag}<br>
+                        <span style="font-size:10px;color:#059669;font-weight:700;">${mList.length} Sessions Logged</span>
+                    `;
+                } else {
+                    mockCellHtml = `
+                        <strong style="color:#d8232a;">${st.mockOverall || '70'}%</strong><br>
+                        <span style="font-size:11px;color:#64748b;">Apt: ${st.mockAptitude || '-'} | Tech: ${st.mockTech || '-'}</span>
+                    `;
+                }
+
                 tr.innerHTML = `
                     <td>
                         <strong>${st.name || st.fullName}</strong><br>
                         <span style="font-size:11px;color:#64748b;">${st.enrollmentNo || 'No Roll'} (${st.gender || 'M'})</span>
                     </td>
                     <td>
-                        ${renderGradePill(st.grade || 'A')}
+                        ${renderGradePill(st.grade || 'A', st)}
                     </td>
                     <td>
                         ${driveLinkHtml}
@@ -1483,8 +1504,7 @@
                         <span style="font-size:12px;">12th: <strong>${st.twelfthMarks || '-'}%</strong></span>
                     </td>
                     <td>
-                        <strong style="color:#d8232a;">${st.mockOverall || '70'}%</strong><br>
-                        <span style="font-size:11px;color:#64748b;">Apt: ${st.mockAptitude || '-'} | Tech: ${st.mockTech || '-'}</span>
+                        ${mockCellHtml}
                     </td>
                     <td>
                         <strong style="font-size:14px;color:#0d2c6c;">${st.cgpa || '-'}</strong>
@@ -1556,6 +1576,59 @@
                     </div>
                 `;
 
+            // Build Multi-Round Mock Longitudinal Progress Section
+            const assessments = (Array.isArray(st.mockAssessments) && st.mockAssessments.length > 0)
+                ? st.mockAssessments
+                : [{
+                    roundId: 'round1',
+                    roundTitle: '1st Sem Baseline Diagnostic',
+                    date: st.mockDate || '',
+                    mockAptitude: st.mockAptitude || 70,
+                    mockTech: st.mockTech || 68,
+                    mockComm: st.mockComm || 72,
+                    mockConfidence: st.mockConfidence || 75,
+                    mockOverall: st.mockOverall || 71.25,
+                    mockStrengths: st.mockStrengths || '',
+                    mockImprovements: st.mockImprovements || '',
+                    mockRemarks: st.mockRemarks || ''
+                }];
+
+            const baselineRound = assessments[0];
+            const latestRound = assessments[assessments.length - 1];
+            const bScore = parseFloat(baselineRound.mockOverall) || 0;
+            const lScore = parseFloat(latestRound.mockOverall) || 0;
+            const deltaVal = (lScore - bScore).toFixed(1);
+
+            let deltaBadgeHtml = `<span style="background:#0284c7;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">🌱 Baseline: ${bScore}%</span>`;
+            if (assessments.length > 1) {
+                if (parseFloat(deltaVal) > 0) {
+                    deltaBadgeHtml = `<span style="background:#16a34a;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">📈 +${deltaVal}% Skill Growth</span>`;
+                } else if (parseFloat(deltaVal) < 0) {
+                    deltaBadgeHtml = `<span style="background:#dc2626;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">⚠️ ${deltaVal}% Needs Revision</span>`;
+                } else {
+                    deltaBadgeHtml = `<span style="background:#475569;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">🟡 Steady: ${lScore}%</span>`;
+                }
+            }
+
+            const mockHistoryRowsHtml = assessments.map((m, idx) => `
+                <tr style="border-bottom:1px solid #e2e8f0;font-size:12px;">
+                    <td style="padding:10px;font-weight:700;color:#0d2c6c;">
+                        ${idx === 0 ? '🎯' : '🚀'} ${m.roundTitle || 'Mock ' + (idx + 1)}
+                        ${m.date ? `<br><span style="font-size:10px;color:#64748b;font-weight:normal;">📅 ${m.date}</span>` : ''}
+                    </td>
+                    <td style="padding:10px 6px;text-align:center;font-weight:600;">${m.mockAptitude ?? '-'}</td>
+                    <td style="padding:10px 6px;text-align:center;font-weight:600;">${m.mockTech ?? '-'}</td>
+                    <td style="padding:10px 6px;text-align:center;font-weight:600;">${m.mockComm ?? '-'}</td>
+                    <td style="padding:10px 6px;text-align:center;font-weight:600;">${m.mockConfidence ?? '-'}</td>
+                    <td style="padding:10px 8px;text-align:center;font-weight:800;color:#d8232a;font-size:13px;">${m.mockOverall ?? '-'}%</td>
+                    <td style="padding:10px;font-size:11px;color:#334155;line-height:1.4;">
+                        ${m.mockStrengths ? `<span style="color:#047857;font-weight:600;">Strengths:</span> ${m.mockStrengths}<br>` : ''}
+                        ${m.mockImprovements ? `<span style="color:#b91c1c;font-weight:600;">Growth:</span> ${m.mockImprovements}<br>` : ''}
+                        ${m.mockRemarks ? `<em style="color:#475569;">"${m.mockRemarks}"</em>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+
             const modalBody = document.getElementById('modalDossierBody');
             modalBody.innerHTML = `
                 ${driveHubHtml}
@@ -1563,22 +1636,38 @@
                 <div class="dossier-grid">
                     <div class="dossier-item"><label>Overall Grade</label><span>${renderGradePill(st.grade || 'A')}</span></div>
                     <div class="dossier-item"><label>Institutional Sector</label><span>${st.sectorName || 'Sector ' + st.sectorId}</span></div>
-                    <div class="dossier-item"><label>Assigned Mentor</label><span>${st.mentorName || 'Prof. Faculty Advisor'}</span></div>
                     <div class="dossier-item"><label>Pre-Admission Baseline</label><span>10th: ${st.tenthMarks || '-'}% | 12th: ${st.twelfthMarks || '-'}%</span></div>
+                    <div class="dossier-item"><label>Current CGPA / SGPA</label><span>${st.cgpa ? st.cgpa + ' CGPA' : 'In Evaluation'}</span></div>
                 </div>
 
-                <div style="background:#f1f5f9;border-left:4px solid #d8232a;padding:14px;border-radius:6px;margin-bottom:18px;">
-                    <h4 style="color:#0d2c6c;margin-bottom:6px;font-size:14px;">🎯 1st Semester Mock Diagnostic Evaluation</h4>
-                    <p style="font-size:13px;color:#334155;margin-bottom:6px;">
-                        <strong>Overall Mock Score:</strong> ${st.mockOverall || '-'}% &nbsp;|&nbsp;
-                        <strong>Aptitude:</strong> ${st.mockAptitude || '-'} &nbsp;|&nbsp;
-                        <strong>Technical:</strong> ${st.mockTech || '-'} &nbsp;|&nbsp;
-                        <strong>Communication:</strong> ${st.mockComm || '-'} &nbsp;|&nbsp;
-                        <strong>Confidence:</strong> ${st.mockConfidence || '-'}
-                    </p>
-                    <p style="font-size:12px;color:#475569;"><strong>Strengths:</strong> ${st.mockStrengths || 'Foundational reasoning'}</p>
-                    <p style="font-size:12px;color:#475569;"><strong>Areas for Growth:</strong> ${st.mockImprovements || 'Continuous practice'}</p>
-                    <p style="font-size:12px;color:#475569;"><strong>Evaluator Roadmap:</strong> ${st.mockRemarks || 'Recommended for RNTU Placement Training Program'}</p>
+                <!-- Longitudinal Multi-Mock Evaluation Table -->
+                <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:16px;margin-bottom:18px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <h4 style="color:#0d2c6c;font-size:14px;margin-bottom:2px;font-weight:800;">📈 Multi-Round Mock Evaluation & Longitudinal Growth Trajectory</h4>
+                            <span style="font-size:12px;color:#475569;">Recorded across ${assessments.length} assessment session(s)</span>
+                        </div>
+                        <div>${deltaBadgeHtml}</div>
+                    </div>
+
+                    <div style="overflow-x:auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;">
+                        <table style="width:100%;border-collapse:collapse;text-align:left;">
+                            <thead>
+                                <tr style="background:#f1f5f9;color:#334155;font-size:11px;border-bottom:1.5px solid #cbd5e1;">
+                                    <th style="padding:10px;">Round / Milestone</th>
+                                    <th style="padding:10px 6px;text-align:center;">Aptitude</th>
+                                    <th style="padding:10px 6px;text-align:center;">Technical</th>
+                                    <th style="padding:10px 6px;text-align:center;">Communication</th>
+                                    <th style="padding:10px 6px;text-align:center;">Confidence</th>
+                                    <th style="padding:10px 8px;text-align:center;">Overall %</th>
+                                    <th style="padding:10px;">Evaluator Remarks & Strengths</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${mockHistoryRowsHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div style="background:#eff6ff;border-left:4px solid #1e50a2;padding:14px;border-radius:6px;margin-bottom:18px;">
