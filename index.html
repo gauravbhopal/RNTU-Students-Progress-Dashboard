@@ -1080,6 +1080,7 @@
                     <button class="btn-nav-action" onclick="saveDriveUrl()">💾 Save Connection URL</button>
                     <button id="btnPullFromSheet" class="btn-nav-action" style="background:#059669;color:white;" onclick="triggerPullFromGoogleSheet()">📥 Pull Records from Google Sheet</button>
                     <button class="btn-gdrive-sync" onclick="triggerFullDriveSync()">📤 Push Records to Google Sheet</button>
+                    <button class="btn-table-action" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;padding:8px 14px;" onclick="clearLocalCache()">🗑️ Clear Browser Cache</button>
                 </div>
 
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;">
@@ -1641,6 +1642,13 @@
             } else {
                 alert('⚠️ Sync dispatched to Google Apps Script endpoint.');
             }
+        };
+
+        window.clearLocalCache = function() {
+            localStorage.removeItem('rntu_students_cache');
+            studentsList = [];
+            renderDashboard();
+            alert('🧹 Browser storage cache cleared! Dashboard is now fresh and clean.');
         };
 
         // EXPORT TO EXCEL / CSV
