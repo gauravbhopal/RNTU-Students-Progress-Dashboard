@@ -525,6 +525,44 @@
 
         .btn-delete-row:hover { background: #dc2626; color: white; }
 
+        /* Auto-Suggestion Chips */
+        .suggestion-chips-wrap {
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chip-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            margin-right: 2px;
+        }
+
+        .chip-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 3px 9px;
+            font-size: 11px;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .chip-btn:hover {
+            background: var(--rntu-blue);
+            color: white;
+            border-color: var(--rntu-blue);
+            transform: translateY(-1px);
+        }
+
         /* Career Radio Cards */
         .career-options {
             display: grid;
@@ -801,7 +839,34 @@
 
                     <div class="form-group">
                         <label for="courseSelect">Specific Course / Branch <span class="req">*</span></label>
-                        <input type="text" id="courseSelect" class="form-control" placeholder="e.g. BE Computer Science, BCA, B.Sc. Agri Sec-A" required>
+                        <input type="text" id="courseSelect" list="courseSuggestions" class="form-control" placeholder="e.g. BE Computer Science, BCA, B.Sc. Agri Sec-A" required>
+                        <datalist id="courseSuggestions">
+                            <!-- Sector 1: Engg -->
+                            <option value="BE Computer Science & Engineering">
+                            <option value="BE Mechanical Engineering">
+                            <option value="BE Civil Engineering">
+                            <option value="BE Electrical & Electronics">
+                            <option value="Diploma Mechanical Engineering">
+                            <option value="Diploma Civil Engineering">
+                            <option value="Diploma Computer Science">
+                            <!-- Sector 2: IT -->
+                            <option value="BCA (Bachelor of Computer Applications)">
+                            <option value="BCA (Data Science & Analytics)">
+                            <option value="B.Sc. Information Technology (IT)">
+                            <option value="B.Sc. Computer Science">
+                            <!-- Sector 3: Mgt -->
+                            <option value="B.Com (Honours / Plain)">
+                            <option value="BBA (Bachelor of Business Administration)">
+                            <!-- Sector 4: Sciences -->
+                            <option value="B.Sc. Life Sciences (Biotechnology / Microbiology)">
+                            <option value="B.Sc. Physical Sciences (Maths, Physics, Chem)">
+                            <!-- Sector 5: Pharmacy -->
+                            <option value="B.Pharma (Bachelor of Pharmacy)">
+                            <option value="D.Pharma (Diploma in Pharmacy)">
+                            <!-- Sector 6: Agriculture -->
+                            <option value="B.Sc. Agriculture (Section A)">
+                            <option value="B.Sc. Agriculture (Section B)">
+                        </datalist>
                     </div>
 
                     <div class="form-group">
@@ -832,12 +897,30 @@
 
                     <div class="form-group">
                         <label for="sectionBatch">Section / Batch Code</label>
-                        <input type="text" id="sectionBatch" class="form-control" placeholder="e.g. Batch 2023-27 / Sec-A">
+                        <input type="text" id="sectionBatch" list="sectionSuggestions" class="form-control" placeholder="e.g. Batch 2024-28 / Sec-A">
+                        <datalist id="sectionSuggestions">
+                            <option value="Batch 2024-28 / Sec-A">
+                            <option value="Batch 2024-28 / Sec-B">
+                            <option value="Batch 2023-27 / Sec-A">
+                            <option value="Batch 2023-27 / Sec-B">
+                            <option value="Batch 2022-26 / Sec-A">
+                            <option value="Batch 2022-26 / Sec-B">
+                            <option value="Batch 2021-25">
+                        </datalist>
                     </div>
 
                     <div class="form-group">
                         <label for="mentorName">Assigned Faculty Mentor / Guide</label>
-                        <input type="text" id="mentorName" class="form-control" placeholder="Prof. / Dr. Name">
+                        <input type="text" id="mentorName" list="mentorSuggestions" class="form-control" placeholder="Prof. / Dr. Name">
+                        <datalist id="mentorSuggestions">
+                            <option value="Dr. Sanjeev Gupta (Dean Engg & Tech)">
+                            <option value="Dr. R.K. Saxena (HOD Mechanical)">
+                            <option value="Prof. Anjali Verma (HOD CS & IT)">
+                            <option value="Dr. Suresh Tiwari (Dean Agriculture)">
+                            <option value="Prof. Meenakshi Sharma (HOD Commerce)">
+                            <option value="Dr. Rajesh Dubey (Principal Pharmacy)">
+                            <option value="Dr. Neha Chouhan (Life Sciences)">
+                        </datalist>
                     </div>
 
                     <!-- STUDENT GRADING (C, B, B+, A, A+) - 100% AUTOMATICALLY CALCULATED -->
@@ -962,17 +1045,58 @@
 
                     <div class="form-group grid-full">
                         <label for="mockStrengths">Key Strengths Identified</label>
-                        <input type="text" id="mockStrengths" class="form-control" placeholder="e.g. Good logical grasp, high enthusiasm, articulate verbal expression">
+                        <input type="text" id="mockStrengths" list="strengthSuggestions" class="form-control" placeholder="e.g. Good logical grasp, high enthusiasm, articulate verbal expression">
+                        <datalist id="strengthSuggestions">
+                            <option value="Strong Analytical & Logical Reasoning">
+                            <option value="Proficient in Coding (C++ / Java / Python)">
+                            <option value="Fluent English Communication & Expressive">
+                            <option value="High Confidence & Professional Demeanor">
+                            <option value="Quick Learner & Adaptable to Technology">
+                            <option value="Agronomy & Soil Practical Field Acumen">
+                            <option value="Laboratory Experimentation & Pharmacy Formulations">
+                            <option value="Leadership, Initiative & Team Collaboration">
+                        </datalist>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Quick Suggest:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'Strong Analytical & Logic')">+ Analytical Logic</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'Proficient in Coding (C++/Java/Python)')">+ Coding & DSA</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'Fluent Verbal Communication')">+ Spoken English</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'High Confidence & Professional')">+ High Confidence</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'Practical Field & Lab Acumen')">+ Field/Lab Acumen</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockStrengths', 'Teamwork & Active Leadership')">+ Leadership</button>
+                        </div>
                     </div>
 
                     <div class="form-group grid-full">
                         <label for="mockImprovements">Key Areas for Improvement</label>
-                        <input type="text" id="mockImprovements" class="form-control" placeholder="e.g. Technical terminology, coding practice, stage fear reduction">
+                        <input type="text" id="mockImprovements" list="improvementSuggestions" class="form-control" placeholder="e.g. Technical terminology, coding practice, stage fear reduction">
+                        <datalist id="improvementSuggestions">
+                            <option value="Public Speaking & Stage Fear Reduction">
+                            <option value="Core Technical & Data Structure Depth">
+                            <option value="Grammar, Vocabulary & Formal Email Writing">
+                            <option value="Quantitative Aptitude & Speed Mathematics">
+                            <option value="Time Management & Academic Consistency">
+                            <option value="Hands-on Project Development Experience">
+                        </datalist>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Quick Suggest:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockImprovements', 'Public Speaking & Stage Fear')">+ Public Speaking</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockImprovements', 'Core Technical & Coding Speed')">+ Coding Speed</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockImprovements', 'Grammar & Formal Business English')">+ Business English</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockImprovements', 'Quantitative Aptitude Practice')">+ Aptitude</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockImprovements', 'Hands-on Projects & GitHub Portfolio')">+ Real Projects</button>
+                        </div>
                     </div>
 
                     <div class="form-group grid-full">
                         <label for="mockRemarks">Evaluator / Mentor Remarks & 4-Year Roadmap</label>
                         <textarea id="mockRemarks" class="form-control" placeholder="Detailed evaluator comments and recommended training tracks for the student..."></textarea>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Quick Templates:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockRemarks', 'Excellent baseline foundation. Recommended for NPTEL/Swayam advanced specialization and competitive hackathons.')">+ Top Candidate Track</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockRemarks', 'Good potential. Advised to participate in weekly GDs and soft-skills workshops to enhance spoken clarity.')">+ Soft-Skills Focus</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('mockRemarks', 'Strong domain interest. Recommended to build 2-3 full projects and maintain active GitHub portfolio.')">+ Project Portfolio Focus</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1206,7 +1330,27 @@
                 <div class="form-grid" style="margin-top:16px;">
                     <div class="form-group grid-full">
                         <label for="targetDetails">Target Role, Exam, University, or Startup Idea Details</label>
-                        <input type="text" id="targetDetails" class="form-control" placeholder="e.g. Aiming for Software Engineer at MNC / GATE 2026 for IITs / Agri-Tech Startup">
+                        <input type="text" id="targetDetails" list="targetRoleSuggestions" class="form-control" placeholder="e.g. Aiming for Software Engineer at MNC / GATE 2026 for IITs / Agri-Tech Startup">
+                        <datalist id="targetRoleSuggestions">
+                            <option value="Software Development Engineer (SDE / Core Coding)">
+                            <option value="Data Analyst / Business Intelligence Specialist">
+                            <option value="Full Stack Web & Mobile App Developer">
+                            <option value="Agri-Business Enterprise / Organic Export Director">
+                            <option value="Clinical Pharmacist / Quality Assurance Chemist">
+                            <option value="Financial Analyst / Corporate Manager">
+                            <option value="GATE 2026 / M.Tech in Top IITs/NITs">
+                            <option value="MS / International Higher Studies in Data Science">
+                            <option value="UPSC / MPPSC Civil Services Officer">
+                        </datalist>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Quick Suggest:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'Software Development Engineer (SDE)')">+ SDE Role</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'Data Analyst / Data Science')">+ Data Analyst</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'Full Stack Web Developer')">+ Full Stack Dev</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'GATE 2026 / M.Tech in IITs')">+ GATE / M.Tech</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'Agri-Business & Farm Management')">+ Agri-Business</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('targetDetails', 'UPSC / MPPSC Civil Services')">+ UPSC / Govt</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1238,12 +1382,46 @@
 
                     <div class="form-group">
                         <label for="placedCompany">Recruiting Company Name</label>
-                        <input type="text" id="placedCompany" class="form-control" placeholder="e.g. TCS, Infosys, Lupin, Mahindra Agri">
+                        <input type="text" id="placedCompany" list="companySuggestions" class="form-control" placeholder="e.g. TCS, Infosys, Lupin, Mahindra Agri">
+                        <datalist id="companySuggestions">
+                            <option value="TCS (Tata Consultancy Services)">
+                            <option value="Infosys Technologies">
+                            <option value="Wipro Limited">
+                            <option value="Cognizant">
+                            <option value="Capgemini">
+                            <option value="HCL Technologies">
+                            <option value="AISECT Group">
+                            <option value="Lupin Pharmaceuticals">
+                            <option value="Sun Pharma">
+                            <option value="Mahindra Agri Solutions">
+                            <option value="ITC Agribusiness">
+                            <option value="ICICI Bank">
+                            <option value="Persistent Systems">
+                            <option value="Amazon India">
+                        </datalist>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Top Recruiters:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'TCS')">TCS</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'Infosys')">Infosys</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'Wipro')">Wipro</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'AISECT Group')">AISECT</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'Lupin Pharma')">Lupin</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedCompany', 'Mahindra Agri')">Mahindra</button>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="placedRole">Designation / Job Role</label>
-                        <input type="text" id="placedRole" class="form-control" placeholder="e.g. Associate Software Engineer">
+                        <input type="text" id="placedRole" list="roleSuggestions" class="form-control" placeholder="e.g. Associate Software Engineer">
+                        <datalist id="roleSuggestions">
+                            <option value="Associate Software Engineer">
+                            <option value="Graduate Engineer Trainee (GET)">
+                            <option value="Data Analyst / Associate">
+                            <option value="Quality Assurance / QC Executive">
+                            <option value="Field Agronomist / Extension Officer">
+                            <option value="Business Development Associate">
+                            <option value="System Engineer">
+                        </datalist>
                     </div>
 
                     <div class="form-group">
@@ -1253,7 +1431,25 @@
 
                     <div class="form-group">
                         <label for="placedLocation">Job / Work Location</label>
-                        <input type="text" id="placedLocation" class="form-control" placeholder="e.g. Bhopal, Indore, Pune, Bangalore">
+                        <input type="text" id="placedLocation" list="locationSuggestions" class="form-control" placeholder="e.g. Bhopal, Indore, Pune, Bangalore">
+                        <datalist id="locationSuggestions">
+                            <option value="Bhopal, MP">
+                            <option value="Indore, MP">
+                            <option value="Pune, Maharashtra">
+                            <option value="Bengaluru, Karnataka">
+                            <option value="Hyderabad, Telangana">
+                            <option value="Noida / Delhi NCR">
+                            <option value="Mumbai, Maharashtra">
+                            <option value="Ahmedabad, Gujarat">
+                        </datalist>
+                        <div class="suggestion-chips-wrap">
+                            <span class="chip-label">⚡ Cities:</span>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedLocation', 'Bhopal')">Bhopal</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedLocation', 'Indore')">Indore</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedLocation', 'Pune')">Pune</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedLocation', 'Bengaluru')">Bengaluru</button>
+                            <button type="button" class="chip-btn" onclick="appendChipText('placedLocation', 'Delhi NCR')">Delhi NCR</button>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -1272,12 +1468,32 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="alumniOrg">Current Organization / Employer</label>
-                        <input type="text" id="alumniOrg" class="form-control" placeholder="e.g. Microsoft, Sun Pharma, ICAR Research">
+                        <input type="text" id="alumniOrg" list="alumniOrgSuggestions" class="form-control" placeholder="e.g. Microsoft, Sun Pharma, ICAR Research">
+                        <datalist id="alumniOrgSuggestions">
+                            <option value="Microsoft">
+                            <option value="Google">
+                            <option value="Amazon">
+                            <option value="TCS">
+                            <option value="Infosys">
+                            <option value="AISECT Group">
+                            <option value="Sun Pharmaceuticals">
+                            <option value="ICAR Research Institute">
+                            <option value="State Govt / MPPSC">
+                        </datalist>
                     </div>
 
                     <div class="form-group">
                         <label for="alumniRole">Current Designation / Title</label>
-                        <input type="text" id="alumniRole" class="form-control" placeholder="e.g. Senior Data Analyst">
+                        <input type="text" id="alumniRole" list="alumniRoleSuggestions" class="form-control" placeholder="e.g. Senior Data Analyst">
+                        <datalist id="alumniRoleSuggestions">
+                            <option value="Senior Software Engineer">
+                            <option value="Technical Project Lead">
+                            <option value="Lead Data Scientist">
+                            <option value="Principal Chemist / QA Lead">
+                            <option value="Senior Agronomist">
+                            <option value="Assistant Professor / Lecturer">
+                            <option value="Founder / Director">
+                        </datalist>
                     </div>
 
                     <div class="form-group">
@@ -1348,6 +1564,43 @@
             toastMessage.textContent = msg;
             toast.style.display = 'flex';
             setTimeout(() => { toast.style.display = 'none'; }, duration);
+        }
+
+        // Helper for Quick Suggestion Chips
+        window.appendChipText = function(inputId, text) {
+            const el = document.getElementById(inputId);
+            if (!el) return;
+            if (!el.value || el.value.trim() === '') {
+                el.value = text;
+            } else if (!el.value.includes(text)) {
+                el.value = el.value.trim() + ', ' + text;
+            }
+            el.focus();
+        };
+
+        // Dynamic Course Suggestions on Sector Change
+        const sectorSelectEl = document.getElementById('sectorSelect');
+        const SECTOR_COURSES = {
+            '1': ['BE Computer Science & Engineering', 'BE Mechanical Engineering', 'BE Civil Engineering', 'BE Electrical & Electronics', 'Diploma Mechanical', 'Diploma Civil', 'Diploma Computer Science'],
+            '2': ['BCA (Bachelor of Computer Applications)', 'BCA (Data Science & Analytics)', 'B.Sc. Information Technology (IT)', 'B.Sc. Computer Science'],
+            '3': ['B.Com (Honours / Plain)', 'BBA (Bachelor of Business Administration)'],
+            '4': ['B.Sc. Life Sciences (Biotechnology / Microbiology)', 'B.Sc. Physical Sciences (Maths, Physics, Chem)'],
+            '5': ['B.Pharma (Bachelor of Pharmacy)', 'D.Pharma (Diploma in Pharmacy)'],
+            '6': ['B.Sc. Agriculture (Section A)', 'B.Sc. Agriculture (Section B)']
+        };
+
+        if (sectorSelectEl) {
+            sectorSelectEl.addEventListener('change', (e) => {
+                const sId = e.target.value;
+                const courseDatalist = document.getElementById('courseSuggestions');
+                const courseInput = document.getElementById('courseSelect');
+                if (sId && SECTOR_COURSES[sId] && courseDatalist) {
+                    courseDatalist.innerHTML = SECTOR_COURSES[sId].map(c => `<option value="${c}">`).join('');
+                    if (!courseInput.value || courseInput.value.trim() === '') {
+                        courseInput.value = SECTOR_COURSES[sId][0]; // Auto-suggest primary course for this sector
+                    }
+                }
+            });
         }
 
         // Automated Real-Time Grade Calculator based on given numbers
