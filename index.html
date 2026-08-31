@@ -648,6 +648,9 @@
             z-index: 1000;
             padding: 20px;
         }
+        .modal-overlay.active {
+            display: flex !important;
+        }
 
         .modal-card {
             background: white;
@@ -1875,11 +1878,15 @@
             if (fileInput) fileInput.value = '';
             document.getElementById('bulkPreviewContainer').style.display = 'none';
             document.getElementById('btnConfirmBulkImport').style.display = 'none';
-            document.getElementById('bulkImportModal').classList.add('active');
+            const modal = document.getElementById('bulkImportModal');
+            modal.classList.add('active');
+            modal.style.display = 'flex';
         };
 
         window.closeBulkImportModal = function() {
-            document.getElementById('bulkImportModal').classList.remove('active');
+            const modal = document.getElementById('bulkImportModal');
+            modal.classList.remove('active');
+            modal.style.display = 'none';
         };
 
         window.downloadSampleTemplate = function() {
