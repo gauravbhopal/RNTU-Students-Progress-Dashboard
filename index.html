@@ -1125,258 +1125,13 @@
             '6': { name: 'Agriculture', code: 'B.Sc. Agriculture (A & B)' }
         };
 
-        // SEED DEFAULT INITIAL DATA FOR RNTU WITH GRADES AND DRIVE LINKS
-        const INITIAL_SAMPLE_STUDENTS = [
-            {
-                id: 'rntu_001',
-                enrollmentNo: '0101RNTU23001',
-                name: 'Aman Sharma',
-                fullName: 'Aman Sharma',
-                grade: 'A+',
-                drivePortfolioUrl: 'https://drive.google.com/drive/folders/sample-aman-sharma-portfolio',
-                email: 'aman.sharma@rntu.ac.in',
-                mobile: '9826012345',
-                gender: 'Male',
-                sectorId: '1',
-                sectorName: 'Sector 1: Engineering & Technology',
-                course: 'BE Computer Science',
-                currentYear: '3rd Year',
-                currentSemester: '6',
-                section: 'Batch 2023-27 / Sec-A',
-                mentorName: 'Dr. R.K. Saxena',
-                tenthMarks: 86.5,
-                twelfthMarks: 82.0,
-                entranceScore: 'JEE 88.5%ile',
-                cgpa: 8.65,
-                mockDate: '2023-10-15',
-                mockAptitude: 82,
-                mockTech: 85,
-                mockComm: 78,
-                mockConfidence: 80,
-                mockOverall: 81.25,
-                mockStrengths: 'Strong analytical logic, proficient in C++ & Data Structures',
-                mockImprovements: 'Advanced system architecture, public speaking',
-                mockRemarks: 'Excellent analytical aptitude, recommended for product-based software tracks',
-                scoreComm: 82,
-                scorePresentation: 78,
-                scoreLeadership: 85,
-                scoreProblemSolving: 88,
-                scoreEtiquette: 84,
-                scoreTechnical: 86,
-                personalityScore: 83.8,
-                personalityReadiness: 'Placement Ready',
-                careerAspiration: 'Job / Corporate Placement',
-                targetDetails: 'Software Development Engineer in MNCs',
-                placementStatus: 'Placed',
-                placedCompany: 'TCS Digital',
-                placedRole: 'Systems Engineer',
-                placedPackage: 7.5,
-                placedLocation: 'Pune',
-                offerLetterReceived: 'Yes',
-                certifications: [
-                    { title: 'AWS Certified Cloud Practitioner', issuer: 'Amazon Web Services', year: '2024', link: 'AWS-98765' },
-                    { title: 'NPTEL Data Structures in Java', issuer: 'IIT Kharagpur', year: '2023', link: 'NPTEL23CS45' }
-                ]
-            },
-            {
-                id: 'rntu_002',
-                enrollmentNo: '0101RNTU23002',
-                name: 'Priya Patel',
-                fullName: 'Priya Patel',
-                grade: 'A+',
-                drivePortfolioUrl: 'https://drive.google.com/drive/folders/sample-priya-patel-portfolio',
-                email: 'priya.patel@rntu.ac.in',
-                mobile: '9425098765',
-                gender: 'Female',
-                sectorId: '2',
-                sectorName: 'Sector 2: Computer Applications & IT',
-                course: 'B.Sc. Data Science',
-                currentYear: '3rd Year',
-                currentSemester: '5',
-                section: 'Batch 2023-26',
-                mentorName: 'Prof. Anjali Verma',
-                tenthMarks: 89.2,
-                twelfthMarks: 85.6,
-                entranceScore: 'Merit Rank 14',
-                cgpa: 8.9,
-                mockDate: '2023-11-04',
-                mockAptitude: 88,
-                mockTech: 82,
-                mockComm: 85,
-                mockConfidence: 86,
-                mockOverall: 85.25,
-                mockStrengths: 'High mathematical clarity, fluent communicator, Python enthusiast',
-                mockImprovements: 'Big Data distributed tools',
-                mockRemarks: 'Exceptional profile for analytics and AI roles',
-                scoreComm: 88,
-                scorePresentation: 85,
-                scoreLeadership: 82,
-                scoreProblemSolving: 90,
-                scoreEtiquette: 92,
-                scoreTechnical: 86,
-                personalityScore: 87.2,
-                personalityReadiness: 'Exceptional / Top Talent',
-                careerAspiration: 'Higher Studies',
-                targetDetails: 'MS in Data Science / GATE DA 2026',
-                placementStatus: 'Higher Studies',
-                placedCompany: '',
-                placedRole: '',
-                placedPackage: 0,
-                placedLocation: '',
-                certifications: [
-                    { title: 'Google Data Analytics Professional', issuer: 'Coursera / Google', year: '2024', link: 'COUR-GD901' }
-                ]
-            },
-            {
-                id: 'rntu_003',
-                enrollmentNo: '0101RNTU23003',
-                name: 'Rahul Chouhan',
-                fullName: 'Rahul Chouhan',
-                grade: 'A',
-                drivePortfolioUrl: 'https://drive.google.com/drive/folders/sample-rahul-chouhan-portfolio',
-                email: 'rahul.chouhan@rntu.ac.in',
-                mobile: '9754011223',
-                gender: 'Male',
-                sectorId: '6',
-                sectorName: 'Sector 6: Agriculture',
-                course: 'B.Sc. Agriculture (Sec-A)',
-                currentYear: '4th Year',
-                currentSemester: '8',
-                section: 'Batch 2022-26 / Sec-A',
-                mentorName: 'Dr. Suresh Tiwari',
-                tenthMarks: 78.4,
-                twelfthMarks: 76.5,
-                entranceScore: 'PAT Rank 120',
-                cgpa: 8.2,
-                mockDate: '2022-10-18',
-                mockAptitude: 74,
-                mockTech: 80,
-                mockComm: 70,
-                mockConfidence: 75,
-                mockOverall: 74.75,
-                mockStrengths: 'Deep practical understanding of agronomy and soil health',
-                mockImprovements: 'Business communication and agri-marketing skills',
-                mockRemarks: 'Well suited for Agri-tech innovations and agricultural officer roles',
-                scoreComm: 74,
-                scorePresentation: 72,
-                scoreLeadership: 86,
-                scoreProblemSolving: 80,
-                scoreEtiquette: 82,
-                scoreTechnical: 84,
-                personalityScore: 79.7,
-                personalityReadiness: 'Placement Ready',
-                careerAspiration: 'Start Own / Startup',
-                targetDetails: 'Hydroponics & Organic Farm Export Enterprise',
-                placementStatus: 'Entrepreneur',
-                placedCompany: 'AgriGreen Organics (Founder)',
-                placedRole: 'Co-Founder & Director',
-                placedPackage: 8.0,
-                placedLocation: 'Bhopal',
-                certifications: [
-                    { title: 'Precision Agriculture Certification', issuer: 'ICAR-CIAE', year: '2024', link: 'ICAR-2024-55' }
-                ]
-            },
-            {
-                id: 'rntu_004',
-                enrollmentNo: '0101RNTU23004',
-                name: 'Neha Dubey',
-                fullName: 'Neha Dubey',
-                grade: 'A',
-                drivePortfolioUrl: 'https://drive.google.com/drive/folders/sample-neha-dubey-portfolio',
-                email: 'neha.dubey@rntu.ac.in',
-                mobile: '9179044556',
-                gender: 'Female',
-                sectorId: '5',
-                sectorName: 'Sector 5: Pharmacy',
-                course: 'B.Pharma',
-                currentYear: '4th Year',
-                currentSemester: '7',
-                section: 'Batch 2022-26',
-                mentorName: 'Prof. Manish Sen',
-                tenthMarks: 84.0,
-                twelfthMarks: 81.5,
-                entranceScore: 'Pharmacy Merit 84%',
-                cgpa: 8.45,
-                mockDate: '2022-11-10',
-                mockAptitude: 76,
-                mockTech: 84,
-                mockComm: 80,
-                mockConfidence: 78,
-                mockOverall: 79.5,
-                mockStrengths: 'Pharmacology, formulation research, and good presentation',
-                mockImprovements: 'Clinical data handling and regulatory documentation',
-                mockRemarks: 'High potential for Pharmaceutical QA/QC and formulation R&D',
-                scoreComm: 80,
-                scorePresentation: 79,
-                scoreLeadership: 76,
-                scoreProblemSolving: 82,
-                scoreEtiquette: 85,
-                scoreTechnical: 86,
-                personalityScore: 81.3,
-                personalityReadiness: 'Placement Ready',
-                careerAspiration: 'Job / Corporate Placement',
-                targetDetails: 'Formulation Scientist / QC Officer at Lupin / Sun Pharma',
-                placementStatus: 'Placed',
-                placedCompany: 'Lupin Pharmaceuticals',
-                placedRole: 'Quality Control Associate',
-                placedPackage: 4.8,
-                placedLocation: 'Mandideep, Bhopal',
-                offerLetterReceived: 'Yes',
-                certifications: [
-                    { title: 'Good Manufacturing Practices (GMP) & QA', issuer: 'Pharma Skills Academy', year: '2024', link: 'GMP-9921' }
-                ]
-            },
-            {
-                id: 'rntu_005',
-                enrollmentNo: '0101RNTU23005',
-                name: 'Vikram Rajput',
-                fullName: 'Vikram Rajput',
-                grade: 'B+',
-                drivePortfolioUrl: 'https://drive.google.com/drive/folders/sample-vikram-rajput-portfolio',
-                email: 'vikram.rajput@rntu.ac.in',
-                mobile: '9893077889',
-                gender: 'Male',
-                sectorId: '3',
-                sectorName: 'Sector 3: Commerce & Management',
-                course: 'BBA (Finance)',
-                currentYear: '2nd Year',
-                currentSemester: '4',
-                section: 'Batch 2024-27',
-                mentorName: 'Dr. Neelesh Sharma',
-                tenthMarks: 76.0,
-                twelfthMarks: 74.0,
-                entranceScore: 'CUET 76%ile',
-                cgpa: 7.8,
-                mockDate: '2024-09-12',
-                mockAptitude: 72,
-                mockTech: 70,
-                mockComm: 78,
-                mockConfidence: 82,
-                mockOverall: 75.5,
-                mockStrengths: 'High interpersonal confidence, financial market awareness',
-                mockImprovements: 'Financial modeling & advanced Excel',
-                mockRemarks: 'Strong corporate communication, focus on financial modeling training',
-                scoreComm: 78,
-                scorePresentation: 80,
-                scoreLeadership: 84,
-                scoreProblemSolving: 72,
-                scoreEtiquette: 80,
-                scoreTechnical: 70,
-                personalityScore: 77.3,
-                personalityReadiness: 'Placement Ready',
-                careerAspiration: 'Family Business',
-                targetDetails: 'Modernizing Family Retail & Logistics Distribution',
-                placementStatus: 'Not Yet Placed',
-                certifications: [
-                    { title: 'Financial Markets & Equity Analysis', issuer: 'NSE Academy', year: '2024', link: 'NSE-FM-2024' }
-                ]
-            }
-        ];
-
         let studentsList = [];
         let activeSectorFilter = '';
         let sectorChartInstance = null;
         let careerChartInstance = null;
+
+        // Dummy Sample ID list to purge legacy sample items from browser storage
+        const SAMPLE_STUDENT_IDS = ['rntu_001', 'rntu_002', 'rntu_003', 'rntu_004', 'rntu_005'];
 
         // Helper to format grade pill dynamically with auto-calculated fallback
         function renderGradePill(grade, student = null) {
@@ -1391,20 +1146,19 @@
             return `<span class="grade-pill grade-${cleanG}" title="Student Performance Grade ${g}">Grade ${g}</span>`;
         }
 
-        // Initialize Data
+        // Initialize Real Data
         async function initDashboardData() {
+            studentsList = [];
             let localData = localStorage.getItem('rntu_students_cache');
             if (localData) {
                 try {
-                    studentsList = JSON.parse(localData);
+                    const parsed = JSON.parse(localData);
+                    // Filter out legacy dummy students
+                    studentsList = Array.isArray(parsed) ? parsed.filter(s => !SAMPLE_STUDENT_IDS.includes(s.id)) : [];
+                    localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
                 } catch(e) {
                     studentsList = [];
                 }
-            }
-
-            if (!studentsList || studentsList.length === 0) {
-                studentsList = INITIAL_SAMPLE_STUDENTS;
-                localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
             }
 
             try {
@@ -1412,15 +1166,17 @@
                     const snap = await getDocs(collection(db, 'students'));
                     if (!snap.empty) {
                         const fsStudents = [];
-                        snap.forEach(doc => fsStudents.push({ id: doc.id, ...doc.data() }));
-                        if (fsStudents.length > 0) {
-                            studentsList = fsStudents;
-                            localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
-                        }
+                        snap.forEach(doc => {
+                            if (!SAMPLE_STUDENT_IDS.includes(doc.id)) {
+                                fsStudents.push({ id: doc.id, ...doc.data() });
+                            }
+                        });
+                        studentsList = fsStudents;
+                        localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
                     }
                 }
             } catch(e) {
-                console.log('Using local cache for students data.');
+                console.log('Using local cache for real students data.');
             }
 
             renderDashboard();
