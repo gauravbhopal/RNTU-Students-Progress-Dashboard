@@ -480,5 +480,322 @@ function deleteStudent(sheet, idOrKey) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    },
+
+    /**
+     * Download a clean pre-formatted Sample CSV Template for Bulk Upload
+     */
+    downloadSampleTemplateCSV(filename = 'RNTU_Student_Bulk_Upload_Sample_Template.csv') {
+        const headers = [
+            "Enrollment / Roll No",
+            "Full Name",
+            "Sector ID (1-6)",
+            "Course / Branch",
+            "Current Year",
+            "Current Semester",
+            "Section",
+            "Email",
+            "Mobile",
+            "Gender",
+            "Faculty Mentor",
+            "10th %",
+            "12th %",
+            "Entrance Score",
+            "Current CGPA",
+            "Sem 1 Mock Aptitude (100)",
+            "Sem 1 Mock Tech (100)",
+            "Sem 1 Mock Comm (100)",
+            "Sem 1 Mock Confidence (100)",
+            "Key Strengths",
+            "Improvement Areas",
+            "Career Aspiration",
+            "Target Details",
+            "Placement Status",
+            "Company Name",
+            "Designation",
+            "Package (CTC LPA)",
+            "Job Location",
+            "Google Drive Portfolio Folder Link"
+        ];
+
+        const sampleRows = [
+            [
+                "0101RNTU23001",
+                "Aman Sharma",
+                "1",
+                "BE Computer Science",
+                "3rd Year",
+                "5",
+                "Batch 2023-27 / Sec-A",
+                "aman.sharma@rntu.ac.in",
+                "9826012345",
+                "Male",
+                "Dr. R.K. Saxena",
+                "86.5",
+                "82.0",
+                "JEE 88.5%ile",
+                "8.65",
+                "82",
+                "85",
+                "78",
+                "80",
+                "Strong analytical logic, proficient in C++ & Data Structures",
+                "Advanced system architecture, public speaking",
+                "Job / Corporate Placement",
+                "Software Development Engineer in MNCs",
+                "Placed",
+                "TCS Digital",
+                "Systems Engineer",
+                "7.5",
+                "Pune",
+                "https://drive.google.com/drive/folders/sample-portfolio-aman"
+            ],
+            [
+                "0102RNTU23002",
+                "Priya Patel",
+                "2",
+                "BCA (Data Science)",
+                "3rd Year",
+                "5",
+                "Batch 2023-26",
+                "priya.patel@rntu.ac.in",
+                "9425098765",
+                "Female",
+                "Prof. Anjali Verma",
+                "89.2",
+                "85.6",
+                "Merit Rank 14",
+                "8.90",
+                "88",
+                "82",
+                "85",
+                "86",
+                "High mathematical clarity, fluent communicator, Python enthusiast",
+                "Big Data distributed tools",
+                "Higher Studies",
+                "MS in Data Science / GATE 2026",
+                "Higher Studies",
+                "",
+                "",
+                "0",
+                "",
+                "https://drive.google.com/drive/folders/sample-portfolio-priya"
+            ],
+            [
+                "0106RNTU23003",
+                "Rahul Chouhan",
+                "6",
+                "B.Sc. Agriculture (Sec-A)",
+                "4th Year",
+                "7",
+                "Batch 2022-26 / Sec-A",
+                "rahul.chouhan@rntu.ac.in",
+                "9754011223",
+                "Male",
+                "Dr. Suresh Tiwari",
+                "78.4",
+                "76.5",
+                "PAT Rank 120",
+                "8.20",
+                "74",
+                "80",
+                "70",
+                "75",
+                "Deep practical understanding of agronomy and soil health",
+                "Agri-marketing skills",
+                "Start Own / Startup",
+                "Hydroponics & Organic Farm Export Enterprise",
+                "Entrepreneur",
+                "AgriGreen Organics",
+                "Co-Founder & Director",
+                "8.0",
+                "Bhopal",
+                "https://drive.google.com/drive/folders/sample-portfolio-rahul"
+            ]
+        ];
+
+        const escapeCSV = (val) => `"${String(val || '').replace(/"/g, '""')}"`;
+        const content = "\uFEFF" + [
+            headers.map(escapeCSV).join(','),
+            ...sampleRows.map(row => row.map(escapeCSV).join(','))
+        ].join('\r\n');
+
+        const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    },
+
+    /**
+     * Parse raw CSV text into array of structured Student objects
+     */
+    parseCSVToStudents(csvText) {
+        if (!csvText || !csvText.trim()) return [];
+
+        const SECTOR_NAME_MAP = {
+            '1': 'Sector 1: Engineering & Technology',
+            '2': 'Sector 2: Computer Applications & IT',
+            '3': 'Sector 3: Commerce & Management',
+            '4': 'Sector 4: Life & Physical Sciences',
+            '5': 'Sector 5: Pharmacy',
+            '6': 'Sector 6: Agriculture'
+        };
+
+        // Standard CSV Splitter handling quotes and multi-line cells
+        const rows = [];
+        let currentRow = [];
+        let currentCell = '';
+        let insideQuotes = false;
+
+        const cleanText = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+        for (let i = 0; i < cleanText.length; i++) {
+            const char = cleanText[i];
+            const nextChar = cleanText[i + 1];
+
+            if (char === '"') {
+                if (insideQuotes && nextChar === '"') {
+                    currentCell += '"';
+                    i++; // skip escaped quote
+                } else {
+                    insideQuotes = !insideQuotes;
+                }
+            } else if (char === ',' && !insideQuotes) {
+                currentRow.push(currentCell.trim());
+                currentCell = '';
+            } else if (char === '\n' && !insideQuotes) {
+                currentRow.push(currentCell.trim());
+                if (currentRow.some(c => c !== '')) {
+                    rows.push(currentRow);
+                }
+                currentRow = [];
+                currentCell = '';
+            } else {
+                currentCell += char;
+            }
+        }
+        if (currentCell || currentRow.length > 0) {
+            currentRow.push(currentCell.trim());
+            if (currentRow.some(c => c !== '')) {
+                rows.push(currentRow);
+            }
+        }
+
+        if (rows.length < 2) return [];
+
+        const rawHeaders = rows[0].map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+        const students = [];
+
+        for (let r = 1; r < rows.length; r++) {
+            const row = rows[r];
+            if (row.length === 0 || row.every(c => c === '')) continue;
+
+            const getCol = (possibleNames) => {
+                for (const name of possibleNames) {
+                    const idx = rawHeaders.indexOf(name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                    if (idx !== -1 && row[idx] !== undefined && row[idx] !== '') {
+                        return row[idx];
+                    }
+                }
+                return '';
+            };
+
+            const enrollmentNo = getCol(['enrollment', 'enrollmentno', 'rollno', 'roll', 'id', 'studentroll']);
+            const name = getCol(['fullname', 'name', 'studentname', 'student']);
+            if (!enrollmentNo && !name) continue;
+
+            let sectorId = String(getCol(['sectorid', 'sector', 'sectorno']) || '1');
+            if (sectorId.includes('1') || sectorId.toLowerCase().includes('eng')) sectorId = '1';
+            else if (sectorId.includes('2') || sectorId.toLowerCase().includes('it') || sectorId.toLowerCase().includes('bca')) sectorId = '2';
+            else if (sectorId.includes('3') || sectorId.toLowerCase().includes('comm') || sectorId.toLowerCase().includes('mgt')) sectorId = '3';
+            else if (sectorId.includes('4') || sectorId.toLowerCase().includes('sci')) sectorId = '4';
+            else if (sectorId.includes('5') || sectorId.toLowerCase().includes('pharm')) sectorId = '5';
+            else if (sectorId.includes('6') || sectorId.toLowerCase().includes('agri')) sectorId = '6';
+            else sectorId = '1';
+
+            const cgpa = parseFloat(getCol(['cgpa', 'currentcgpa', 'sgpa'])) || '';
+            const mockAptitude = parseFloat(getCol(['sem1mockaptitude', 'mockaptitude', 'aptitude'])) || 70;
+            const mockTech = parseFloat(getCol(['sem1mocktech', 'mocktech', 'technical'])) || 68;
+            const mockComm = parseFloat(getCol(['sem1mockcomm', 'mockcomm', 'communication'])) || 72;
+            const mockConfidence = parseFloat(getCol(['sem1mockconfidence', 'mockconfidence', 'confidence'])) || 75;
+            const mockOverall = ((mockAptitude + mockTech + mockComm + mockConfidence) / 4);
+
+            let grade = getCol(['grade', 'overallgrade']);
+            if (!grade) {
+                grade = GDriveSync.calculateGrade(cgpa, mockOverall);
+            }
+
+            const student = {
+                id: enrollmentNo || ('rntu_' + (Date.now() + r)),
+                enrollmentNo: enrollmentNo,
+                name: name,
+                fullName: name,
+                grade: grade,
+                drivePortfolioUrl: getCol(['driveportfoliofolderlink', 'driveportfoliourl', 'drivelink', 'portfolio', 'drivefolder']),
+                email: getCol(['email', 'institutionalemail', 'mail']),
+                mobile: getCol(['mobile', 'phone', 'whatsapp', 'contact']),
+                gender: getCol(['gender', 'sex']) || 'Male',
+                sectorId: sectorId,
+                sectorName: SECTOR_NAME_MAP[sectorId] || 'Sector ' + sectorId,
+                course: getCol(['coursebranch', 'course', 'branch', 'program']),
+                currentYear: getCol(['currentyear', 'year']) || '1st Year',
+                currentSemester: String(getCol(['currentsemester', 'semester', 'sem']) || '1'),
+                section: getCol(['section', 'batch', 'sectionbatch']),
+                mentorName: getCol(['mentor', 'mentorname', 'facultymentor', 'guide']),
+                tenthMarks: parseFloat(getCol(['10th', 'tenthmarks', '10thpercent'])) || '',
+                twelfthMarks: parseFloat(getCol(['12th', 'twelfthmarks', '12thpercent'])) || '',
+                entranceScore: getCol(['entrancescore', 'jee', 'cuet', 'pat']),
+                cgpa: cgpa,
+                mockAptitude: mockAptitude,
+                mockTech: mockTech,
+                mockComm: mockComm,
+                mockConfidence: mockConfidence,
+                mockOverall: parseFloat(mockOverall.toFixed(2)),
+                mockDate: getCol(['mockdate', 'date']),
+                mockStrengths: getCol(['keystrengths', 'mockstrengths', 'strengths']),
+                mockImprovements: getCol(['improvementareas', 'mockimprovements', 'improvements']),
+                mockRemarks: getCol(['evaluatorremarks', 'mockremarks', 'remarks']),
+                scoreComm: parseFloat(getCol(['commscore', 'scorecomm'])) || 75,
+                scorePresentation: parseFloat(getCol(['presentationscore', 'scorepresentation'])) || 70,
+                scoreLeadership: parseFloat(getCol(['leadershipscore', 'scoreleadership'])) || 80,
+                scoreProblemSolving: parseFloat(getCol(['problemsolvingscore', 'scoreproblemsolving'])) || 78,
+                scoreEtiquette: parseFloat(getCol(['etiquettescore', 'scoreetiquette'])) || 82,
+                scoreTechnical: parseFloat(getCol(['technicaldomainscore', 'scoretechnical'])) || 75,
+                personalityScore: 76.7,
+                personalityReadiness: 'Placement Ready',
+                certifications: getCol(['certifications', 'certs']),
+                careerAspiration: getCol(['careeraspiration', 'careeraspirationgoal', 'careergoal']) || 'Job / Corporate Placement',
+                targetDetails: getCol(['targetdetails', 'targetrole', 'target']),
+                placementStatus: getCol(['placementstatus', 'status']) || 'Not Yet Placed',
+                placedCompany: getCol(['companyname', 'recruitingcompany', 'company']),
+                placedRole: getCol(['designation', 'role', 'jobrole']),
+                placedPackage: parseFloat(getCol(['packagectclpa', 'package', 'ctc', 'lpa'])) || 0,
+                placedLocation: getCol(['joblocation', 'location', 'city']),
+                offerLetterReceived: getCol(['offerletterreceived', 'offerletter']) || 'No',
+                alumniOrg: getCol(['alumniorganization', 'alumniorg']),
+                alumniRole: getCol(['alumnidesignation', 'alumnirole']),
+                alumniExp: parseFloat(getCol(['alumniexperience', 'alumniexp'])) || 0,
+                alumniLinkedIn: getCol(['alumnilinkedinprofile', 'alumnilinkedin', 'linkedin']),
+                alumniMentor: getCol(['willingtomentor', 'alumnimentor']) || 'No',
+                lastUpdated: new Date().toLocaleString()
+            };
+
+            // Compute composite personality
+            const pAvg = (student.scoreComm + student.scorePresentation + student.scoreLeadership + student.scoreProblemSolving + student.scoreEtiquette + student.scoreTechnical) / 6;
+            student.personalityScore = parseFloat(pAvg.toFixed(1));
+            if (student.personalityScore >= 85) student.personalityReadiness = 'Exceptional / Top Talent';
+            else if (student.personalityScore >= 70) student.personalityReadiness = 'Placement Ready';
+            else if (student.personalityScore >= 50) student.personalityReadiness = 'Developing Aptitude';
+            else student.personalityReadiness = 'Needs Focused Training';
+
+            students.push(student);
+        }
+
+        return students;
     }
 };
+

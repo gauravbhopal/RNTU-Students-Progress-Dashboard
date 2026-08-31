@@ -769,6 +769,7 @@
             <p>Conduct Semester 1 Mock diagnostics, track multi-year academic trajectory, student grading (C, B, B+, A, A+), 360° personality scores, drive asset links, and sector placements through to alumni journeys.</p>
             <div class="hero-btn-row">
                 <a href="student-form.html" class="btn-hero-pri">+ Record New Student Mock</a>
+                <button class="btn-hero-pri" style="background:#15803d;border-color:#15803d;" onclick="openBulkImportModal()">📤 Bulk Upload Students (CSV)</button>
                 <button class="btn-hero-sec" onclick="exportMasterCSV()">📑 Export to Excel (.xlsx/CSV)</button>
                 <button class="btn-hero-sec" onclick="downloadSectorConsolidatedPDF()">📄 Download Consolidated PDF</button>
                 <button class="btn-hero-sec" onclick="openDriveSyncModal()">⚙️ Drive Sync Settings</button>
@@ -951,9 +952,10 @@
                     <span>📋 Student Lifecycle & Evaluation Registry</span>
                     <span id="activeSectorBadge" style="display:none;" class="badge-sector-tag"></span>
                 </h2>
-                <div style="display:flex;gap:10px;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
                     <a href="student-form.html" class="btn-nav-action">+ Add Student</a>
-                    <button class="btn-hero-sec" style="background:var(--rntu-blue);color:white;" onclick="exportMasterCSV()">📥 Excel / CSV</button>
+                    <button class="btn-hero-sec" style="background:#15803d;color:white;" onclick="openBulkImportModal()">📤 Bulk Upload CSV</button>
+                    <button class="btn-hero-sec" style="background:var(--rntu-blue);color:white;" onclick="exportMasterCSV()">📥 Export Excel/CSV</button>
                 </div>
             </div>
 
@@ -1089,6 +1091,72 @@
                         <button class="btn-table-action btn-view-dossier" onclick="copyAppsScriptCode()">📋 Copy Script Code</button>
                     </div>
                     <textarea id="appsScriptCodeArea" readonly style="width:100%;height:160px;font-family:monospace;font-size:11px;padding:10px;border:1px solid #cbd5e1;border-radius:6px;resize:none;background:#ffffff;"></textarea>
+                </div>
+            </div>
+        </div>
+    <!-- BULK STUDENT IMPORT MODAL -->
+    <div class="modal-overlay" id="bulkImportModal">
+        <div class="modal-card" style="max-width:850px;">
+            <div class="modal-header">
+                <h3>📤 Bulk Student Records Import</h3>
+                <button class="modal-close" onclick="closeBulkImportModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: Download Sample -->
+                <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+                    <div>
+                        <strong style="color:#1e40af;font-size:14px;display:block;">Step 1: Download Standard Sample Template</strong>
+                        <span style="font-size:12px;color:#3b82f6;">Get the pre-formatted CSV template with all standard columns (Roll No, Sector 1-6, CGPA, Mock scores, Placements, etc.)</span>
+                    </div>
+                    <button class="btn-nav-action" style="background:#1e40af;padding:9px 18px;" onclick="downloadSampleTemplate()">
+                        📥 Download Sample Template (.csv)
+                    </button>
+                </div>
+
+                <!-- Step 2: Upload CSV File -->
+                <div style="margin-bottom:20px;">
+                    <strong style="color:#0d2c6c;font-size:14px;display:block;margin-bottom:8px;">Step 2: Upload Your Filled CSV File</strong>
+                    <div id="dropZone" style="border:2px dashed #94a3b8;border-radius:12px;padding:26px 20px;text-align:center;background:#f8fafc;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('bulkCsvFileInput').click()">
+                        <div style="font-size:32px;margin-bottom:6px;">📄</div>
+                        <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:2px;">Click to Browse or Drag & Drop your CSV file here</div>
+                        <div style="font-size:12px;color:#64748b;">Supports CSV files exported from Google Sheets or Excel (.csv)</div>
+                        <input type="file" id="bulkCsvFileInput" accept=".csv,text/csv" style="display:none;" onchange="handleBulkFileSelect(event)">
+                    </div>
+                </div>
+
+                <!-- Step 3: Preview Area (Hidden until file selected) -->
+                <div id="bulkPreviewContainer" style="display:none;margin-bottom:20px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <strong style="color:#0d2c6c;font-size:14px;">Step 3: Preview & Validation (<span id="parsedRecordCount">0</span> Students Detected)</strong>
+                        <span style="font-size:12px;color:#15803d;font-weight:700;">✅ Ready to Import</span>
+                    </div>
+                    <div class="table-responsive" style="max-height:220px;overflow-y:auto;border:1px solid #cbd5e1;border-radius:8px;">
+                        <table class="rntu-table" style="font-size:12px;">
+                            <thead>
+                                <tr>
+                                    <th>Roll / ID</th>
+                                    <th>Name</th>
+                                    <th>Sector</th>
+                                    <th>Course</th>
+                                    <th>Year</th>
+                                    <th>CGPA</th>
+                                    <th>Mock %</th>
+                                    <th>Grade</th>
+                                    <th>Placement</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bulkPreviewTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Action Footer -->
+                <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:16px;">
+                    <button class="btn-cancel" onclick="closeBulkImportModal()">Cancel</button>
+                    <button id="btnConfirmBulkImport" class="btn-save-main" style="background:#15803d;display:none;" onclick="confirmBulkImport()">
+                        🚀 Confirm & Sync to Google Sheet
+                    </button>
                 </div>
             </div>
         </div>
@@ -1796,6 +1864,108 @@
             });
 
             doc.save(`RNTU_Consolidated_Student_Progress_Report_${Date.now()}.pdf`);
+        };
+
+        // BULK IMPORT MODAL & PARSER
+        let pendingBulkStudents = [];
+
+        window.openBulkImportModal = function() {
+            pendingBulkStudents = [];
+            const fileInput = document.getElementById('bulkCsvFileInput');
+            if (fileInput) fileInput.value = '';
+            document.getElementById('bulkPreviewContainer').style.display = 'none';
+            document.getElementById('btnConfirmBulkImport').style.display = 'none';
+            document.getElementById('bulkImportModal').classList.add('active');
+        };
+
+        window.closeBulkImportModal = function() {
+            document.getElementById('bulkImportModal').classList.remove('active');
+        };
+
+        window.downloadSampleTemplate = function() {
+            GDriveSync.downloadSampleTemplateCSV();
+        };
+
+        window.handleBulkFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const parsed = GDriveSync.parseCSVToStudents(text);
+
+                if (!parsed || parsed.length === 0) {
+                    alert('⚠️ No valid student records detected in this file. Please ensure the CSV has column headers (e.g. Enrollment No, Full Name, Sector ID, Course, CGPA). You can download the Sample Template to check the standard format.');
+                    return;
+                }
+
+                pendingBulkStudents = parsed;
+                document.getElementById('parsedRecordCount').textContent = parsed.length;
+
+                const tbody = document.getElementById('bulkPreviewTableBody');
+                tbody.innerHTML = '';
+                parsed.slice(0, 15).forEach(st => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${st.enrollmentNo || 'Auto ID'}</strong></td>
+                        <td>${st.name || st.fullName}</td>
+                        <td><span class="sector-badge badge-${st.sectorId}" style="display:inline-block;padding:2px 8px;font-size:10px;color:white;">S${st.sectorId}</span></td>
+                        <td>${st.course || '-'}</td>
+                        <td>${st.currentYear} (Sem ${st.currentSemester})</td>
+                        <td>${st.cgpa || '-'}</td>
+                        <td>${st.mockOverall || '-'}%</td>
+                        <td>${renderGradePill(st.grade || 'A')}</td>
+                        <td>${st.placementStatus || 'In Process'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                if (parsed.length > 15) {
+                    const trMore = document.createElement('tr');
+                    trMore.innerHTML = `<td colspan="9" style="text-align:center;color:#64748b;font-style:italic;padding:8px;">...and ${parsed.length - 15} more student records</td>`;
+                    tbody.appendChild(trMore);
+                }
+
+                document.getElementById('bulkPreviewContainer').style.display = 'block';
+                document.getElementById('btnConfirmBulkImport').style.display = 'block';
+                document.getElementById('btnConfirmBulkImport').textContent = `🚀 Confirm & Import ${parsed.length} Students`;
+            };
+            reader.readAsText(file);
+        };
+
+        window.confirmBulkImport = async function() {
+            if (!pendingBulkStudents || pendingBulkStudents.length === 0) {
+                alert('No students to import.');
+                return;
+            }
+
+            const btn = document.getElementById('btnConfirmBulkImport');
+            btn.disabled = true;
+            btn.textContent = '⏳ Syncing to Google Sheet...';
+
+            try {
+                // Merge into studentsList without duplicate IDs/Enrollment numbers
+                const existingMap = new Map();
+                studentsList.forEach(s => existingMap.set(s.enrollmentNo || s.id, s));
+                pendingBulkStudents.forEach(s => existingMap.set(s.enrollmentNo || s.id, s));
+
+                studentsList = Array.from(existingMap.values());
+                localStorage.setItem('rntu_students_cache', JSON.stringify(studentsList));
+
+                // Dispatch Bulk Sync to Google Sheet
+                await GDriveSync.syncAllStudents(studentsList);
+
+                renderDashboard();
+                closeBulkImportModal();
+                alert(`🎉 Successfully imported ${pendingBulkStudents.length} students and synchronized them with your Google Sheet!`);
+            } catch (err) {
+                console.error('Bulk Import Error:', err);
+                alert('Error during bulk import: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Confirm & Sync to Google Sheet';
+            }
         };
 
         // Initialize on page load
