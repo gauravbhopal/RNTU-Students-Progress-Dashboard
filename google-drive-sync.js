@@ -5,7 +5,7 @@ export const GDriveSync = {
     STORAGE_KEY: 'rntu_gdrive_sync_url',
     STATUS_KEY: 'rntu_gdrive_last_sync',
 
-    DEFAULT_URL: 'https://script.google.com/macros/s/AKfycbxgrFZEbE0_JTPE99sgstm10CXDWzFThyR3Q7YHALstX0m4uq0GfDizZptni2FeE72LgA/exec',
+    DEFAULT_URL: 'https://script.google.com/macros/s/AKfycbxaktp-Dh6_kfpQ01NKWvkQapXJpDI4r50H66pecFE1_ThcTVgzM2kn3RHubDiL9HBu_A/exec',
 
     getSyncUrl() {
         return localStorage.getItem(this.STORAGE_KEY) || this.DEFAULT_URL;
