@@ -909,20 +909,6 @@
                         </datalist>
                     </div>
 
-                    <div class="form-group">
-                        <label for="mentorName">Assigned Faculty Mentor / Guide</label>
-                        <input type="text" id="mentorName" list="mentorSuggestions" class="form-control" placeholder="Prof. / Dr. Name">
-                        <datalist id="mentorSuggestions">
-                            <option value="Dr. Sanjeev Gupta (Dean Engg & Tech)">
-                            <option value="Dr. R.K. Saxena (HOD Mechanical)">
-                            <option value="Prof. Anjali Verma (HOD CS & IT)">
-                            <option value="Dr. Suresh Tiwari (Dean Agriculture)">
-                            <option value="Prof. Meenakshi Sharma (HOD Commerce)">
-                            <option value="Dr. Rajesh Dubey (Principal Pharmacy)">
-                            <option value="Dr. Neha Chouhan (Life Sciences)">
-                        </datalist>
-                    </div>
-
                     <!-- STUDENT GRADING (C, B, B+, A, A+) - 100% AUTOMATICALLY CALCULATED -->
                     <div class="form-group grid-full" style="background:#ffffff;border:2px solid #bfdbfe;border-radius:12px;padding:20px;box-shadow:0 4px 14px rgba(13,44,108,0.06);">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
@@ -1603,71 +1589,41 @@
             });
         }
 
-        // Automated Real-Time Grade Calculator based on given numbers
+        // Automated Real-Time Grade Calculator purely based on 1st Sem Mock Diagnostic Score
         window.autoCalculateGrade = function() {
-            const cgpa = parseFloat(document.getElementById('currentCgpa')?.value) || 0;
-            const tenth = parseFloat(document.getElementById('tenthMarks')?.value) || 0;
-            const twelfth = parseFloat(document.getElementById('twelfthMarks')?.value) || 0;
-
             const apt = parseFloat(document.getElementById('mockAptitude')?.value) || 0;
             const tech = parseFloat(document.getElementById('mockTech')?.value) || 0;
             const comm = parseFloat(document.getElementById('mockComm')?.value) || 0;
             const conf = parseFloat(document.getElementById('mockConfidence')?.value) || 0;
             const mockAvg = (apt + tech + comm + conf) / 4;
 
-            const c = parseFloat(document.getElementById('scoreComm')?.value) || 0;
-            const p = parseFloat(document.getElementById('scorePresentation')?.value) || 0;
-            const l = parseFloat(document.getElementById('scoreLeadership')?.value) || 0;
-            const ps = parseFloat(document.getElementById('scoreProblemSolving')?.value) || 0;
-            const e = parseFloat(document.getElementById('scoreEtiquette')?.value) || 0;
-            const t = parseFloat(document.getElementById('scoreTechnical')?.value) || 0;
-            const softAvg = (c + p + l + ps + e + t) / 6;
+            const score = mockAvg;
+            const explanation = `Calculated purely on the basis of 1st Semester Mock Diagnostic Assessment (${mockAvg.toFixed(1)}%)`;
 
-            // Compute composite percentage based on available numbers
-            let score = 0;
-            let explanation = '';
-
-            if (cgpa > 0) {
-                const cgpaPercent = cgpa <= 10 ? (cgpa * 9.5) : cgpa;
-                score = (cgpaPercent * 0.5) + (mockAvg * 0.25) + (softAvg * 0.25);
-                explanation = `Computed from CGPA (${cgpa} = ${cgpaPercent.toFixed(1)}%) + 1st Sem Mock (${mockAvg.toFixed(1)}%) + Soft Skills (${softAvg.toFixed(1)}%)`;
-            } else if (mockAvg > 0) {
-                score = (mockAvg * 0.6) + (softAvg * 0.4);
-                explanation = `Computed from 1st Sem Mock Diagnostic (${mockAvg.toFixed(1)}%) + 360° Soft Skills (${softAvg.toFixed(1)}%)`;
-            } else if (twelfth > 0 || tenth > 0) {
-                score = twelfth > 0 ? twelfth : tenth;
-                explanation = `Computed from Pre-admission Academic Marks (${score.toFixed(1)}%)`;
-            } else {
-                score = 75;
-                explanation = 'Default baseline evaluation';
-            }
-
-            score = Math.min(100, Math.max(0, score));
-
-            // Determine Grade (C, B, B+, A, A+)
+            // Determine Grade (C, B, B+, A, A+) strictly based on Mock session score
             let computedGrade = 'C';
             let gradeLabel = 'Grade C (< 60%)';
             let gradeColor = '#b91c1c';
 
-            if (score >= 90.0 || (cgpa >= 9.0 && cgpa <= 10)) {
+            if (score >= 90.0) {
                 computedGrade = 'A+';
-                gradeLabel = `Grade A+ (${score.toFixed(1)}% — Top Tier)`;
+                gradeLabel = `Grade A+ (${score.toFixed(1)}% — Top Tier Mock)`;
                 gradeColor = '#15803d';
-            } else if (score >= 80.0 || (cgpa >= 8.0 && cgpa <= 10)) {
+            } else if (score >= 80.0) {
                 computedGrade = 'A';
-                gradeLabel = `Grade A (${score.toFixed(1)}% — Excellent)`;
+                gradeLabel = `Grade A (${score.toFixed(1)}% — Excellent Mock)`;
                 gradeColor = '#1d4ed8';
-            } else if (score >= 70.0 || (cgpa >= 7.0 && cgpa <= 10)) {
+            } else if (score >= 70.0) {
                 computedGrade = 'B+';
-                gradeLabel = `Grade B+ (${score.toFixed(1)}% — Very Good)`;
-                gradeColor = '#0369a1';
-            } else if (score >= 60.0 || (cgpa >= 6.0 && cgpa <= 10)) {
+                gradeLabel = `Grade B+ (${score.toFixed(1)}% — Good Mock Baseline)`;
+                gradeColor = '#059669';
+            } else if (score >= 60.0) {
                 computedGrade = 'B';
-                gradeLabel = `Grade B (${score.toFixed(1)}% — Good)`;
-                gradeColor = '#b45309';
+                gradeLabel = `Grade B (${score.toFixed(1)}% — Average Mock Baseline)`;
+                gradeColor = '#d97706';
             } else {
                 computedGrade = 'C';
-                gradeLabel = `Grade C (${score.toFixed(1)}% — Needs Focus)`;
+                gradeLabel = `Grade C (${score.toFixed(1)}% — Needs Focused Training)`;
                 gradeColor = '#b91c1c';
             }
 
@@ -1681,7 +1637,7 @@
 
             const formulaEl = document.getElementById('gradeCalcFormulaText');
             if (formulaEl) {
-                formulaEl.textContent = `${explanation} ➔ Final Composite Rating: ${score.toFixed(1)}%`;
+                formulaEl.textContent = `${explanation} ➔ Assigned Performance Grade: Grade ${computedGrade}`;
             }
 
             // Highlight Active Grade Button
@@ -2029,7 +1985,6 @@
                     currentSemester: document.getElementById('currentSemester').value,
                     section: document.getElementById('sectionBatch').value.trim(),
                     batchCode: document.getElementById('sectionBatch').value.trim(),
-                    mentorName: document.getElementById('mentorName').value.trim(),
 
                     // Academics
                     tenthMarks: parseFloat(document.getElementById('tenthMarks').value) || 0,

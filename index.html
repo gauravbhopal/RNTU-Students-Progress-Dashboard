@@ -1211,9 +1211,8 @@
         function renderGradePill(grade, student = null) {
             let g = grade;
             if (!g && student) {
-                const cgpa = parseFloat(student.cgpa) || 0;
                 const mock = parseFloat(student.mockOverall) || 0;
-                g = GDriveSync.calculateGrade(cgpa, mock);
+                g = GDriveSync.calculateGrade(mock);
             }
             if (!g) g = 'A';
             const cleanG = g.replace('+', 'plus');

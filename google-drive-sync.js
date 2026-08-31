@@ -34,14 +34,19 @@ export const GDriveSync = {
     },
 
     /**
-     * Helper to compute standard RNTU Grade from C, B, B+, A, A+
+     * Helper to compute standard RNTU Grade strictly based on 1st Sem Mock Diagnostic Score (%)
+     * Grade A+ : >= 90% (Top Tier)
+     * Grade A  : >= 80% and < 90% (Excellent)
+     * Grade B+ : >= 70% and < 80% (Good Baseline)
+     * Grade B  : >= 60% and < 70% (Average Baseline)
+     * Grade C  : < 60% (Needs Focused Training)
      */
-    calculateGrade(cgpa, mockOrPercent) {
-        const score = parseFloat(cgpa) ? (parseFloat(cgpa) * 9.5) : (parseFloat(mockOrPercent) || 70);
-        if (score >= 85) return 'A+';
-        if (score >= 75) return 'A';
-        if (score >= 65) return 'B+';
-        if (score >= 55) return 'B';
+    calculateGrade(mockScore) {
+        const score = parseFloat(mockScore) || 0;
+        if (score >= 90) return 'A+';
+        if (score >= 80) return 'A';
+        if (score >= 70) return 'B+';
+        if (score >= 60) return 'B';
         return 'C';
     },
 
@@ -175,43 +180,42 @@ function doGet(e) {
         currentYear: String(row[10] || '1st Year'),
         currentSemester: String(row[11] || '1'),
         section: String(row[12] || ''),
-        mentorName: String(row[13] || ''),
-        tenthMarks: parseFloat(row[14]) || '',
-        twelfthMarks: parseFloat(row[15]) || '',
-        entranceScore: String(row[16] || ''),
-        cgpa: parseFloat(row[17]) || '',
-        mockAptitude: parseFloat(row[18]) || 70,
-        mockTech: parseFloat(row[19]) || 68,
-        mockComm: parseFloat(row[20]) || 72,
-        mockConfidence: parseFloat(row[21]) || 75,
-        mockOverall: parseFloat(row[22]) || 71.25,
-        mockDate: row[23] ? String(row[23]) : '',
-        mockStrengths: String(row[24] || ''),
-        mockImprovements: String(row[25] || ''),
-        mockRemarks: String(row[26] || ''),
-        scoreComm: parseFloat(row[27]) || 75,
-        scorePresentation: parseFloat(row[28]) || 70,
-        scoreLeadership: parseFloat(row[29]) || 80,
-        scoreProblemSolving: parseFloat(row[30]) || 78,
-        scoreEtiquette: parseFloat(row[31]) || 82,
-        scoreTechnical: parseFloat(row[32]) || 75,
-        personalityScore: parseFloat(row[33]) || 76.7,
-        personalityReadiness: String(row[34] || 'Placement Ready'),
-        certifications: String(row[35] || ''),
-        careerAspiration: String(row[36] || 'Job / Corporate Placement'),
-        targetDetails: String(row[37] || ''),
-        placementStatus: String(row[38] || 'Not Yet Placed'),
-        placedCompany: String(row[39] || ''),
-        placedRole: String(row[40] || ''),
-        placedPackage: parseFloat(row[41]) || 0,
-        placedLocation: String(row[42] || ''),
-        offerLetterReceived: String(row[43] || 'No'),
-        alumniOrg: String(row[44] || ''),
-        alumniRole: String(row[45] || ''),
-        alumniExp: parseFloat(row[46]) || 0,
-        alumniLinkedIn: String(row[47] || ''),
-        alumniMentor: String(row[48] || 'No'),
-        lastUpdated: String(row[49] || '')
+        tenthMarks: parseFloat(row[13]) || '',
+        twelfthMarks: parseFloat(row[14]) || '',
+        entranceScore: String(row[15] || ''),
+        cgpa: parseFloat(row[16]) || '',
+        mockAptitude: parseFloat(row[17]) || 70,
+        mockTech: parseFloat(row[18]) || 68,
+        mockComm: parseFloat(row[19]) || 72,
+        mockConfidence: parseFloat(row[20]) || 75,
+        mockOverall: parseFloat(row[21]) || 71.25,
+        mockDate: row[22] ? String(row[22]) : '',
+        mockStrengths: String(row[23] || ''),
+        mockImprovements: String(row[24] || ''),
+        mockRemarks: String(row[25] || ''),
+        scoreComm: parseFloat(row[26]) || 75,
+        scorePresentation: parseFloat(row[27]) || 70,
+        scoreLeadership: parseFloat(row[28]) || 80,
+        scoreProblemSolving: parseFloat(row[29]) || 78,
+        scoreEtiquette: parseFloat(row[30]) || 82,
+        scoreTechnical: parseFloat(row[31]) || 75,
+        personalityScore: parseFloat(row[32]) || 76.7,
+        personalityReadiness: String(row[33] || 'Placement Ready'),
+        certifications: String(row[34] || ''),
+        careerAspiration: String(row[35] || 'Job / Corporate Placement'),
+        targetDetails: String(row[36] || ''),
+        placementStatus: String(row[37] || 'Not Yet Placed'),
+        placedCompany: String(row[38] || ''),
+        placedRole: String(row[39] || ''),
+        placedPackage: parseFloat(row[40]) || 0,
+        placedLocation: String(row[41] || ''),
+        offerLetterReceived: String(row[42] || 'No'),
+        alumniOrg: String(row[43] || ''),
+        alumniRole: String(row[44] || ''),
+        alumniExp: parseFloat(row[45]) || 0,
+        alumniLinkedIn: String(row[46] || ''),
+        alumniMentor: String(row[47] || 'No'),
+        lastUpdated: String(row[48] || '')
       };
       students.push(student);
     }
@@ -287,7 +291,6 @@ function setupHeaders(sheet) {
     "Current Year",
     "Semester",
     "Section / Batch",
-    "Faculty Mentor",
     "10th %",
     "12th / Diploma %",
     "Entrance Score",
@@ -352,7 +355,6 @@ function mapStudentToRow(st) {
     st.currentYear || "",
     st.currentSemester || "",
     st.section || st.batchCode || "",
-    st.mentorName || "",
     st.tenthMarks || "",
     st.twelfthMarks || "",
     st.entranceScore || "",
@@ -444,7 +446,7 @@ function deleteStudent(sheet, idOrKey) {
 
         const headers = [
             "Enrollment / Roll No", "Full Name", "Overall Grade (C, B, B+, A, A+)", "Google Drive Portfolio Folder Link", "Email", "Mobile", "Gender",
-            "Sector ID", "Sector Name", "Course / Branch", "Current Year", "Semester", "Section", "Mentor Guide",
+            "Sector ID", "Sector Name", "Course / Branch", "Current Year", "Semester", "Section",
             "10th %", "12th / Diploma %", "Entrance Score", "Current CGPA",
             "Sem 1 Mock Aptitude (100)", "Sem 1 Mock Tech (100)", "Sem 1 Mock Comm (100)", "Sem 1 Mock Overall (100)", "Mock Date", "Mock Remarks", "Key Strengths", "Improvement Areas",
             "Comm Score", "Presentation Score", "Leadership Score", "Problem Solving Score", "Etiquette Score", "Overall Personality Score (100)", "Personality Readiness",
@@ -482,7 +484,6 @@ function deleteStudent(sheet, idOrKey) {
                 escapeCSV(st.currentYear || ''),
                 escapeCSV(st.currentSemester || ''),
                 escapeCSV(st.section || ''),
-                escapeCSV(st.mentorName || ''),
                 escapeCSV(st.tenthMarks || ''),
                 escapeCSV(st.twelfthMarks || ''),
                 escapeCSV(st.entranceScore || ''),
@@ -545,7 +546,6 @@ function deleteStudent(sheet, idOrKey) {
             "Email",
             "Mobile",
             "Gender",
-            "Faculty Mentor",
             "10th %",
             "12th %",
             "Entrance Score",
@@ -578,7 +578,6 @@ function deleteStudent(sheet, idOrKey) {
                 "aman.sharma@rntu.ac.in",
                 "9826012345",
                 "Male",
-                "Dr. R.K. Saxena",
                 "86.5",
                 "82.0",
                 "JEE 88.5%ile",
@@ -609,7 +608,6 @@ function deleteStudent(sheet, idOrKey) {
                 "priya.patel@rntu.ac.in",
                 "9425098765",
                 "Female",
-                "Prof. Anjali Verma",
                 "89.2",
                 "85.6",
                 "Merit Rank 14",
@@ -640,7 +638,6 @@ function deleteStudent(sheet, idOrKey) {
                 "rahul.chouhan@rntu.ac.in",
                 "9754011223",
                 "Male",
-                "Dr. Suresh Tiwari",
                 "78.4",
                 "76.5",
                 "PAT Rank 120",
@@ -774,7 +771,7 @@ function deleteStudent(sheet, idOrKey) {
 
             let grade = getCol(['grade', 'overallgrade']);
             if (!grade) {
-                grade = GDriveSync.calculateGrade(cgpa, mockOverall);
+                grade = GDriveSync.calculateGrade(mockOverall);
             }
 
             const student = {
@@ -793,7 +790,6 @@ function deleteStudent(sheet, idOrKey) {
                 currentYear: getCol(['currentyear', 'year']) || '1st Year',
                 currentSemester: String(getCol(['currentsemester', 'semester', 'sem']) || '1'),
                 section: getCol(['section', 'batch', 'sectionbatch']),
-                mentorName: getCol(['mentor', 'mentorname', 'facultymentor', 'guide']),
                 tenthMarks: parseFloat(getCol(['10th', 'tenthmarks', '10thpercent'])) || '',
                 twelfthMarks: parseFloat(getCol(['12th', 'twelfthmarks', '12thpercent'])) || '',
                 entranceScore: getCol(['entrancescore', 'jee', 'cuet', 'pat']),
